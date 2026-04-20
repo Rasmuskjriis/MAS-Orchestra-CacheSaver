@@ -1,0 +1,174 @@
+hydra:
+  run:
+    dir: outputs/${now:%Y-%m-%d}/${now:%H-%M-%S}
+  sweep:
+    dir: multirun/${now:%Y-%m-%d}/${now:%H-%M-%S}
+    subdir: ${hydra.job.num}
+  launcher:
+    _target_: hydra._internal.core_plugins.basic_launcher.BasicLauncher
+  sweeper:
+    _target_: hydra._internal.core_plugins.basic_sweeper.BasicSweeper
+    max_batch_size: null
+    params: null
+  help:
+    app_name: ${hydra.job.name}
+    header: '${hydra.help.app_name} is powered by Hydra.
+
+      '
+    footer: 'Powered by Hydra (https://hydra.cc)
+
+      Use --hydra-help to view Hydra specific help
+
+      '
+    template: '${hydra.help.header}
+
+      == Configuration groups ==
+
+      Compose your configuration from those groups (group=option)
+
+
+      $APP_CONFIG_GROUPS
+
+
+      == Config ==
+
+      Override anything in the config (foo.bar=value)
+
+
+      $CONFIG
+
+
+      ${hydra.help.footer}
+
+      '
+  hydra_help:
+    template: 'Hydra (${hydra.runtime.version})
+
+      See https://hydra.cc for more info.
+
+
+      == Flags ==
+
+      $FLAGS_HELP
+
+
+      == Configuration groups ==
+
+      Compose your configuration from those groups (For example, append hydra/job_logging=disabled
+      to command line)
+
+
+      $HYDRA_CONFIG_GROUPS
+
+
+      Use ''--cfg hydra'' to Show the Hydra config.
+
+      '
+    hydra_help: ???
+  hydra_logging:
+    version: 1
+    formatters:
+      simple:
+        format: '[%(asctime)s][HYDRA] %(message)s'
+    handlers:
+      console:
+        class: logging.StreamHandler
+        formatter: simple
+        stream: ext://sys.stdout
+    root:
+      level: INFO
+      handlers:
+      - console
+    loggers:
+      logging_example:
+        level: DEBUG
+    disable_existing_loggers: false
+  job_logging:
+    version: 1
+    formatters:
+      simple:
+        format: '[%(asctime)s][%(name)s][%(levelname)s] - %(message)s'
+    handlers:
+      console:
+        class: logging.StreamHandler
+        formatter: simple
+        stream: ext://sys.stdout
+      file:
+        class: logging.FileHandler
+        formatter: simple
+        filename: ${hydra.runtime.output_dir}/${hydra.job.name}.log
+    root:
+      level: INFO
+      handlers:
+      - console
+      - file
+    disable_existing_loggers: false
+  env: {}
+  mode: RUN
+  searchpath: []
+  callbacks: {}
+  output_subdir: .hydra
+  overrides:
+    hydra:
+    - hydra.mode=RUN
+    task:
+    - data.max_prompt_length=15000
+    - data.max_validation_prompt_length=15000
+    - data.val_files=data/browse_comp/test_subset_200.parquet
+    - data.train_files=data/browse_comp/train_subset_1066.parquet
+    - azr.mas_r1.use_llm_judge=True
+    - data.raw_data=True
+    - data.train_batch_size=64
+    - actor_rollout_ref.rollout.n=32
+    - azr.mas_r1.execution_success_weight=0.0
+    - azr.mas_r1.final_answer_weight=1.0
+    - azr.mas_r1.agent.model_name=gpt-oss-120b
+    - azr.mas_r1.multiply_processes=0
+    - azr.mas_r1.max_ray_workers=1
+    - azr.problem_type=igsm_depth
+    - azr.mas_r1.agent.init_archive=[COT,COT_SC,Reflexion,LLM_debate,WebSearch]
+    - trainer.val_before_train=True
+    - trainer.test_freq=5
+    - trainer.save_freq=10
+    - actor_rollout_ref.model.path=Qwen/Qwen2.5-7B-Instruct
+    - trainer.experiment_name=harmony_medium_grpo_7b_gpt_oss_120b_browse_comp_plus
+  job:
+    name: main_mas_r1
+    chdir: null
+    override_dirname: actor_rollout_ref.model.path=Qwen/Qwen2.5-7B-Instruct,actor_rollout_ref.rollout.n=32,azr.mas_r1.agent.init_archive=[COT,COT_SC,Reflexion,LLM_debate,WebSearch],azr.mas_r1.agent.model_name=gpt-oss-120b,azr.mas_r1.execution_success_weight=0.0,azr.mas_r1.final_answer_weight=1.0,azr.mas_r1.max_ray_workers=1,azr.mas_r1.multiply_processes=0,azr.mas_r1.use_llm_judge=True,azr.problem_type=igsm_depth,data.max_prompt_length=15000,data.max_validation_prompt_length=15000,data.raw_data=True,data.train_batch_size=64,data.train_files=data/browse_comp/train_subset_1066.parquet,data.val_files=data/browse_comp/test_subset_200.parquet,trainer.experiment_name=harmony_medium_grpo_7b_gpt_oss_120b_browse_comp_plus,trainer.save_freq=10,trainer.test_freq=5,trainer.val_before_train=True
+    id: ???
+    num: ???
+    config_name: grpo_trainer
+    env_set: {}
+    env_copy: []
+    config:
+      override_dirname:
+        kv_sep: '='
+        item_sep: ','
+        exclude_keys: []
+  runtime:
+    version: 1.3.2
+    version_base: '1.3'
+    cwd: /workspace
+    config_sources:
+    - path: hydra.conf
+      schema: pkg
+      provider: hydra
+    - path: /workspace/mas_r1_reasoner/configs
+      schema: file
+      provider: main
+    - path: ''
+      schema: structured
+      provider: schema
+    output_dir: /workspace/outputs/2026-04-16/14-51-46
+    choices:
+      hydra/env: default
+      hydra/callbacks: null
+      hydra/job_logging: default
+      hydra/hydra_logging: default
+      hydra/hydra_help: default
+      hydra/help: default
+      hydra/sweeper: basic
+      hydra/launcher: basic
+      hydra/output: default
+  verbose: false
