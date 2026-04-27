@@ -2,9 +2,17 @@ import torch
 import time
 from transformers import AutoModelForCausalLM, AutoTokenizer, TextStreamer
 from datasets import load_dataset
+from openai import OpenAI
 
-MODEL_PATH = "./models/harmony-aime-merged"
+BASE_URL = "https://discern-stroller-recycling.ngrok-free.dev/v1"
+MODEL = "math"
+
 OUTPUT_XML = "mas_plan.xml"
+
+client = OpenAI(
+    base_url=BASE_URL,
+    api_key="dummy"  # required but ignored by server
+)
 
 # =========================
 # 1. Load dataset problem
@@ -19,24 +27,13 @@ dataset = load_dataset(
 
 problem = dataset[5]["problem"]
 
-# =========================
-# 2. Load model
-# =========================
-tokenizer = AutoTokenizer.from_pretrained(MODEL_PATH, use_fast=False)
-
-model = AutoModelForCausalLM.from_pretrained(
-    MODEL_PATH,
-    device_map={"": "cpu"},
-    torch_dtype=torch.bfloat16,
-    low_cpu_mem_usage=True,
-    trust_remote_code=True
-)
-
-streamer = TextStreamer(tokenizer, skip_prompt=True, skip_special_tokens=True)
+# print("problem: ", problem)
+# print()
 
 # =========================
 # 3. MAS PROMPT (IMPORTANT)
 # =========================
+
 MATH_SYSTEM_PROMPT = """You are a helpful assistant.
 
 MASness (How much Multi-Agent System-ness): Minimal
@@ -238,13 +235,7 @@ def build_math_messages(question):
 
 messages = build_math_messages(problem)
 
-prompt = tokenizer.apply_chat_template(
-    messages,
-    tokenize=False,
-    add_generation_prompt=True
-)
-
-inputs = tokenizer(prompt, return_tensors="pt")
+# print("messages: ", messages)
 
 # =========================
 # 4. Generate XML
@@ -255,29 +246,30 @@ print("==============================\n")
 
 start = time.time()
 
-print(f"Token count: {inputs['input_ids'].shape[1]}")
-
-with torch.no_grad():
-    outputs = model.generate(
-        **inputs,
-        max_new_tokens=5000,   # IMPORTANT: give it room
-        do_sample=True,
-        temperature=0.7,
-        streamer=streamer,
-        pad_token_id=tokenizer.eos_token_id,
-        eos_token_id=tokenizer.eos_token_id,
-    )
+response = client.chat.completions.create(
+    model=MODEL,
+    messages=messages,
+    temperature=0.7,
+    max_tokens=4096,
+)
 
 end = time.time()
 
-# =========================
-# 5. Decode + save
-# =========================
-full_output = tokenizer.decode(outputs[0], skip_special_tokens=True)
+print(f"Model: {response.model}")
+print(f"Tokens: {response.usage.prompt_tokens} prompt, {response.usage.completion_tokens} completion")
+print(f"\n--- Response ---\n")
+print(response.choices[0].message.content)
 
-# Extract only XML part (optional but recommended)
-xml_start = full_output.find("<thinking>")
-xml_content = full_output[xml_start:]
+output = response.choices[0].message.content
+
+end_tag = "</answer>"
+end_idx = output.rfind(end_tag)
+
+if end_idx != -1:
+    xml_content = output[:end_idx + len(end_tag)]
+else:
+    # fallback if model is broken
+    xml_content = output
 
 with open(OUTPUT_XML, "w") as f:
     f.write(xml_content)

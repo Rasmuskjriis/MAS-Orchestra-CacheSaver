@@ -43,9 +43,9 @@ class ChatCompletionSampler(SamplerBase):
         mock_output: bool = False,
     ):
         self.client = AsyncOpenAI(
-            base_url="https://gateway.salesforceresearch.ai/openai/process/v1/",
-            api_key="dummy",
-            default_headers = {"X-Api-Key": os.getenv("X_API_KEY")},
+            base_url="https://api.groq.com/openai/v1",
+            api_key=os.getenv("GROQ_API_KEY"),
+            # default_headers = {"X-Api-Key": os.getenv("X_API_KEY")},
             timeout=60
         )
         
