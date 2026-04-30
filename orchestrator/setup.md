@@ -20,15 +20,18 @@
 7. Open a terminal in VSC (which should be in WSL), also make sure to open Docker Desktop.
 
 ### Setting up Docker
+(To avoid warnings add this to the .env file: "RAY_ACCEL_ENV_VAR_OVERRIDE_ON_ZERO=0", as well as the keys for OPENAI and GROQ and also a HF_TOKEN for huggingface)
+
 8. Create a Docker image:
 "docker build -t cachesaver-base -f orchestrator/Dockerfile.base ."
 
 9. Create a Docker container:
-"docker run -it \
+docker run -it \
   --name cachesaver_dev \
+  --shm-size=8gb \
   -v $(pwd):/app \
   --env-file .env \
-  cachesaver-base /bin/bash"
+  cachesaver-base /bin/bash
 
 (The terminal should now look something like: "root@c73297dabeb0:/app#")
 

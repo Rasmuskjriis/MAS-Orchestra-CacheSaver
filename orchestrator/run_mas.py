@@ -45,8 +45,7 @@ set_global("global_debate_role", ['Math Professor', 'Grade School Teacher'])
 dataset = load_dataset(
     "DigitalLearningGmbH/MATH-lighteval",
     "algebra",
-    split="train",
-    trust_remote_code=True
+    split="train"
 )
 
 problem = dataset[5]["problem"]
@@ -77,17 +76,20 @@ code, name, thought = extract_harmony_code_from_response(
 if code.startswith("direct_answer"):
     print("No executable agent plan found:", thought)
 else:
-    print("Check if API key is present")
     assert os.getenv("GROQ_API_KEY") is not None, "Missing GROQ_API_KEY"
     ray.init()
 
     system = AsyncAgentSystem.create_with_globals()
 
     async def run():
-        result = await system.execute_mas_batch_async(
+        results = await system.execute_mas_batch_async(
             [code],
             [task_info]
         )
-        print(result[0])
+        result, success, error_message = results[0]
+       
+        print("result: ", result)
+        print("success: ", success)
+        print("error_message: ", error_message)
 
     asyncio.run(run())

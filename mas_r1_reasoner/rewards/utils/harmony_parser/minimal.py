@@ -51,8 +51,8 @@ def parse_harmony_agent_response(response_text: str) -> str:
         # Parse the required_arguments directly
         try:
             # Debug: Print the raw required_arguments content
-            main_rank_print(f"Raw required_arguments: {repr(required_arguments_xml)}")
-            main_rank_print(f"required_arguments length: {len(required_arguments_xml)}")
+            # main_rank_print(f"Raw required_arguments: {repr(required_arguments_xml)}")
+            # main_rank_print(f"required_arguments length: {len(required_arguments_xml)}")
             
             if not required_arguments_xml:
                 main_rank_print("Failed to extract required_arguments from response")
@@ -122,7 +122,7 @@ def parse_harmony_agent_response(response_text: str) -> str:
                 'required_arguments': required_arguments
             }]
             
-            main_rank_print(f"Constructed agent_calls: {json.dumps(agent_calls, indent=2)}")
+            # main_rank_print(f"Constructed agent_calls: {json.dumps(agent_calls, indent=2)}")
             
         except Exception as e:
             main_rank_print(f"Failed to parse required_arguments XML: {required_arguments_xml}")
@@ -224,11 +224,11 @@ def parse_harmony_agent_response(response_text: str) -> str:
         generated_code = "\n".join(code_lines)
         
         # Log the generated code after parsing
-        main_rank_print(f"\n{'='*80}")
-        main_rank_print(f"GENERATED CODE FOR AGENT: {agent_name}")
-        main_rank_print(f"{'='*80}")
-        main_rank_print(generated_code)
-        main_rank_print(f"{'='*80}\n")
+        # main_rank_print(f"\n{'='*80}")
+        # main_rank_print(f"GENERATED CODE FOR AGENT: {agent_name}")
+        # main_rank_print(f"{'='*80}")
+        # main_rank_print(generated_code)
+        # main_rank_print(f"{'='*80}\n")
         
         return generated_code
         
@@ -259,10 +259,12 @@ def extract_harmony_code_from_response(response_text: str, validate_python_code,
             thought = extract_xml(response_text, "thinking")
             
             # Check if parsing was successful (code is not empty and valid)
-            if code and code.strip():
-                main_rank_print(f"Successfully parsed agent response for {agent_name}")
-            else:
-                main_rank_print(f"Agent parsing failed for {agent_name} - empty code generated. response_text: {response_text}")
+            assert code and code.strip(), main_rank_print(f"Agent parsing failed for {agent_name} - empty code generated. response_text: {response_text}")
+            
+            # if code and code.strip():
+            #     main_rank_print(f"Successfully parsed agent response for {agent_name}")
+            # else:
+            #     main_rank_print(f"Agent parsing failed for {agent_name} - empty code generated. response_text: {response_text}")
             
             return code, name, thought
         else:

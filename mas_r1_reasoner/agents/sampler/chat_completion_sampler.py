@@ -56,7 +56,7 @@ class ChatCompletionSampler(SamplerBase):
         self.no_temperature_models = ['gpt-5-nano']
         self.reasonining_models = ['gpt-5']
         self.mock_output = mock_output
-        print('OpenAI mock_output init: ', self.mock_output)
+        # print('OpenAI mock_output init: ', self.mock_output)
 
     def _convert_to_basic_type(self, value: Any) -> Any:
         """Convert OmegaConf objects to basic Python types."""
