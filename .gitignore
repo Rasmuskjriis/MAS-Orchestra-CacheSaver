@@ -1,3 +1,5 @@
 .env
 __pycache__/
 *.pyc
+mas_orchestrator_remote.egg-info/
+outputs/

@@ -47,11 +47,11 @@ or run:
 
 and then:
 
-"python3 orchestrator.remote_orchestrator"
+"python3 -m orchestrator.remote_orchestrator"
 
 12. Execute the orchestrator:
 "uv run -m orchestrator.run_mas"
 
 or
 
-"python3 orchestrator.run_mas"
+"python3 -m orchestrator.run_mas"
