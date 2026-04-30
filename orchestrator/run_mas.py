@@ -17,7 +17,7 @@ set_global("global_node_model", "gpt-4o")
 model_sampler_map = {
     "gpt-4o": ChatCompletionSampler(
         model="meta-llama/llama-4-scout-17b-16e-instruct",
-        temperature=0.5,
+        temperature=0.7,
         mock_output=False
     )
 }
@@ -61,7 +61,7 @@ task_info = Info(
     final_answer=None
 )
 
-with open("mas_plan.xml") as f:
+with open("orchestrator/mas_plan.xml") as f:
     xml_plan = f.read()
 
 code, name, thought = extract_harmony_code_from_response(
@@ -70,9 +70,9 @@ code, name, thought = extract_harmony_code_from_response(
     logger=None
 )
 
-print(f"Extracted code: {code}")
-print(f"Extracted thought: {thought}")
-print(f"Extracted name: {name}")
+# print(f"Extracted code: {code}")
+# print(f"Extracted thought: {thought}")
+# print(f"Extracted name: {name}")
 
 if code.startswith("direct_answer"):
     print("No executable agent plan found:", thought)

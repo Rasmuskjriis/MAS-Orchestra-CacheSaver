@@ -2,34 +2,8 @@ import time
 from datasets import load_dataset
 from openai import OpenAI
 
-BASE_URL = "https://discern-stroller-recycling.ngrok-free.dev/v1"
-MODEL = "math"
-
-OUTPUT_XML = "mas_plan.xml"
-
-client = OpenAI(
-    base_url=BASE_URL,
-    api_key="dummy"  # required but ignored by server
-)
-
 # =========================
-# 1. Load dataset problem
-# =========================
-print("Fetching dataset problem...")
-dataset = load_dataset(
-    "DigitalLearningGmbH/MATH-lighteval",
-    "algebra",
-    split="train",
-    trust_remote_code=True
-)
-
-problem = dataset[5]["problem"]
-
-# print("problem: ", problem)
-# print()
-
-# =========================
-# 3. MAS PROMPT (IMPORTANT)
+# 1. MAS PROMPT
 # =========================
 
 MATH_SYSTEM_PROMPT = """You are a helpful assistant.
@@ -223,7 +197,6 @@ DebateAgent: {\"desciption\": \"By letting different LLMs debate with each other
 
 ReflexionAgent: {\"desciption\": \"To enhance its performance, an LLM can iteratively improve its answer based on feedback. By reflecting on its previous attempts and incorporating feedback, the model can refine its reasoning and provide a more accurate solution. Best for complex problems that benefit from self-correction.\", \"name\": \"Self-Refine (Reflexion)\", \"required_arguments\": {\"agent_input\": \"The input for the ReflexionAgent. This is the task question for the CoT LLM to solve. If left empty (\\\"\\\") the parser will automatically replace it with the original question.\"}, \"implementation\": \"def ReflexionAgent(self, agent_input, model: str):\\n    from mas_r1_reasoner.agents.agent_system import LLMAgentBase, Info\\n    \\n    # Validate that agent_input is an Info object\\n    assert isinstance(agent_input, Info), f\\\"agent_input must be an Info object, got {agent_input}\\\"\\n\\n    # Basic setting\\n    temperature = 0.5\\n    max_reflection_round = 5\\n\\n    # Instruction for initial reasoning\\n    initial_instruction = \\\"Please think step by step and then solve the task.\\\"\\n\\n    # Instruction for reflecting on previous attempts and feedback to improve\\n    reflect_instruction = \\\"Given previous attempts and feedback, carefully consider where you could go wrong in your latest attempt. Using insights from previous attempts, try to solve the task better.\\\"\\n    cot_agent = LLMAgentBase(['thinking', 'answer'], 'Chain-of-Thought LLM', model=model, temperature=temperature)\\n\\n    # Instruction for providing feedback and correcting the answer\\n    critic_instruction = \\\"Please review the answer above and criticize on where might be wrong. If you are absolutely sure it is correct, output exactly 'True' in 'correct'.\\\"\\n\\n    critic_agent = LLMAgentBase(['feedback', 'correct'], 'Critic LLM', model=model, temperature=temperature)\\n        \\n    # Initial attempt\\n    cot_inputs = [agent_input]\\n    thinking, answer = cot_agent(cot_inputs, initial_instruction, 0)\\n\\n    for i in range(max_reflection_round):\\n        # Get feedback and correct status from the critic\\n        feedback, correct = critic_agent([agent_input, thinking, answer], critic_instruction, i)\\n        if correct.content == 'True':\\n            break\\n            \\n        # Add feedback to the inputs for the next iteration\\n        cot_inputs.extend([thinking, answer, feedback])\\n\\n        # Reflect on previous attempts and refine the answer\\n        thinking, answer = cot_agent(cot_inputs, reflect_instruction, i + 1)\\n\\n    final_answer = self.make_final_answer(thinking, answer)\\n\\n    return final_answer\\n\"}"""
 
-
 def build_math_messages(question):
     return [
         {"role": "system", "content": MATH_SYSTEM_PROMPT},
@@ -231,9 +204,34 @@ def build_math_messages(question):
         {"role": "user", "content": MATH_USER_SUFFIX},
     ]
 
+
+
+BASE_URL = "https://discern-stroller-recycling.ngrok-free.dev/v1"
+
+client = OpenAI(
+    base_url=BASE_URL,
+    api_key="dummy"  # required but ignored by server
+)
+
+# =========================
+# 1. Load dataset problem
+# =========================
+print("Fetching dataset problem...")
+dataset = load_dataset(
+    "DigitalLearningGmbH/MATH-lighteval",
+    "algebra",
+    split="train",
+    trust_remote_code=True
+)
+
+problem = dataset[5]["problem"]
+
+problem += " Use two agents to debate over two rounds."
+
 messages = build_math_messages(problem)
 
-# print("messages: ", messages)
+print("messages: ", messages)
+
 
 # =========================
 # 4. Generate XML
@@ -241,6 +239,8 @@ messages = build_math_messages(problem)
 print("\n==============================")
 print("🧠 GENERATING MAS XML PLAN")
 print("==============================\n")
+
+MODEL = "math"
 
 start = time.time()
 
@@ -269,8 +269,13 @@ else:
     # fallback if model is broken
     xml_content = output
 
+
+# Save output to file
+OUTPUT_XML = "orchestrator/mas_plan.xml"
+
 with open(OUTPUT_XML, "w") as f:
     f.write(xml_content)
+
 
 print("\n==============================")
 print("✅ XML PLAN SAVED")

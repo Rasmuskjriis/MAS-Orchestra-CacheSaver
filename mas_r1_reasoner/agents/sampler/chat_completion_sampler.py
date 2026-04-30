@@ -91,11 +91,11 @@ class ChatCompletionSampler(SamplerBase):
         
         if self.system_message:
             message_list = [self._pack_message("system", self.system_message)] + message_list
-            print(f"Added system message, total messages: {len(message_list)}")
+            # print(f"Added system message, total messages: {len(message_list)}")
         
         trial = 0
         while True:
-            print(f"\n--- Trial {trial + 1} ---")
+            # print(f"\n--- Trial {trial + 1} ---")
             try:
                 # Convert non-string content to strings
                 # print("Converting message content to strings...")
@@ -119,10 +119,10 @@ class ChatCompletionSampler(SamplerBase):
                     except (ValueError, TypeError) as e:
                         raise ValueError(f"Failed to convert temperature '{safe_temperature}' to float: {e}")
                 
-                print(f"  - Safe model: {safe_model} (type: {type(safe_model).__name__})")
-                print(f"  - Safe temperature: {safe_temperature} (type: {type(safe_temperature).__name__})")
-                print(f"  - OpenAI mock_output: {self.mock_output}")
-                print(f"  - Msg: {message_list}")
+                # print(f"  - Safe model: {safe_model} (type: {type(safe_model).__name__})")
+                # print(f"  - Safe temperature: {safe_temperature} (type: {type(safe_temperature).__name__})")
+                # print(f"  - OpenAI mock_output: {self.mock_output}")
+                # print(f"  - Msg: {message_list}")
 
 
 
