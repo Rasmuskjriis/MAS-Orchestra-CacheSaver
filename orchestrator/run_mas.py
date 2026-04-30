@@ -25,8 +25,8 @@ model_sampler_map = {
 set_global("global_model_sampler_map", model_sampler_map)
 
 # Set other required global variables with defaults
-set_global("global_max_round", 5)
-set_global("global_max_sc", 5)
+set_global("global_max_round", 2)
+set_global("global_max_sc", 1)
 set_global("global_decompose_only", False)
 set_global("global_architecture_only", False)
 set_global("global_architecture_only_sequential", False)
@@ -91,5 +91,7 @@ else:
         print("result: ", result)
         print("success: ", success)
         print("error_message: ", error_message)
+
+        return
 
     asyncio.run(run())
