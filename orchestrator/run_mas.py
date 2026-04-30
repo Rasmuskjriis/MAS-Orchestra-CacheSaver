@@ -8,7 +8,6 @@ from datasets import load_dataset
 import asyncio
 import ray
 import os
-from orchestrator.samplers import GroqChatCompletionSampler
 
 # Set up global variables required for MAS execution
 set_global("global_max_ray_workers", 4)

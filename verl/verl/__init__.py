@@ -14,7 +14,7 @@
 
 import logging
 import os
-import pkg_resources
+import importlib.metadata
 
 from pkg_resources import DistributionNotFound
 from packaging.version import parse as parse_version

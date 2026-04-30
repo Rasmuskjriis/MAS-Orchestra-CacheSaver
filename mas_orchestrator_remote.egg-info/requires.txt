@@ -1,0 +1,8 @@
+datasets
+openai
+ray
+torch
+numpy
+tqdm
+pyarrow
+verl>=0.3.0

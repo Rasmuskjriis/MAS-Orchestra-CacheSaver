@@ -1,6 +1,4 @@
-import torch
 import time
-from transformers import AutoModelForCausalLM, AutoTokenizer, TextStreamer
 from datasets import load_dataset
 from openai import OpenAI
 

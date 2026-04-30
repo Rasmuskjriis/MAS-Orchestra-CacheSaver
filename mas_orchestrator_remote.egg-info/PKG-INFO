@@ -1,0 +1,14 @@
+Metadata-Version: 2.4
+Name: mas-orchestrator-remote
+Version: 0.1.0
+Requires-Python: >=3.13
+License-File: LICENSE.txt
+Requires-Dist: datasets
+Requires-Dist: openai
+Requires-Dist: ray
+Requires-Dist: torch
+Requires-Dist: numpy
+Requires-Dist: tqdm
+Requires-Dist: pyarrow
+Requires-Dist: verl>=0.3.0
+Dynamic: license-file

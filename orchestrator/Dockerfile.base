@@ -1,0 +1,14 @@
+# Use the official PyTorch runtime (includes CUDA 12.4)
+FROM pytorch/pytorch:2.4.0-cuda12.4-cudnn9-runtime
+
+# Install uv for fast dependency management
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+
+# Install basic system tools needed for building/git
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set the working directory
+WORKDIR /app

@@ -1,0 +1,19 @@
+[project]
+name = "mas-orchestrator"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = [
+    "datasets",
+    "openai",
+    "together",
+    "ray[default]>=2.10",
+    "torch>=2.4.0",
+    "numpy",
+    "tensordict==0.6.2",
+    "transformers",
+    "accelerate",
+    "verl",
+]
+
+[tool.uv.sources]
+verl = { path = "./verl", editable = true }
