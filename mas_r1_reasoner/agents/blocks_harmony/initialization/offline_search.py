@@ -94,6 +94,7 @@ def _initialize_chat_model(node_model):
             "qwen-2.5-32b-instr": "qwen-2.5-32b-instr",
             "qwen-2.5-7b-instr": "Qwen/Qwen2.5-7B-Instruct-Turbo",
             "qwen-2.5-72b-instr": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+            "meta-llama/llama-4-scout-17b-16e-instruct": "meta-llama/llama-4-scout-17b-16e-instruct",
         }
         
         # Parse model name: if it already has a prefix, use as-is; otherwise map it

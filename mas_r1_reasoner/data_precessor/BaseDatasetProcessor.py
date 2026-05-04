@@ -5,6 +5,7 @@ from verl import DataProto
 from mas_r1_reasoner.agents.sampler.chat_completion_sampler import ChatCompletionSampler
 from mas_r1_reasoner.agents.sampler.together_completion_sampler import TogetherCompletionSampler
 from mas_r1_reasoner.agents.sampler.vllm_completion_sampler import VLLMCompletionSampler
+from mas_r1_reasoner.agents.sampler.groq_completion_sampler import GroqCompletionSampler
 from mas_r1_reasoner.agents.shared_vars import set_global, get_global
 from mas_r1_reasoner.agents.common import main_rank_print, get_prompt
 from mas_r1_reasoner.agents.agent_system import AgentSystem, LLMAgentBase, Info
@@ -76,6 +77,17 @@ class BaseDatasetProcessor:
                         raise ValueError(f"Model name not specified for sampler '{model_name}'. Please specify a 'model' field in the sampler configuration.")
                     
                     model_sampler_map[model_name] = VLLMCompletionSampler(
+                        model=model_name_to_use,
+                        temperature=sampler_config.get('temperature', 0.5),
+                        system_message=sampler_config.get('system_message', None)
+                    )
+                elif sampler_type == 'GroqCompletionSampler':
+                    # Create Groq sampler
+                    model_name_to_use = sampler_config.get('model', model_name)
+                    if not model_name_to_use:
+                        raise ValueError(f"Model name not specified for sampler '{model_name}'. Please specify a 'model' field in the sampler configuration.")
+                    
+                    model_sampler_map[model_name] = GroqCompletionSampler(
                         model=model_name_to_use,
                         temperature=sampler_config.get('temperature', 0.5),
                         system_message=sampler_config.get('system_message', None)

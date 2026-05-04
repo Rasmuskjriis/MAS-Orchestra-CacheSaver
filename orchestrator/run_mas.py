@@ -3,6 +3,7 @@ from mas_r1_reasoner.agents.agent_system import Info
 from mas_r1_reasoner.agents.shared_vars import set_global
 from mas_r1_reasoner.agents.code_sanity import validate_python_code
 from mas_r1_reasoner.agents.sampler.chat_completion_sampler import ChatCompletionSampler
+from mas_r1_reasoner.agents.sampler.groq_completion_sampler import GroqCompletionSampler
 from mas_r1_reasoner.rewards.utils.harmony_parser.minimal import extract_harmony_code_from_response
 from datasets import load_dataset
 import asyncio
@@ -12,10 +13,10 @@ import os
 # Set up global variables required for MAS execution
 set_global("global_max_ray_workers", 4)
 
-set_global("global_node_model", "gpt-4o")
+set_global("global_node_model", "meta-llama/llama-4-scout-17b-16e-instruct")
 
 model_sampler_map = {
-    "gpt-4o": ChatCompletionSampler(
+    "meta-llama/llama-4-scout-17b-16e-instruct": GroqCompletionSampler(
         model="meta-llama/llama-4-scout-17b-16e-instruct",
         temperature=0.7,
         mock_output=False
@@ -40,7 +41,6 @@ set_global("global_multiply_processes", None)
 set_global("global_FORMAT_INST", lambda request_keys: f"""Reply EXACTLY with the following XML format.\n{str(request_keys)}\nDO NOT MISS ANY REQUEST FIELDS and ensure that your response is a well-formed XML object!\n\n""")
 set_global("global_output_description", "If the question is asked for a numeric result, Return ONLY an integer and DO NOT return anything other than the integer answer; If the question is asked for more than numeric results, Return what the question asked and make sure the answer is complete.")
 set_global("global_cot_instruction", "Please think step by step and then solve the task.")
-set_global("global_debate_role", ['Math Professor', 'Grade School Teacher'])
 
 dataset = load_dataset(
     "DigitalLearningGmbH/MATH-lighteval",
