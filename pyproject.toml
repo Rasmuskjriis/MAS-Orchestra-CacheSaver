@@ -3,9 +3,16 @@ name = "mas-orchestrator"
 version = "0.1.0"
 requires-python = ">=3.11"
 dependencies = [
+    "numpy",
+    "scipy",
+    "argparse",
     "datasets",
+    "groq",
     "openai",
     "together",
+    "python-dotenv",
+    "pandas",
+    "openpyxl",
     "ray[default]>=2.10",
     "torch>=2.4.0",
     "numpy",
@@ -13,6 +20,7 @@ dependencies = [
     "transformers",
     "accelerate",
     "verl",
+    "cachesaver"
 ]
 
 [tool.uv.sources]

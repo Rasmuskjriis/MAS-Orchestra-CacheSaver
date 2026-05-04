@@ -152,7 +152,7 @@ class LLMAgentBase():
 
         # print(f"[DEBUG] msg: {msg}")
 
-        response_json = await self.get_response_from_agent(msg, self.output_fields)
+        (response_json, metadata) = await self.get_response_from_agent(msg, self.output_fields)
 
         output_infos = []
         for key, value in response_json.items():
@@ -208,7 +208,9 @@ class LLMAgentBase():
                 # print(f"Temperature: {temp}")
                 
                 # Call the async sampler directly
-                response_text = await sampler(msg, temp, output_fields)
+                (response_text, metadata) = await sampler(msg, temp, output_fields)
+
+                print("METADATA: ", metadata)
 
                 # Check if response_text is already valid JSON with required fields
                 try:
@@ -233,7 +235,7 @@ class LLMAgentBase():
                             print(f"✓ Response is already valid JSON with required fields: {list(response_json.keys())}")
                             print(f"Parsed response: {response_json}")
                             print(f"{'='*50}\n")
-                            return response_json
+                            return response_json, metadata
                 except (json.JSONDecodeError, TypeError):
                     # Not valid JSON, continue with XML processing
                     print("Not a Json. Continue with XML processing")
@@ -266,7 +268,7 @@ class LLMAgentBase():
                 if is_valid_response:
                     print(f"Parsed response: {response_dict}")
                     print(f"{'='*50}\n")
-                    return response_dict
+                    return response_dict, metadata
                 else: # TODO: we may not need it with reponse AI gurentee the output format
                     print(f'Invalid XML response. Required fields: {output_fields}, response: {response_text}, recall LLM with clearer instructions (Attempt {debug_count})')
                     

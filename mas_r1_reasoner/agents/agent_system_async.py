@@ -125,7 +125,7 @@ class RayAgentWorker:
             print(f"✅ Ray Worker: AgentSystem initialized!")
         return True
     
-    async def execute_single_task_async(self, code: str, task_info: Dict[str, Any], timeout: int = None) -> tuple[str, bool, str]:
+    async def execute_single_task_async(self, code: str, task_info: Dict[str, Any], timeout: int = None) -> tuple[str, bool, str, Any]:
         """Execute a single task asynchronously with timeout handling"""
         try:
             # Ensure global variables are initialized
@@ -148,24 +148,29 @@ class RayAgentWorker:
             else:
                 result = await self.agent_system.forward(task_info)
             
+            # Handle case where result is a tuple (result, metadata) from CacheSaver
+            metadata = None
+            if isinstance(result, tuple) and len(result) == 2:
+                result, metadata = result
+            
             # Convert result to string if needed
             if isinstance(result, dict):
                 result_str = str(result)
             elif hasattr(result, 'final_answer'): # TODO: here we care about the final answer, not the content
                 result_str = str(result.final_answer)
                 if hasattr(result, 'name') and result.name == 'error':
-                    return result_str, False, f"Agent execution failed: {result_str}"
+                    return result_str, False, f"Agent execution failed: {result_str}", metadata
             else:
                 result_str = str(result)
             
-            return result_str, True, ""
+            return result_str, True, "", metadata
             
         except asyncio.TimeoutError:
-            return "", False, f"Task timed out after {timeout} seconds"
+            return "", False, f"Task timed out after {timeout} seconds", None
         except Exception as e:
-            return "", False, str(e)
+            return "", False, str(e), None
     
-    def execute_single_task_sync(self, code: str, task_info: Dict[str, Any], timeout: int = None) -> tuple[str, bool, str]:
+    def execute_single_task_sync(self, code: str, task_info: Dict[str, Any], timeout: int = None) -> tuple[str, bool, str, Any]:
         """Synchronous wrapper for execute_single_task_async"""
         return asyncio.run(self.execute_single_task_async(code, task_info, timeout))
 
@@ -318,7 +323,7 @@ class AsyncAgentSystem(AgentSystem):
             self.worker_pool_size = num_workers
             print(f"✓ Initialized {num_workers} Ray workers with global variables")
     
-    async def execute_mas_batch_async(self, codes: List[str], task_infos: List[Dict[str, Any]], timeout: int = None) -> List[tuple[str, bool, str]]:
+    async def execute_mas_batch_async(self, codes: List[str], task_infos: List[Dict[str, Any]], timeout: int = None) -> List[tuple[str, bool, str, Any]]:
         """
         Execute multiple codes in parallel using Ray async workers.
         
@@ -328,7 +333,7 @@ class AsyncAgentSystem(AgentSystem):
             timeout: Execution timeout in seconds per execution
             
         Returns:
-            List of tuples (result, success, error_message)
+            List of tuples (result, success, error_message, metadata)
         """
         print(f"\n{'='*50}")
         print(f"EXECUTING {len(codes)} CODES IN PARALLEL WITH RAY")
@@ -391,7 +396,7 @@ class AsyncAgentSystem(AgentSystem):
                                     print(f"[DEBUG] Task {task_index+1} failed: {result[2]}")
                             except Exception as e:
                                 print(f"[DEBUG] Task {task_index+1} execution failed: {e}")
-                                results[task_index] = ("", False, f"Task execution failed: {e}")
+                                results[task_index] = ("", False, f"Task execution failed: {e}", None)
                             
                             completed_tasks += 1
                             pbar.update(1)
@@ -399,14 +404,14 @@ class AsyncAgentSystem(AgentSystem):
         # Ensure all results are filled (shouldn't be None)
         for i, result in enumerate(results):
             if result is None:
-                results[i] = ("", False, f"Task {i+1} failed to complete")
+                results[i] = ("", False, f"Task {i+1} failed to complete", None)
         
         print(f"All {len(tasks)} executions completed!")
         print(f"{'='*50}\n")
         
         return results
     
-    def execute_mas_batch_sync(self, codes: List[str], task_infos: List[Dict[str, Any]], timeout: int = None) -> List[tuple[str, bool, str]]:
+    def execute_mas_batch_sync(self, codes: List[str], task_infos: List[Dict[str, Any]], timeout: int = None) -> List[tuple[str, bool, str, Any]]:
         """
         Synchronous wrapper for execute_mas_batch_async.
         This method is kept for backward compatibility.
@@ -417,7 +422,7 @@ class AsyncAgentSystem(AgentSystem):
             timeout: Execution timeout in seconds per execution
             
         Returns:
-            List of tuples (result, success, error_message)
+            List of tuples (result, success, error_message, metadata)
         """
         return asyncio.run(self.execute_mas_batch_async(codes, task_infos, timeout))
     

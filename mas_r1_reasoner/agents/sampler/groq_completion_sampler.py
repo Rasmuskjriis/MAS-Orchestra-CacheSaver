@@ -18,11 +18,6 @@ MessageList = list[Message]
 
 
 GROQ_SYSTEM_MESSAGE_API = "You are a helpful assistant."
-# GROQ_SYSTEM_MESSAGE_CHATGPT = (
-#     "You are ChatGPT, a large language model trained by OpenAI, based on the GPT-4 architecture."
-#     + "\nKnowledge cutoff: 2023-12\nCurrent date: 2024-04-01"
-# )
-
 
 class GroqCompletionSampler(SamplerBase):
     """
@@ -78,12 +73,6 @@ class GroqCompletionSampler(SamplerBase):
         return {"role": str(role), "content": content}
 
     async def __call__(self, message_list: MessageList, temperature=None, output_fields=None) -> str:
-            
-        # print(f"\n=== ChatCompletionSampler.__call__ Debug ===")
-        # print(f"Model: {self.model}")
-        # print(f"Temperature: {temperature if temperature is not None else self.temperature}")
-        # print(f"System message: {self.system_message}")
-        # print(f"Input message count: {len(message_list)}")
         
         if self.system_message:
             message_list = [self._pack_message("system", self.system_message)] + message_list
@@ -131,6 +120,8 @@ class GroqCompletionSampler(SamplerBase):
                         timeout=60
                     )
                     
+                    # print("response: ", response)
+
                     print(f"✓ API request successful")
                     content = response.choices[0].message.content
 
