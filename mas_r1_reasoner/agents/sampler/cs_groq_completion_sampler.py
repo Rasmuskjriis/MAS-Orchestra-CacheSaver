@@ -15,7 +15,7 @@ from mas_r1_reasoner.agents.shared_vars import get_global
 
 from cachesaver.models.groq import AsyncGroq as _CacheSaverAsyncGroq
 from cachesaver.typedefs import Metadata
-from orchestrator.utils import make_random_ns
+from orchestrator.utils import make_random_ns, calculate_saved_tokens
 
 from groq import AsyncGroq as _AsyncGroq
 
@@ -132,9 +132,13 @@ class CSGroqCompletionSampler(SamplerBase):
                     print("metadata sampler: ", metadata)
                     
                     print(f"✓ API request successful")
+                    
                     content = response.choices[0].message.content
+                   
+                    usage = response.usage
+                    tokens = calculate_saved_tokens(usage, metadata)
 
-                return content, metadata
+                return content, tokens
 
             except APITimeoutError as e:
                 print(f"\n✗ Groq API Timeout Error (Trial {trial + 1})")

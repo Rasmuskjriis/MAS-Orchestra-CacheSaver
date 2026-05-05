@@ -17,12 +17,12 @@ async def ReflexionAgent(self, agent_input, model: str):
 
     # Instruction for reflecting on previous attempts and feedback to improve
     reflect_instruction = "Given previous attempts and feedback, carefully consider where you could go wrong in your latest attempt. Using insights from previous attempts, try to solve the task better. All caculation are done mod 23. Any parameter that wasn't mentioned in the problem statement is by default zero"
-    cot_agent = LLMAgentBase(['thinking', 'answer'], 'Chain-of-Thought LLM', model=model, temperature=temperature)
+    cot_agent = LLMAgentBase(['thinking', 'answer'], 'Chain-of-Thought LLM', model=model, temperature=temperature, agent_system=self)
 
     # Instruction for providing feedback and correcting the answer
     critic_instruction = "Given all caculation are done mod 23 and any parameter that wasn't mentioned in the problem statement is by default zero. Please review the answer above and criticize on where might be wrong. If you are absolutely sure it is correct, output exactly 'True' in 'correct'."
 
-    critic_agent = LLMAgentBase(['feedback', 'correct'], 'Critic LLM', model=model, temperature=temperature)
+    critic_agent = LLMAgentBase(['feedback', 'correct'], 'Critic LLM', model=model, temperature=temperature, agent_system=self)
         
     # Initial attempt
     cot_inputs = [agent_input]

@@ -103,15 +103,15 @@ async def main(use_cachesaver):
             [task_info]
         )
 
-        print("completion: ", completion)
-        print("completion[0]: ", completion[0])
+        # print("completion: ", completion)
+        # print("completion[0]: ", completion[0])
 
-        (result, success, error_message, metadata) = completion[0]
+        (result, success, error_message, tokens) = completion[0]
        
         print("result: ", result)
         print("success: ", success)
         print("error_message: ", error_message)
-        print("metadata: ", metadata)
+        print("tokens: ", tokens)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()

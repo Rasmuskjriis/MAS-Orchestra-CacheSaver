@@ -38,12 +38,14 @@ class LLMAgentBase():
     
 
     def __init__(self, output_fields: list, agent_name: str,
-                 role='helpful assistant', model: str=None, temperature: int=None, system_prompt: str=None) -> None:
+                 role='helpful assistant', model: str=None, temperature: int=None, system_prompt: str=None,
+                 agent_system: Any = None) -> None:
         self.output_fields = output_fields
         self.agent_name = agent_name
         self.role = role
         self.model = model or get_global("global_node_model")
         self.temperature = temperature
+        self.agent_system = agent_system
         # give each instance a unique id
         self.id = random_id()
         self.system_prompt = system_prompt
@@ -152,7 +154,7 @@ class LLMAgentBase():
 
         # print(f"[DEBUG] msg: {msg}")
 
-        (response_json, metadata) = await self.get_response_from_agent(msg, self.output_fields)
+        response_json = await self.get_response_from_agent(msg, self.output_fields)
 
         output_infos = []
         for key, value in response_json.items():
@@ -208,9 +210,9 @@ class LLMAgentBase():
                 # print(f"Temperature: {temp}")
                 
                 # Call the async sampler directly
-                (response_text, metadata) = await sampler(msg, temp, output_fields)
+                (response_text, tokens) = await sampler(msg, temp, output_fields)
 
-                print("METADATA: ", metadata)
+                print("tokens: ", tokens)
 
                 # Check if response_text is already valid JSON with required fields
                 try:
@@ -235,7 +237,9 @@ class LLMAgentBase():
                             print(f"✓ Response is already valid JSON with required fields: {list(response_json.keys())}")
                             print(f"Parsed response: {response_json}")
                             print(f"{'='*50}\n")
-                            return response_json, metadata
+                            
+                            return response_json
+                        
                 except (json.JSONDecodeError, TypeError):
                     # Not valid JSON, continue with XML processing
                     print("Not a Json. Continue with XML processing")
@@ -268,7 +272,9 @@ class LLMAgentBase():
                 if is_valid_response:
                     print(f"Parsed response: {response_dict}")
                     print(f"{'='*50}\n")
-                    return response_dict, metadata
+                    if self.agent_system is not None:
+                        self.agent_system.accumulate_tokens(tokens)
+                    return response_dict
                 else: # TODO: we may not need it with reponse AI gurentee the output format
                     print(f'Invalid XML response. Required fields: {output_fields}, response: {response_text}, recall LLM with clearer instructions (Attempt {debug_count})')
                     
@@ -343,6 +349,9 @@ class AgentSystem():
         import threading
         self.offline_cache_lock = threading.Lock()
         
+        # Token accumulator for tracking LLM usage across MAS execution
+        self.execution_tokens = []
+        
         # Initialize web search resources based on mode
         self._initialize_web_search_resources()
     
@@ -366,6 +375,46 @@ class AgentSystem():
             
         except Exception as e:
             print(f"   ⚠️  Warning: Could not initialize web search resources: {e}")
+
+    def accumulate_tokens(self, tokens: Any) -> None:
+        """Accumulate tokens from LLM calls during MAS execution."""
+        if tokens is not None:
+            self.execution_tokens.append(tokens)
+    
+    def get_accumulated_tokens(self) -> list:
+        """Get all accumulated tokens from the current MAS execution."""
+        return self.execution_tokens.copy()
+    
+    def get_aggregated_tokens(self) -> dict:
+        """Get aggregated tokens (summed token counts) from all LLM calls."""
+        if not self.execution_tokens:
+            return {}
+        
+        print("self.execution_tokens: ", self.execution_tokens)
+
+        # Initialize aggregated tokens
+        aggregated = {
+            'total_prompt_tokens': 0,
+            'total_completion_tokens': 0,
+            'total_tokens': 0,
+            'api_calls': 0,
+            'calls': self.execution_tokens
+        }
+        
+        # Sum up token counts from all calls
+        for tokens in self.execution_tokens:
+            if isinstance(tokens, dict):
+                aggregated['total_prompt_tokens'] += tokens.get('prompt_tokens', 0)
+                aggregated['total_completion_tokens'] += tokens.get('completion_tokens', 0)
+                aggregated['total_tokens'] += tokens.get('total_tokens', 0)
+                if tokens.get('api_call'):
+                    aggregated['api_calls'] += 1
+        
+        return aggregated
+    
+    def clear_tokens(self) -> None:
+        """Clear accumulated tokens (call before each new execution)."""
+        self.execution_tokens = []
 
     def set_instance_forward_function(self, forward_str: str):
         """

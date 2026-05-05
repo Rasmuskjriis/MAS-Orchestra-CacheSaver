@@ -20,7 +20,7 @@ async def CoTAgent(self, agent_input, model: str):
 
     # Instantiate a new LLM specifically for CoT
     # To allow LLM thinking before answering, we need to set an additional output field 'thinking'.
-    cot_agent = LLMAgentBase(['thinking', 'answer'], 'Chain-of-Thought LLM', model=model, temperature=temperature)
+    cot_agent = LLMAgentBase(['thinking', 'answer'], 'Chain-of-Thought LLM', model=model, temperature=temperature, agent_system=self)
 
     # Get the response from the CoT tool
     thinking, answer = await cot_agent([agent_input], cot_instruction)

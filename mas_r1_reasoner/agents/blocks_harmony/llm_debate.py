@@ -22,13 +22,13 @@ async def DebateAgent(self, agent_input, model: str, debate_roles: List[str]):
     debate_instruction = "Given solutions to the problem from other agents, consider their opinions as additional advice. Please think carefully and provide an updated answer. Put your thinking process in the 'thinking' field and the updated answer in the 'answer' field. "
 
     # Initialize debate agents with different roles and a moderate temperature for varied reasoning
-    debate_agents = [LLMAgentBase(['thinking', 'answer'], 'Debate LLM', model=model, role=role, temperature=temperature) for role in debate_roles]
+    debate_agents = [LLMAgentBase(['thinking', 'answer'], 'Debate LLM', model=model, role=role, temperature=temperature, agent_system=self) for role in debate_roles]
 
     # Instruction for final decision-making based on all debates and solutions
     final_decision_instruction = "Given all the above thinking and answers, reason over them carefully and provide a final answer. Put your thinking process in the 'thinking' field and the final answer in the 'answer' field."
 
 
-    final_decision_agent = LLMAgentBase(['thinking', 'answer'], 'Final Decision LLM', model=model, temperature=temperature)
+    final_decision_agent = LLMAgentBase(['thinking', 'answer'], 'Final Decision LLM', model=model, temperature=temperature, agent_system=self)
 
     all_thinking = [[] for _ in range(max_debate_round)]
     all_answer = [[] for _ in range(max_debate_round)]

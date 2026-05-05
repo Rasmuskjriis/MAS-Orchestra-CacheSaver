@@ -19,7 +19,7 @@ async def SCAgent(self, agent_input, model: str):
 
     # Instruction for step-by-step reasoning
     # Initialize multiple CoT agents with a higher temperature for varied reasoning
-    cot_agents = [LLMAgentBase(['thinking', 'answer'], 'Chain-of-Thought LLM', model=model, temperature=temperature) for _ in range(num_repeated_samples)]
+    cot_agents = [LLMAgentBase(['thinking', 'answer'], 'Chain-of-Thought LLM', model=model, temperature=temperature, agent_system=self) for _ in range(num_repeated_samples)]
     
     thinking_mapping = {}
     answer_mapping = {}

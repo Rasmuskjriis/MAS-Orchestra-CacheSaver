@@ -139,6 +139,9 @@ class RayAgentWorker:
             # Set the forward function for THIS EXECUTION ONLY
             self.agent_system.set_instance_forward_function(code)
             
+            # Clear tokens accumulator before execution
+            self.agent_system.clear_tokens()
+            
             # Execute the async forward function
             if timeout:
                 result = await asyncio.wait_for(
@@ -148,10 +151,8 @@ class RayAgentWorker:
             else:
                 result = await self.agent_system.forward(task_info)
             
-            # Handle case where result is a tuple (result, metadata) from CacheSaver
-            metadata = None
-            if isinstance(result, tuple) and len(result) == 2:
-                result, metadata = result
+            # Get accumulated tokens from all LLM calls during execution
+            accumulated_tokens = self.agent_system.get_aggregated_tokens()
             
             # Convert result to string if needed
             if isinstance(result, dict):
@@ -159,16 +160,16 @@ class RayAgentWorker:
             elif hasattr(result, 'final_answer'): # TODO: here we care about the final answer, not the content
                 result_str = str(result.final_answer)
                 if hasattr(result, 'name') and result.name == 'error':
-                    return result_str, False, f"Agent execution failed: {result_str}", metadata
+                    return result_str, False, f"Agent execution failed: {result_str}", accumulated_tokens
             else:
                 result_str = str(result)
             
-            return result_str, True, "", metadata
+            return result_str, True, "", accumulated_tokens
             
         except asyncio.TimeoutError:
-            return "", False, f"Task timed out after {timeout} seconds", None
+            return "", False, f"Task timed out after {timeout} seconds", []
         except Exception as e:
-            return "", False, str(e), None
+            return "", False, str(e), []
     
     def execute_single_task_sync(self, code: str, task_info: Dict[str, Any], timeout: int = None) -> tuple[str, bool, str, Any]:
         """Synchronous wrapper for execute_single_task_async"""
@@ -333,7 +334,7 @@ class AsyncAgentSystem(AgentSystem):
             timeout: Execution timeout in seconds per execution
             
         Returns:
-            List of tuples (result, success, error_message, metadata)
+            List of tuples (result, success, error_message, tokens)
         """
         print(f"\n{'='*50}")
         print(f"EXECUTING {len(codes)} CODES IN PARALLEL WITH RAY")
@@ -422,7 +423,7 @@ class AsyncAgentSystem(AgentSystem):
             timeout: Execution timeout in seconds per execution
             
         Returns:
-            List of tuples (result, success, error_message, metadata)
+            List of tuples (result, success, error_message, tokens)
         """
         return asyncio.run(self.execute_mas_batch_async(codes, task_infos, timeout))
     
