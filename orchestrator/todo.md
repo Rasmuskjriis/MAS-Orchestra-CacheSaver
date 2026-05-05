@@ -1,7 +1,11 @@
 MAS Orchestra
 ===============================
 ### Verification
-* [] Add verification process to check if the returned answer is actually correct
+* [X] Add verification process to check if the returned answer is actually correct
+* [] Average correctness of answers in run_mas.py
+
+### Program
+* [] Refactor run_mas.py to run mutiple problems in a for loop
 
 ### Samplers
 * [X] Add groq sampler

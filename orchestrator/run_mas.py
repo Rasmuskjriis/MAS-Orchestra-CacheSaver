@@ -3,6 +3,7 @@ from mas_r1_reasoner.agents.agent_system import Info
 from mas_r1_reasoner.agents.shared_vars import set_global
 from mas_r1_reasoner.agents.code_sanity import validate_python_code
 from mas_r1_reasoner.rewards.utils.harmony_parser.minimal import extract_harmony_code_from_response
+from mas_r1_reasoner.rewards.utils.string_match_score import MathScorer
 
 from mas_r1_reasoner.agents.sampler.chat_completion_sampler import ChatCompletionSampler
 from mas_r1_reasoner.agents.sampler.groq_completion_sampler import GroqCompletionSampler
@@ -64,7 +65,11 @@ async def main(use_cachesaver):
         split="train"
     )
 
+    print("dataset", dataset)
+
     problem = dataset[5]["problem"]
+    solution = dataset[5]["solution"]
+
     task_info = Info(
         name="task",
         author="user",
@@ -112,6 +117,14 @@ async def main(use_cachesaver):
         print("success: ", success)
         print("error_message: ", error_message)
         print("tokens: ", tokens)
+
+        print("actual solution: ", solution)
+
+        mathscorer = MathScorer()
+
+        correct = mathscorer.grade_answer(result, solution)
+
+        print("correct: ", correct)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
