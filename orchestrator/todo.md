@@ -12,6 +12,8 @@ MAS Orchestra
 ### Trained orchestrator
 * [] Add cachesaver to the orchestrator
 
+### Agents
+* [X] Change agent naming from randomized to standardized
 
 ### Bugs
-* [] Investigate possible bug with only the first round's responses being taken from the cache
+* [X] Investigate possible bug with only the first round's responses being taken from the cache (see agents)

@@ -70,7 +70,7 @@ def sanitize_model_name(model_name):
 def make_random_ns():
     return "ns_" + str(np.random.randint(10000000))
 
-def calculate_saved_tokens(usage, tokens):
+def calculate_saved_tokens(usage, metadata):
     return {
         'prompt_tokens': usage.prompt_tokens,
         'completion_tokens': usage.completion_tokens,

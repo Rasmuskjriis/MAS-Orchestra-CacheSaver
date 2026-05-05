@@ -35,7 +35,7 @@ class LLMAgentBase():
     LLM Agent Base class for MAS-R1 system.
     Handles prompt construction and LLM calls using independent LLM client.
     """
-    
+    _agent_count = 0
 
     def __init__(self, output_fields: list, agent_name: str,
                  role='helpful assistant', model: str=None, temperature: int=None, system_prompt: str=None,
@@ -46,9 +46,11 @@ class LLMAgentBase():
         self.model = model or get_global("global_node_model")
         self.temperature = temperature
         self.agent_system = agent_system
-        # give each instance a unique id
-        self.id = random_id()
         self.system_prompt = system_prompt
+        
+        LLMAgentBase._agent_count += 1
+        self.id = f"Agent {LLMAgentBase._agent_count}"
+
 
     def extract_pattern(self, msg):
         # pattern = r"\s*(.*?)\s*\n\nRelated original question"
@@ -398,7 +400,7 @@ class AgentSystem():
             'total_completion_tokens': 0,
             'total_tokens': 0,
             'api_calls': 0,
-            'calls': self.execution_tokens
+            # 'calls': self.execution_tokens
         }
         
         # Sum up token counts from all calls
