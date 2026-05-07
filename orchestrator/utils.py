@@ -2,6 +2,8 @@ import numpy as np
 import scipy
 import os
 
+from cachesaver.typedefs import Metadata
+
 def calc_mean_sem_ci(scores):
     n = len(scores)
     
@@ -69,6 +71,13 @@ def sanitize_model_name(model_name):
 
 def make_random_ns():
     return "ns_" + str(np.random.randint(10000000))
+
+def make_dummy_metadata(n=1):
+    return Metadata(
+        n=n,
+        cached=[False for _ in range(n)],
+        duplicated=[False for _ in range(n)]
+    )
 
 def calculate_saved_tokens(usage, metadata):
     return {

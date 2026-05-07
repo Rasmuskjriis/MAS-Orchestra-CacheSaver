@@ -10,6 +10,7 @@ MAS Orchestra
 ### Samplers
 * [X] Add groq sampler
 * [X] Add cachesaver with groq sampler
+* [] Add dummy metadata to groq/openai sampler
 * [] Add cachesaver with openai sampler
 * [] Update token counting in cs samplers to reflect cached/deduplicated responses
 

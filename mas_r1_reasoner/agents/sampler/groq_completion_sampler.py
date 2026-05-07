@@ -13,6 +13,8 @@ import os
 from mas_r1_reasoner.agents.sampler.chat_common import SamplerBase, EvalResult, SingleEvalResult, Eval
 from mas_r1_reasoner.agents.shared_vars import get_global
 
+from orchestrator.utils import calculate_saved_tokens, make_dummy_metadata
+
 Message = dict[str, Any]  # keys role, content
 MessageList = list[Message]
 
@@ -125,7 +127,12 @@ class GroqCompletionSampler(SamplerBase):
                     print(f"✓ API request successful")
                     content = response.choices[0].message.content
 
-                return content
+                    metadata = make_dummy_metadata()
+
+                    usage = response.usage
+                    tokens = calculate_saved_tokens(usage, metadata)
+
+                return content, tokens
 
             except APITimeoutError as e:
                 print(f"\n✗ Groq API Timeout Error (Trial {trial + 1})")
