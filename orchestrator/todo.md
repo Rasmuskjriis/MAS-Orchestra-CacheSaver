@@ -5,7 +5,7 @@ MAS Orchestra
 * [] Average correctness of answers in run_mas.py
 
 ### Program
-* [] Refactor run_mas.py to run mutiple problems in a for loop
+* [X] Refactor run_mas.py to run mutiple problems in a for loop
 
 ### Samplers
 * [X] Add groq sampler

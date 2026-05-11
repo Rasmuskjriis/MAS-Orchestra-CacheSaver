@@ -15,24 +15,24 @@ import asyncio
 import ray
 import os
 
-async def main(use_cachesaver):
+async def main(problems, model, use_cachesaver):
     # Set up global variables required for MAS execution
     set_global("global_max_ray_workers", 4)
 
-    set_global("global_node_model", "meta-llama/llama-4-scout-17b-16e-instruct")
+    set_global("global_node_model", f"{model}")
 
     if use_cachesaver:
         model_sampler_map = {
-            "meta-llama/llama-4-scout-17b-16e-instruct": CSGroqCompletionSampler(
-                model="meta-llama/llama-4-scout-17b-16e-instruct",
+            f"{model}": CSGroqCompletionSampler(
+                model=f"{model}",
                 temperature=0.7,
                 mock_output=False
             )
         }
     else:
         model_sampler_map = {
-            "meta-llama/llama-4-scout-17b-16e-instruct": GroqCompletionSampler(
-                model="meta-llama/llama-4-scout-17b-16e-instruct",
+            f"{model}": GroqCompletionSampler(
+                model=f"{model}",
                 temperature=0.7,
                 mock_output=False
             )
@@ -43,7 +43,7 @@ async def main(use_cachesaver):
     set_global("global_model_sampler_map", model_sampler_map)
 
     # Set other required global variables with defaults
-    set_global("global_max_round", 2)
+    set_global("global_max_round", 1)
     set_global("global_max_sc", 1)
     set_global("global_decompose_only", False)
     set_global("global_architecture_only", False)
@@ -68,7 +68,12 @@ async def main(use_cachesaver):
 
     # print("dataset", dataset)
 
-    for i in range(1):
+    if problems == "all":
+        problems = len(dataset["problem"])
+
+    print("problem amount", problems)
+
+    for i in range(problems):
         problem = dataset["problem"][i]
         answer = dataset["answer"][i]
 
@@ -136,12 +141,16 @@ async def main(use_cachesaver):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
+    parser.add_argument("-p","--problems", type=int, default="all")
+    parser.add_argument("-m","--model", type=str, default="meta-llama/llama-4-scout-17b-16e-instruct")
     parser.add_argument("-c","--cachesaver", action="store_true", dest="use_cachesaver")
 
     args = parser.parse_args()
 
     asyncio.run(
         main(
+            problems=args.problems, 
+            model=args.model,
             use_cachesaver=args.use_cachesaver
         )
     )
