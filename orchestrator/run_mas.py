@@ -14,6 +14,7 @@ import argparse
 import asyncio
 import ray
 import os
+import numpy as np
 
 async def main(problems, agent_model, use_cachesaver):
     # Set up global variables required for MAS execution
@@ -72,6 +73,8 @@ async def main(problems, agent_model, use_cachesaver):
         problems = len(dataset["problem"])
 
     print("problem amount", problems)
+
+    scores = []    
 
     for i in range(problems):
         problem = dataset["problem"][i]
@@ -137,6 +140,14 @@ async def main(problems, agent_model, use_cachesaver):
             correct = mathscorer.grade_answer(result, answer)
 
             print("correct: ", correct)
+            
+            if correct:
+                scores.append(1)
+            else:
+                scores.append(0)
+            
+    accuracy = np.mean(scores)
+    print("Accuracy: ", accuracy)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()

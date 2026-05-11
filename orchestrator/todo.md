@@ -2,7 +2,7 @@ MAS Orchestra
 ===============================
 ### Verification
 * [X] Add verification process to check if the returned answer is actually correct
-* [] Average correctness of answers in run_mas.py
+* [X] Add average correctness of answers in run_mas.py
 
 ### Program
 * [X] Refactor run_mas.py to run mutiple problems in a for loop
