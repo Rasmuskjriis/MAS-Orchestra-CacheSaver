@@ -16,7 +16,7 @@ import ray
 import os
 import numpy as np
 
-async def main(problems, agent_model, use_cachesaver):
+async def main(file_name, problems, agent_model, use_cachesaver):
     # Set up global variables required for MAS execution
     set_global("global_max_ray_workers", 4)
 
@@ -69,12 +69,19 @@ async def main(problems, agent_model, use_cachesaver):
 
     # print("dataset", dataset)
 
+    api_calls = 0
+
+    prompt_tokens_used = 0
+    # prompt_tokens_saved = 0
+    completion_tokens_used = 0
+    # completion_tokens_saved = 0
+
+    scores = []
+    
     if problems == "all":
         problems = len(dataset["problem"])
 
     print("problem amount", problems)
-
-    scores = []    
 
     for i in range(problems):
         problem = dataset["problem"][i]
@@ -96,7 +103,7 @@ async def main(problems, agent_model, use_cachesaver):
             final_answer=None
         )
 
-        with open(f"orchestrator/orchestrated_plans/aime24_{i:.2f}.xml") as f:
+        with open(f"{file_name}") as f:
             xml_plan = f.read()
 
         code, name, thought = extract_harmony_code_from_response(
@@ -132,11 +139,19 @@ async def main(problems, agent_model, use_cachesaver):
             print("success: ", success)
             print("error_message: ", error_message)
             print("tokens: ", tokens)
+            
+            prompt_tokens_used += tokens["total_prompt_tokens"]
+            completion_tokens_used += tokens["total_completion_tokens"]
+            
+            print("api_calls", tokens["api_calls"])
+            api_calls += tokens["api_calls"]
 
             print("actual answer: ", answer)
 
             mathscorer = MathScorer()
 
+            print("Result: ", result)
+            print("Answer: ", answer)
             correct = mathscorer.grade_answer(result, answer)
 
             print("correct: ", correct)
@@ -148,10 +163,18 @@ async def main(problems, agent_model, use_cachesaver):
             
     accuracy = np.mean(scores)
     print("Accuracy: ", accuracy)
+    
+    return {
+        "accuracy": accuracy,
+        "prompt_tokens_used_agents": prompt_tokens_used,
+        "completion_tokens_used_agents": completion_tokens_used,
+        "api_calls_agents": api_calls      
+    }
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-
+    
+    parser.add_argument("-f","--file_name", type=str, default="orchestrator/orchestrated_plans/aime24_1.xml")
     parser.add_argument("-p","--problems", type=int, default="all")
     parser.add_argument("-m","--agent_model", type=str, default="meta-llama/llama-4-scout-17b-16e-instruct")
     parser.add_argument("-c","--cachesaver", action="store_true", dest="use_cachesaver")
@@ -160,6 +183,7 @@ if __name__ == "__main__":
 
     asyncio.run(
         main(
+            file_name=args.file_name,
             problems=args.problems, 
             agent_model=args.agent_model,
             use_cachesaver=args.use_cachesaver

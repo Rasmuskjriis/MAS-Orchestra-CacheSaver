@@ -270,6 +270,13 @@ async def main(problems, model, use_cachesaver):
 
   # problem += " Use two agents to debate over two rounds."
 
+  api_calls = 0
+
+  prompt_tokens_used = 0
+  # prompt_tokens_saved = 0
+  completion_tokens_used = 0
+  # completion_tokens_saved = 0
+
   start = time.time()
 
   print("Dataset: ", dataset)
@@ -294,6 +301,11 @@ async def main(problems, model, use_cachesaver):
     else:
       response = create_chat_completion(client, model, messages)
 
+    usage = getattr(response, "usage", None)
+    prompt_tokens_used += usage.prompt_tokens
+    completion_tokens_used += usage.completion_tokens
+    api_calls += 1 
+
     print(f"Model: {response.model}")
     print(f"Tokens: {response.usage.prompt_tokens} prompt, {response.usage.completion_tokens} completion")
     print(f"\n--- Response ---\n")
@@ -312,7 +324,7 @@ async def main(problems, model, use_cachesaver):
 
 
     # Save output to file
-    OUTPUT_XML = f"orchestrator/orchestrated_plans/aime24_{i:.2f}.xml"
+    OUTPUT_XML = f"orchestrator/orchestrated_plans/aime24_{i+1}.xml"
 
     with open(OUTPUT_XML, "w") as f:
         f.write(xml_content)
@@ -323,6 +335,12 @@ async def main(problems, model, use_cachesaver):
   print("✅ XML PLANS SAVED")
   print(f"⏱️ Time: {end - start:.2f}s")
   print("==============================")
+  
+  return OUTPUT_XML, {
+    "prompt_tokens_used_orc": prompt_tokens_used,
+    "completion_tokens_used_orc": completion_tokens_used,
+    "api_calls_orc": api_calls
+  }
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
