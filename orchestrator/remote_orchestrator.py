@@ -5,6 +5,30 @@ from openai import OpenAI
 import argparse
 import asyncio
 
+from openai import AsyncOpenAI as _AsyncOpenAI
+from openai import OpenAI as _OpenAI
+from cachesaver.models.openai import AsyncOpenAI as _CacheSaverAsyncOpenAI
+from cachesaver.models.openai import OpenAI as _CacheSaverOpenAI
+
+def create_chat_completion(client, model, messages):
+     response = client.chat.completions.create(
+        model=f"{model}",
+        messages=messages,
+        temperature=0.7,
+        max_tokens=4096
+    )
+     return response
+
+def create_chat_completion_with_cs(client, model, messages):
+    (response, metadata) = client.chat.completions.create(
+        model=f"{model}",
+        messages=messages,
+        temperature=0.7,
+        max_tokens=4096,
+        metadata = True
+    )
+    return (response, metadata)
+
 async def main(problems, model, use_cachesaver):
   # =========================
   # 1. MAS PROMPT
@@ -212,10 +236,18 @@ async def main(problems, model, use_cachesaver):
 
   BASE_URL = "https://discern-stroller-recycling.ngrok-free.dev/v1"
 
-  client = OpenAI(
-      base_url=BASE_URL,
-      api_key="dummy"  # required but ignored by server
-  )
+  if use_cachesaver:
+     client = _CacheSaverOpenAI(
+        base_url=BASE_URL,
+        api_key="dummy",  # required but ignored by server
+        namespace="",
+        cachedir="./cache"
+     )
+  else:
+     client = _OpenAI(
+        base_url=BASE_URL,
+        api_key="dummy"  # required but ignored by server
+    )
 
   # =========================
   # 1. Load dataset problem
@@ -256,12 +288,11 @@ async def main(problems, model, use_cachesaver):
 
     # print("messages: ", messages)
 
-    response = client.chat.completions.create(
-        model=f"{model}",
-        messages=messages,
-        temperature=0.7,
-        max_tokens=4096,
-    )
+    if use_cachesaver:
+      (response, metadata) = create_chat_completion_with_cs(client, model, messages)
+      print("METADATA: ", metadata)
+    else:
+      response = create_chat_completion(client, model, messages)
 
     print(f"Model: {response.model}")
     print(f"Tokens: {response.usage.prompt_tokens} prompt, {response.usage.completion_tokens} completion")

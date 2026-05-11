@@ -15,24 +15,24 @@ import asyncio
 import ray
 import os
 
-async def main(problems, model, use_cachesaver):
+async def main(problems, agent_model, use_cachesaver):
     # Set up global variables required for MAS execution
     set_global("global_max_ray_workers", 4)
 
-    set_global("global_node_model", f"{model}")
+    set_global("global_node_model", f"{agent_model}")
 
     if use_cachesaver:
         model_sampler_map = {
-            f"{model}": CSGroqCompletionSampler(
-                model=f"{model}",
+            f"{agent_model}": CSGroqCompletionSampler(
+                model=f"{agent_model}",
                 temperature=0.7,
                 mock_output=False
             )
         }
     else:
         model_sampler_map = {
-            f"{model}": GroqCompletionSampler(
-                model=f"{model}",
+            f"{agent_model}": GroqCompletionSampler(
+                model=f"{agent_model}",
                 temperature=0.7,
                 mock_output=False
             )
@@ -142,7 +142,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
     parser.add_argument("-p","--problems", type=int, default="all")
-    parser.add_argument("-m","--model", type=str, default="meta-llama/llama-4-scout-17b-16e-instruct")
+    parser.add_argument("-m","--agent_model", type=str, default="meta-llama/llama-4-scout-17b-16e-instruct")
     parser.add_argument("-c","--cachesaver", action="store_true", dest="use_cachesaver")
 
     args = parser.parse_args()
@@ -150,7 +150,7 @@ if __name__ == "__main__":
     asyncio.run(
         main(
             problems=args.problems, 
-            model=args.model,
+            agent_model=args.agent_model,
             use_cachesaver=args.use_cachesaver
         )
     )
