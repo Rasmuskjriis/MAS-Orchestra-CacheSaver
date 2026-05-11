@@ -80,6 +80,8 @@ def make_dummy_metadata(n=1):
     )
 
 def calculate_saved_tokens(usage, metadata):
+    ## Add logic for handling CacheSaver token usage here
+        
     return {
         'prompt_tokens': usage.prompt_tokens,
         'completion_tokens': usage.completion_tokens,

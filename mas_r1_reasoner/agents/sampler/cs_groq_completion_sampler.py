@@ -128,7 +128,7 @@ class CSGroqCompletionSampler(SamplerBase):
                         metadata=True
                     )
 
-                    print("response sampler: ", response)
+                    # print("response sampler: ", response)
                     print("metadata sampler: ", metadata)
                     
                     print(f"✓ API request successful")

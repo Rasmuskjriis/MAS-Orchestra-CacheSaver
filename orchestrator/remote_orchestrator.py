@@ -216,69 +216,70 @@ client = OpenAI(
 # =========================
 # 1. Load dataset problem
 # =========================
-print("Fetching dataset problem...")
+
+print("Fetching dataset...")
 dataset = load_dataset(
-    "DigitalLearningGmbH/MATH-lighteval",
-    "algebra",
-    split="train",
-    trust_remote_code=True
+    "HuggingFaceH4/aime_2024",
+    "default",
+    split="train"
 )
-
-problem = dataset[5]["problem"]
-
-problem += " Use two agents to debate over two rounds."
-
-messages = build_math_messages(problem)
-
-print("messages: ", messages)
-
 
 # =========================
 # 4. Generate XML
 # =========================
+
 print("\n==============================")
 print("🧠 GENERATING MAS XML PLAN")
 print("==============================\n")
 
-MODEL = "math"
+# problem += " Use two agents to debate over two rounds."
 
 start = time.time()
 
-response = client.chat.completions.create(
-    model=MODEL,
-    messages=messages,
-    temperature=0.7,
-    max_tokens=4096,
-)
+print("Dataset: ", dataset)
+# print("Dataset length: ", len(dataset[:1]))
+print("problems", dataset["problem"])
+print("answer: ", dataset["answer"])
+
+for i in range(1):
+  # print("problem: ", dataset["problem"][i])
+  messages = build_math_messages(dataset["problem"][i])
+
+  # print("messages: ", messages)
+
+  response = client.chat.completions.create(
+      model="math",
+      messages=messages,
+      temperature=0.7,
+      max_tokens=4096,
+  )
+
+  print(f"Model: {response.model}")
+  print(f"Tokens: {response.usage.prompt_tokens} prompt, {response.usage.completion_tokens} completion")
+  print(f"\n--- Response ---\n")
+  print(response.choices[0].message.content)
+
+  output = response.choices[0].message.content
+
+  end_tag = "</answer>"
+  end_idx = output.rfind(end_tag)
+
+  if end_idx != -1:
+      xml_content = output[:end_idx + len(end_tag)]
+  else:
+      # fallback if model is broken
+      xml_content = output
+
+
+  # Save output to file
+  OUTPUT_XML = f"orchestrator/orchestrated_plans/aime24_{i:.2f}.xml"
+
+  with open(OUTPUT_XML, "w") as f:
+      f.write(xml_content)
 
 end = time.time()
 
-print(f"Model: {response.model}")
-print(f"Tokens: {response.usage.prompt_tokens} prompt, {response.usage.completion_tokens} completion")
-print(f"\n--- Response ---\n")
-print(response.choices[0].message.content)
-
-output = response.choices[0].message.content
-
-end_tag = "</answer>"
-end_idx = output.rfind(end_tag)
-
-if end_idx != -1:
-    xml_content = output[:end_idx + len(end_tag)]
-else:
-    # fallback if model is broken
-    xml_content = output
-
-
-# Save output to file
-OUTPUT_XML = "orchestrator/mas_plan.xml"
-
-with open(OUTPUT_XML, "w") as f:
-    f.write(xml_content)
-
-
 print("\n==============================")
-print("✅ XML PLAN SAVED")
-print(f"📄 File: {OUTPUT_XML}")
+print("✅ XML PLANS SAVED")
 print(f"⏱️ Time: {end - start:.2f}s")
 print("==============================")

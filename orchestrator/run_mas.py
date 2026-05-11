@@ -59,72 +59,79 @@ async def main(use_cachesaver):
     set_global("global_output_description", "If the question is asked for a numeric result, Return ONLY an integer and DO NOT return anything other than the integer answer; If the question is asked for more than numeric results, Return what the question asked and make sure the answer is complete.")
     set_global("global_cot_instruction", "Please think step by step and then solve the task.")
 
+    print("Fetching dataset...")
     dataset = load_dataset(
-        "DigitalLearningGmbH/MATH-lighteval",
-        "algebra",
+        "HuggingFaceH4/aime_2024",
+        "default",
         split="train"
     )
 
-    print("dataset", dataset)
+    # print("dataset", dataset)
 
-    problem = dataset[5]["problem"]
-    solution = dataset[5]["solution"]
+    for i in range(1):
+        problem = dataset["problem"][i]
+        answer = dataset["answer"][i]
 
-    task_info = Info(
-        name="task",
-        author="user",
-        content=problem,
-        msg=None,
-        sub_tasks=[],
-        agents=[],
-        iteration_idx=-1,
-        final_answer=None
-    )
+        print("problem: ", problem)
+        print("answer: ", answer)
 
-    with open("orchestrator/mas_plan.xml") as f:
-        xml_plan = f.read()
+        print("END OF SOLUTION")
 
-    code, name, thought = extract_harmony_code_from_response(
-        xml_plan,
-        validate_python_code,
-        logger=None
-    )
-
-    # print(f"Extracted code: {code}")
-    # print(f"Extracted thought: {thought}")
-    # print(f"Extracted name: {name}")
-
-    if code.startswith("direct_answer"):
-        print("No executable agent plan found:", thought)
-    else:
-        assert os.getenv("GROQ_API_KEY") is not None, "Missing GROQ_API_KEY"
-        ray.init()
-
-        system = AsyncAgentSystem.create_with_globals()
-
-        # Run the MAS-plan
-        completion = await system.execute_mas_batch_async(
-            [code],
-            [task_info]
+        task_info = Info(
+            name="task",
+            author="user",
+            content=problem,
+            msg=None,
+            sub_tasks=[],
+            agents=[],
+            iteration_idx=-1,
+            final_answer=None
         )
 
-        # print("completion: ", completion)
-        # print("completion[0]: ", completion[0])
+        with open(f"orchestrator/orchestrated_plans/aime24_{i:.2f}.xml") as f:
+            xml_plan = f.read()
 
-        (result, success, error_message, tokens) = completion[0]
-       
-        print("result: ", result)
-        print("success: ", success)
-        print("error_message: ", error_message)
-        print("tokens: ", tokens)
+        code, name, thought = extract_harmony_code_from_response(
+            xml_plan,
+            validate_python_code,
+            logger=None
+        )
 
-        print("actual solution: ", solution)
+        # print(f"Extracted code: {code}")
+        # print(f"Extracted thought: {thought}")
+        # print(f"Extracted name: {name}")
 
-        mathscorer = MathScorer()
+        if code.startswith("direct_answer"):
+            print("No executable agent plan found:", thought)
+        else:
+            assert os.getenv("GROQ_API_KEY") is not None, "Missing GROQ_API_KEY"
+            ray.init()
 
-        correct = mathscorer.grade_answer(result, solution)
+            system = AsyncAgentSystem.create_with_globals()
 
-        print("correct: ", correct)
+            # Run the MAS-plan
+            completion = await system.execute_mas_batch_async(
+                [code],
+                [task_info]
+            )
+
+            # print("completion: ", completion)
+            # print("completion[0]: ", completion[0])
+
+            (result, success, error_message, tokens) = completion[0]
+        
+            print("result: ", result)
+            print("success: ", success)
+            print("error_message: ", error_message)
+            print("tokens: ", tokens)
+
+            print("actual answer: ", answer)
+
+            mathscorer = MathScorer()
+
+            correct = mathscorer.grade_answer(result, answer)
+
+            print("correct: ", correct)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
