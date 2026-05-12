@@ -62,7 +62,7 @@ def _initialize_chat_model(node_model):
         # Configure for online search (matching web_search.py settings exactly)
         chat_model_kwargs = {
             "model": model_name,
-            "temperature": 0.5,
+            "temperature": 1,
             "together_api_key": os.getenv("TOGETHER_API_KEY"),
             "reasoning_effort": reasoning_effort,
             "timeout": 300,

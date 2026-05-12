@@ -13,7 +13,7 @@ async def PythonAgent(self, agent_input, model: str):
 
     
     # Basic setting
-    temperature = 0.5
+    temperature = 1
     
     # Instruction for the Chain-of-Thought (CoT) approach
     # It is an important practice that allows the LLM to think step by step before solving the task.

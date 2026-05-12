@@ -11,7 +11,7 @@ async def SCAgent(self, agent_input, model: str):
     assert isinstance(agent_input, Info), f"agent_input must be an Info object, got {agent_input}"
 
     # Basic setting
-    temperature = 0.5
+    temperature = 1
     num_repeated_samples = 5
 
     # Instruction for step-by-step reasoning

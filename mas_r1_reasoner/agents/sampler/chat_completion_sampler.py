@@ -13,6 +13,8 @@ import os
 from mas_r1_reasoner.agents.sampler.chat_common import SamplerBase, EvalResult, SingleEvalResult, Eval
 from mas_r1_reasoner.agents.shared_vars import get_global
 
+from orchestrator.utils import calculate_saved_tokens, make_dummy_metadata
+
 Message = dict[str, Any]  # keys role, content
 MessageList = list[Message]
 
@@ -39,12 +41,11 @@ class ChatCompletionSampler(SamplerBase):
         self,
         model: str | None = None,
         system_message: str | None = None,
-        temperature: float = 0.5,
+        temperature: float = 1,
         mock_output: bool = False,
     ):
         self.client = AsyncOpenAI(
-            base_url="https://api.groq.com/openai/v1",
-            api_key=os.getenv("GROQ_API_KEY"),
+            api_key=os.getenv("OPENAI_API_KEY"),
             # default_headers = {"X-Api-Key": os.getenv("X_API_KEY")},
             timeout=60
         )
@@ -119,13 +120,6 @@ class ChatCompletionSampler(SamplerBase):
                     except (ValueError, TypeError) as e:
                         raise ValueError(f"Failed to convert temperature '{safe_temperature}' to float: {e}")
                 
-                # print(f"  - Safe model: {safe_model} (type: {type(safe_model).__name__})")
-                # print(f"  - Safe temperature: {safe_temperature} (type: {type(safe_temperature).__name__})")
-                # print(f"  - OpenAI mock_output: {self.mock_output}")
-                # print(f"  - Msg: {message_list}")
-
-
-
                 if self.mock_output:
                     content = '<thinking>This is a mock output</thinking><answer>This is a mock answer</answer><correct>True</correct><feedback>This is a mock feedback</feedback>'
 
@@ -168,8 +162,13 @@ class ChatCompletionSampler(SamplerBase):
                     
                     print(f"✓ API request successful")
                     content = response.choices[0].message.content
+                    
+                    metadata = make_dummy_metadata()
 
-                return content
+                    usage = response.usage
+                    tokens = calculate_saved_tokens(usage, metadata)                    
+
+                return content, tokens
 
             except APITimeoutError as e:
                 print(f"\n✗ OpenAI API Timeout Error (Trial {trial + 1})")

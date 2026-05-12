@@ -51,14 +51,16 @@ class Test(unittest.IsolatedAsyncioTestCase):
         
         use_cachesaver = False
         
-        await self.experiment(1, "math", "meta-llama/llama-4-scout-17b-16e-instruct", use_cachesaver)
+        await self.experiment(10, "math", "gpt-5-nano-2025-08-07", use_cachesaver)
         
         dataframe = pd.DataFrame(self.results)
         
         print("\nResults with CacheSaver:")
         print(dataframe)
         
-        dataframe.to_excel("orchestrator/experiments/aime24_results.xlsx", index=False)
+        dataframe = dataframe.T
+        
+        dataframe.to_excel("orchestrator/experiments/aime24_results.xlsx", index=True)
         
 if __name__ == '__main__':
     unittest.main()

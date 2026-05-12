@@ -26,15 +26,15 @@ async def main(file_name, problems, agent_model, use_cachesaver):
         model_sampler_map = {
             f"{agent_model}": CSGroqCompletionSampler(
                 model=f"{agent_model}",
-                temperature=0.7,
+                temperature=1.0,
                 mock_output=False
             )
         }
     else:
         model_sampler_map = {
-            f"{agent_model}": GroqCompletionSampler(
+            f"{agent_model}": ChatCompletionSampler(
                 model=f"{agent_model}",
-                temperature=0.7,
+                temperature=1.0,
                 mock_output=False
             )
         }

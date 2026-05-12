@@ -284,7 +284,7 @@ class AsyncAgentSystem(AgentSystem):
                 config = {
                     'type': sampler_type,
                     'model': getattr(sampler, 'model', model_name),
-                    'temperature': getattr(sampler, 'temperature', 0.5),
+                    'temperature': getattr(sampler, 'temperature', 1),
                     'system_message': getattr(sampler, 'system_message', None),
                     'mock_output': getattr(sampler, 'mock_output', False)  # Preserve mock_output setting
                 }
@@ -294,7 +294,7 @@ class AsyncAgentSystem(AgentSystem):
                 configs[model_name] = {
                     'type': 'ChatCompletionSampler',
                     'model': model_name,
-                    'temperature': 0.5,
+                    'temperature': 1,
                     'system_message': None,
                     'mock_output': False
                 }

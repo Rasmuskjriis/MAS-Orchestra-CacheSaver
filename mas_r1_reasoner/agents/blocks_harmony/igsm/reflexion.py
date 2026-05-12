@@ -9,7 +9,7 @@ async def ReflexionAgent(self, agent_input, model: str):
     assert isinstance(agent_input, Info), f"agent_input must be an Info object, got {agent_input}"
 
     # Basic setting
-    temperature = 0.5
+    temperature = 1
     max_reflection_round = 5
 
     # Instruction for initial reasoning
