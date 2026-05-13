@@ -32,7 +32,7 @@ async def main(problems, agent_model, use_cachesaver):
         }
     else:
         model_sampler_map = {
-            f"{agent_model}": ChatCompletionSampler(
+            f"{agent_model}": GroqCompletionSampler(
                 model=f"{agent_model}",
                 temperature=1.0,
                 mock_output=False
@@ -166,7 +166,6 @@ async def main(problems, agent_model, use_cachesaver):
         print("Accuracy: ", accuracy)
         
         system.cleanup()
-        system = AsyncAgentSystem.create_with_globals()
             
         return {
             "accuracy": accuracy,

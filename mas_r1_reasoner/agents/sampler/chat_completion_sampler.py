@@ -47,7 +47,7 @@ class ChatCompletionSampler(SamplerBase):
         self.client = AsyncOpenAI(
             api_key=os.getenv("OPENAI_API_KEY"),
             # default_headers = {"X-Api-Key": os.getenv("X_API_KEY")},
-            timeout=60
+            timeout=300
         )
         
         # Convert OmegaConf objects to basic Python types (these are loaded fron config, so we need to convert them to basic types)
@@ -140,7 +140,7 @@ class ChatCompletionSampler(SamplerBase):
                         response = await self.client.chat.completions.create(
                             model=safe_model,
                             messages=message_list,
-                            timeout=60
+                            timeout=300
                         )
                     elif safe_model in self.reasonining_models:
                         # Use async client with reasoning_effort for reasoning models
@@ -149,7 +149,7 @@ class ChatCompletionSampler(SamplerBase):
                             messages=message_list,
                             reasoning_effort=reasoning_effort,
                             temperature=safe_temperature,
-                            timeout=60
+                            timeout=300
                         )
                     else:
                         # Use async client with temperature for regular models
@@ -157,7 +157,7 @@ class ChatCompletionSampler(SamplerBase):
                             model=safe_model,
                             messages=message_list,
                             temperature=safe_temperature,
-                            timeout=60
+                            timeout=300
                         )
                     
                     print(f"✓ API request successful")
@@ -166,8 +166,8 @@ class ChatCompletionSampler(SamplerBase):
                     metadata = make_dummy_metadata()
 
                     usage = response.usage
-                    tokens = calculate_saved_tokens(usage, metadata)                    
-
+                    tokens = calculate_saved_tokens(usage, metadata)
+                    
                 return content, tokens
 
             except APITimeoutError as e:

@@ -336,7 +336,10 @@ async def main(problems, model, use_cachesaver):
   print(f"⏱️ Time: {end - start:.2f}s")
   print("==============================")
   
-  return OUTPUT_XML, {
+  print("prompt_tokens_used_orc", prompt_tokens_used)
+  print("completion_tokens_used_orc", completion_tokens_used)
+  
+  return {
     "prompt_tokens_used_orc": prompt_tokens_used,
     "completion_tokens_used_orc": completion_tokens_used,
     "api_calls_orc": api_calls
