@@ -14,8 +14,8 @@ class Test(unittest.IsolatedAsyncioTestCase):
     
     async def experiment(self, problems, model, agent_model, use_cachesaver):
         start_time = time.time()
-        file_name, metrics = await orchestrator.main(problems, model, use_cachesaver)
-        result = await run.main(file_name, problems, agent_model, use_cachesaver)
+        metrics = await orchestrator.main(problems, model, use_cachesaver)
+        result = await run.main(problems, agent_model, use_cachesaver)
         end_time = time.time()
         
         runtime = end_time - start_time
@@ -51,7 +51,7 @@ class Test(unittest.IsolatedAsyncioTestCase):
         
         use_cachesaver = False
         
-        await self.experiment(10, "math", "gpt-5-nano-2025-08-07", use_cachesaver)
+        await self.experiment(5, "math", "gpt-5-nano-2025-08-07", use_cachesaver)
         
         dataframe = pd.DataFrame(self.results)
         
