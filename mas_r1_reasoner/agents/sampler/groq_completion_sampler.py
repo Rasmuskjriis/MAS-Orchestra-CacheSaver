@@ -13,7 +13,7 @@ import os
 from mas_r1_reasoner.agents.sampler.chat_common import SamplerBase, EvalResult, SingleEvalResult, Eval
 from mas_r1_reasoner.agents.shared_vars import get_global
 
-from orchestrator.utils import calculate_saved_tokens, make_dummy_metadata
+from orchestrator.utils.utils import calculate_saved_tokens, make_dummy_metadata
 
 Message = dict[str, Any]  # keys role, content
 MessageList = list[Message]

@@ -3,9 +3,9 @@ import asyncio
 import pandas as pd
 import time
 
-import orchestrator.remote_orchestrator as orchestrator
-import orchestrator.run_mas as run
-from orchestrator.utils import tokens_to_cost
+import orchestrator.main.remote_orchestrator as orchestrator
+import orchestrator.main.run_mas as run
+from orchestrator.utils.utils import tokens_to_cost
 
 class Test(unittest.IsolatedAsyncioTestCase):
     async def asyncSetUp(self):
@@ -60,7 +60,7 @@ class Test(unittest.IsolatedAsyncioTestCase):
         
         dataframe = dataframe.T
         
-        dataframe.to_excel("orchestrator/experiments/aime24_results.xlsx", index=True)
+        dataframe.to_excel("orchestrator/results/aime24_results.xlsx", index=True)
         
 if __name__ == '__main__':
     unittest.main()

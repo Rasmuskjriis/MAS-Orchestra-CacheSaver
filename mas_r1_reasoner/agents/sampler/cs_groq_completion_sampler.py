@@ -15,7 +15,7 @@ from mas_r1_reasoner.agents.shared_vars import get_global
 
 from cachesaver.models.groq import AsyncGroq as _CacheSaverAsyncGroq
 from cachesaver.typedefs import Metadata
-from orchestrator.utils import make_random_ns, calculate_saved_tokens
+from orchestrator.utils.utils import make_random_ns, calculate_saved_tokens
 
 from groq import AsyncGroq as _AsyncGroq
 
