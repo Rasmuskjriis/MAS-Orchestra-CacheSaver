@@ -38,6 +38,8 @@ async def SCAgent(self, agent_input, model: str):
 
     final_answer = self.make_final_answer(thinking, answer)
 
+    print("FINAL ANSWER: ", final_answer)
+    
     return final_answer  
 
 func_string = inspect.getsource(SCAgent)

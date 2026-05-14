@@ -35,7 +35,11 @@ async def main(problems, model, use_cachesaver):
   # 1. MAS PROMPT
   # =========================
   
-  agent_type = "All"
+#   agent_type = "CoTAgent"  
+#   agent_type = "SCAgent"
+#   agent_type = "DebateAgent"
+  agent_type = "ReflexionAgent" # uses early exit right now
+#   agent_type = "All"
 
   MATH_SYSTEM_PROMPT, MATH_USER_PROMPT_TEMPLATE, MATH_USER_SUFFIX = agent_prompt(agent_type)
 

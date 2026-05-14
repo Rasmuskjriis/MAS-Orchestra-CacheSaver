@@ -20,7 +20,7 @@ async def ReflexionAgent(self, agent_input, model: str):
     cot_agent = LLMAgentBase(['thinking', 'answer'], 'Chain-of-Thought LLM', model=model, temperature=temperature, agent_system=self)
 
     # Instruction for providing feedback and correcting the answer
-    critic_instruction = "Please review the answer above and criticize on where might be wrong. If you are absolutely sure it is correct, output exactly 'True' in 'correct'."
+    critic_instruction = "Please review the answer above and criticize on where it might be wrong. If you are absolutely sure it is correct, output exactly 'True' in 'correct'."
 
     critic_agent = LLMAgentBase(['feedback', 'correct'], 'Critic LLM', model=model, temperature=temperature, agent_system=self)
         
