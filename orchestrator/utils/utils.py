@@ -81,7 +81,32 @@ def make_dummy_metadata(n=1):
 
 def calculate_saved_tokens(usage, metadata):
     ## Add logic for handling CacheSaver token usage here
-        
+    
+    usage_tracker = {
+        'prompt_tokens_saved': 0,
+        'prompt_tokens_used': 0,
+        'completion_tokens_saved': 0,
+        'completion_tokens_used': 0,
+        'api_call': False
+    }
+    
+    cached = metadata.cached[0]
+    duplicated = metadata.duplicated[0]
+
+    if cached: # If cached, all tokens are saved
+        usage_tracker["prompt_tokens_saved"] += usage.prompt_tokens
+        usage_tracker["completion_tokens_saved"] += usage.completion_tokens
+    elif duplicated: # If duped only prompt tokens are saved
+        usage_tracker["prompt_tokens_saved"] += usage.prompt_tokens
+        usage_tracker["completion_tokens_used"] += usage.completion_tokens
+        usage_tracker["api_call"] = True
+    else:
+        usage_tracker["prompt_tokens_used"] += usage.prompt_tokens
+        usage_tracker["completion_tokens_used"] += usage.completion_tokens
+        usage_tracker["api_call"] = True
+
+    return usage_tracker
+    
     return {
         'prompt_tokens': usage.prompt_tokens,
         'completion_tokens': usage.completion_tokens,

@@ -396,9 +396,10 @@ class AgentSystem():
 
         # Initialize aggregated tokens
         aggregated = {
-            'total_prompt_tokens': 0,
-            'total_completion_tokens': 0,
-            'total_tokens': 0,
+            'total_prompt_tokens_saved': 0,
+            'total_prompt_tokens_used': 0,
+            'total_completion_tokens_saved': 0,
+            'total_completion_tokens_used': 0,
             'api_calls': 0,
             # 'calls': self.execution_tokens
         }
@@ -406,9 +407,10 @@ class AgentSystem():
         # Sum up token counts from all calls
         for tokens in self.execution_tokens:
             if isinstance(tokens, dict):
-                aggregated['total_prompt_tokens'] += tokens.get('prompt_tokens', 0)
-                aggregated['total_completion_tokens'] += tokens.get('completion_tokens', 0)
-                aggregated['total_tokens'] += tokens.get('total_tokens', 0)
+                aggregated['total_prompt_tokens_saved'] += tokens.get('prompt_tokens_saved', 0)
+                aggregated['total_prompt_tokens_used'] += tokens.get('prompt_tokens_used', 0)
+                aggregated['total_completion_tokens_saved'] += tokens.get('completion_tokens_saved', 0)
+                aggregated['total_completion_tokens_used'] += tokens.get('completion_tokens_used', 0)
                 if tokens.get('api_call'):
                     aggregated['api_calls'] += 1
         

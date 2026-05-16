@@ -140,9 +140,11 @@ async def main(problems, agent_model, use_cachesaver):
                 print("success: ", success)
                 print("error_message: ", error_message)
                 print("tokens: ", tokens)
-                
-                prompt_tokens_used += tokens["total_prompt_tokens"]
-                completion_tokens_used += tokens["total_completion_tokens"]
+
+                prompt_tokens_saved += tokens["total_prompt_tokens_saved"]                
+                prompt_tokens_used += tokens["total_prompt_tokens_used"]
+                completion_tokens_saved += tokens["total_completion_tokens_saved"]
+                completion_tokens_used += tokens["total_completion_tokens_used"]
                 
                 print("api_calls", tokens["api_calls"])
                 api_calls += tokens["api_calls"]
@@ -169,7 +171,9 @@ async def main(problems, agent_model, use_cachesaver):
             
         return {
             "accuracy": accuracy,
+            "prompt_tokens_saved_agents": prompt_tokens_saved,
             "prompt_tokens_used_agents": prompt_tokens_used,
+            "completion_tokens_saved_agents": completion_tokens_saved,
             "completion_tokens_used_agents": completion_tokens_used,
             "api_calls_agents": api_calls      
         }
