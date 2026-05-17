@@ -1,23 +1,6 @@
 ```xml
 <thinking>
-    To solve this problem, let's first understand the given information and set up the equations based on the walking speeds and times provided.
-    
-    Let \( s \) be the walking speed in kilometers per hour, and \( t \) be the time spent in the coffee shop in minutes.
-    
-    When Aya walks at \( s \) km/h, the total time taken is 4 hours, which includes \( t \) minutes in the coffee shop. Therefore, the time spent walking is \( 4 \text{ hours} - \frac{t}{60} \text{ hours} \).
-    
-    When Aya walks at \( s + 2 \) km/h, the total time taken is 2 hours and 24 minutes, which includes \( t \) minutes in the coffee shop. Therefore, the time spent walking is \( 2 \text{ hours} + \frac{24}{60} \text{ hours} - \frac{t}{60} \text{ hours} = 2.4 - \frac{t}{60} \text{ hours} \).
-    
-    We can set up the following equations based on the distance covered:
-    
-    \[
-    s \left(4 - \frac{t}{60}\right) = 9
-    \]
-    \[
-    (s + 2) \left(2.4 - \frac{t}{60}\right) = 9
-    \]
-    
-    Let's solve these equations to find \( s \) and \( t \).
+    To solve this problem, we need to determine the time Aya spends walking and the time she spends in the coffee shop. Let's start by defining the variables and equations based on the given information.
 </thinking>
 <agent>
     <agent_name>SCAgent</agent_name>
@@ -25,25 +8,77 @@
     <required_arguments>
         <agent_input></agent_input>
     </required_arguments>
-    <agent_output_id>math_agent_output</agent_output_id>
+    <agent_output_id>time_agent_output</agent_output_id>
 </agent>
-<answer>math_agent_output</answer>
-```
+<answer>time_agent_output</answer>
 
-Now, let's solve the equations using the SCAgent.
+<thinking>
+    Let's denote the speed at which Aya walks as \( s \) km/h and the time she spends in the coffee shop as \( t \) minutes. The total time for the walk and coffee shop visit is given in two scenarios.
 
-```xml
+    1. When Aya walks at \( s \) km/h, the total time is 4 hours, including \( t \) minutes.
+    2. When Aya walks at \( s + 2 \) km/h, the total time is 2 hours and 24 minutes, including \( t \) minutes.
+
+    We need to convert the total times into consistent units. Let's convert everything into minutes.
+</thinking>
 <agent>
     <agent_name>SCAgent</agent_name>
     <agent_description>Performs arithmetic calculations using Chain-of-Thought with Self-Consistency (CoT_SC).</agent_description>
     <required_arguments>
-        <agent_input>
-            <![CDATA[
-            s * (4 - t/60) = 9
-            (s + 2) * (2.4 - t/60) = 9
-            ]]>
-        </agent_input>
+        <agent_input></agent_input>
     </required_arguments>
-    <agent_output_id>math_agent_output</agent_output_id>
+    <agent_output_id>speed_agent_output</agent_output_id>
 </agent>
-<answer>math_agent_output</answer>
+<answer>speed_agent_output</answer>
+
+<thinking>
+    First, let's express the total time in minutes for both scenarios.
+    - For the first scenario: \( 4 \text{ hours} + \frac{t}{60} \text{ minutes} = 240 + \frac{t}{60} \text{ minutes} \).
+    - For the second scenario: \( 2 \text{ hours and } 24 \text{ minutes} + \frac{t}{60} \text{ minutes} = 144 + \frac{t}{60} \text{ minutes} \).
+
+    Since the distance walked is 9 km in both scenarios, we can write the equations for the time taken to walk 9 km at the respective speeds.
+    - Time taken at speed \( s \): \( \frac{9}{s} \) hours.
+    - Time taken at speed \( s + 2 \): \( \frac{9}{s + 2} \) hours.
+</thinking>
+<agent>
+    <agent_name>SCAgent</agent_name>
+    <agent_description>Performs arithmetic calculations using Chain-of-Thought with Self-Consistency (CoT_SC).</agent_description>
+    <required_arguments>
+        <agent_input></agent_input>
+    </required_arguments>
+    <agent_output_id>equation_agent_output</agent_output_id>
+</agent>
+<answer>equation_agent_output</answer>
+
+<thinking>
+    Now, we need to solve the equations derived from the time taken to walk 9 km at the respective speeds.
+    - For the first scenario: \( \frac{9}{s} + \frac{t}{60} = 240 + \frac{t}{60} \).
+    - For the second scenario: \( \frac{9}{s + 2} + \frac{t}{60} = 144 + \frac{t}{60} \).
+
+    Simplifying these, we get:
+    - \( \frac{9}{s} = 240 \).
+    - \( \frac{9}{s + 2} = 144 \).
+
+    Solving these equations will give us the value of \( s \).
+</thinking>
+<agent>
+    <agent_name>SCAgent</agent_name>
+    <agent_description>Performs arithmetic calculations using Chain-of-Thought with Self-Consistency (CoT_SC).</agent_description>
+    <required_arguments>
+        <agent_input></agent_input>
+    </required_arguments>
+    <agent_output_id>solution_agent_output</agent_output_id>
+</agent>
+<answer>solution_agent_output</answer>
+
+<thinking>
+    Once we have the value of \( s \), we can find the time taken to walk 9 km at \( s + \frac{1}{2} \) km/h and add \( t \) minutes to get the total time.
+</thinking>
+<agent>
+    <agent_name>SCAgent</agent_name>
+    <agent_description>Performs arithmetic calculations using Chain-of-Thought with Self-Consistency (CoT_SC).</agent_description>
+    <required_arguments>
+        <agent_input></agent_input>
+    </required_arguments>
+    <agent_output_id>final_time_agent_output</agent_output_id>
+</agent>
+<answer>final_time_agent_output</answer>

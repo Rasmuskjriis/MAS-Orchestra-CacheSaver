@@ -20,6 +20,7 @@ class Test(unittest.IsolatedAsyncioTestCase):
         
         runtime = end_time - start_time
         
+        input_cost_saved_orc, output_cost_saved_orc, total_cost_saved_orc = tokens_to_cost(result_orc["prompt_tokens_saved_orc"], result_orc["completion_tokens_saved_orc"], agent_model)
         input_cost_used_orc, output_cost_used_orc, total_cost_used_orc = tokens_to_cost(result_orc["prompt_tokens_used_orc"], result_orc["completion_tokens_used_orc"], agent_model)
         input_cost_saved_agents, output_cost_saved_agents, total_cost_saved_agents = tokens_to_cost(result_agents["prompt_tokens_saved_agents"], result_agents["completion_tokens_saved_agents"], agent_model)
         input_cost_used_agents, output_cost_used_agents, total_cost_used_agents = tokens_to_cost(result_agents["prompt_tokens_used_agents"], result_agents["completion_tokens_used_agents"], agent_model)
@@ -30,7 +31,13 @@ class Test(unittest.IsolatedAsyncioTestCase):
             "use_cachesaver": use_cachesaver,
             "accuracy": round(result_agents["accuracy"], 2),
             
-            # Orchestrator
+            # Orchestrator - Saved
+            "prompt_tokens_saved_orc": result_orc["prompt_tokens_saved_orc"],
+            "input_cost_saved_orc ($)": input_cost_saved_orc,
+            "completion_tokens_saved_orc": result_orc["completion_tokens_saved_orc"],
+            "output_cost_saved_orc ($)": output_cost_saved_orc,
+            
+            # Orchestrator - Used
             "prompt_tokens_used_orc": result_orc["prompt_tokens_used_orc"],
             "input_cost_used_orc ($)": input_cost_used_orc,
             "completion_tokens_used_orc": result_orc["completion_tokens_used_orc"],

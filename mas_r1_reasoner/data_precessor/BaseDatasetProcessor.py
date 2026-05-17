@@ -8,6 +8,7 @@ from mas_r1_reasoner.agents.sampler.together_completion_sampler import TogetherC
 from mas_r1_reasoner.agents.sampler.vllm_completion_sampler import VLLMCompletionSampler
 from mas_r1_reasoner.agents.sampler.groq_completion_sampler import GroqCompletionSampler
 from mas_r1_reasoner.agents.sampler.cs_groq_completion_sampler import CSGroqCompletionSampler
+from mas_r1_reasoner.agents.sampler.cs_chat_completion_sampler import CSChatCompletionSampler
 
 from mas_r1_reasoner.agents.shared_vars import set_global, get_global
 from mas_r1_reasoner.agents.common import main_rank_print, get_prompt
@@ -106,8 +107,20 @@ class BaseDatasetProcessor:
                         temperature=sampler_config.get('temperature', 0.5),
                         system_message=sampler_config.get('system_message', None)
                     )
+                elif sampler_type == 'CSChatCompletionSampler':
+                    # Create OpenAI sampler with CacheSaver
+                    model_name_to_use = sampler_config.get('model', model_name)
+                    if not model_name_to_use:
+                        raise ValueError(f"Model name not specified for sampler '{model_name}'. Please specify a 'model' field in the sampler configuration.")
+                    
+                    model_sampler_map[model_name] = CSChatCompletionSampler(
+                        model=model_name_to_use,
+                        temperature=sampler_config.get('temperature', 0.5),
+                        system_message=sampler_config.get('system_message', None),
+                        mock_output=mock_output
+                    )
                 else:
-                    raise ValueError(f"Unsupported sampler type '{sampler_type}' for model '{model_name}'. Only 'ChatCompletionSampler', 'TogetherCompletionSampler', and 'VLLMCompletionSampler' are supported.")
+                    raise ValueError(f"Unsupported sampler type '{sampler_type}' for model '{model_name}'. Only 'ChatCompletionSampler', 'TogetherCompletionSampler', 'VLLMCompletionSampler', 'GroqCompletionSampler', 'CSGroqCompletionSampler', and 'CSChatCompletionSampler' are supported.")
             else:
                 # Default sampler - but require a valid model name
                 if not model_name or model_name == "":

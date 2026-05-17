@@ -8,6 +8,7 @@ from mas_r1_reasoner.rewards.utils.string_match_score import MathScorer
 from mas_r1_reasoner.agents.sampler.chat_completion_sampler import ChatCompletionSampler
 from mas_r1_reasoner.agents.sampler.groq_completion_sampler import GroqCompletionSampler
 from mas_r1_reasoner.agents.sampler.cs_groq_completion_sampler import CSGroqCompletionSampler
+from mas_r1_reasoner.agents.sampler.cs_chat_completion_sampler import CSChatCompletionSampler
 
 from datasets import load_dataset
 import argparse

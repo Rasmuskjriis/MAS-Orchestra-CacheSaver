@@ -106,10 +106,3 @@ def calculate_saved_tokens(usage, metadata):
         usage_tracker["api_call"] = True
 
     return usage_tracker
-    
-    return {
-        'prompt_tokens': usage.prompt_tokens,
-        'completion_tokens': usage.completion_tokens,
-        'total_tokens': usage.total_tokens,
-        'api_call': True
-    }

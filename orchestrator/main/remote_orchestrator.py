@@ -11,6 +11,8 @@ from cachesaver.models.openai import AsyncOpenAI as _CacheSaverAsyncOpenAI
 from cachesaver.models.openai import OpenAI as _CacheSaverOpenAI
 from orchestrator.prompts.agent_prompts import agent_prompt
 
+from orchestrator.utils.utils import calculate_saved_tokens, make_dummy_metadata
+
 def create_chat_completion(client, model, messages):
      response = client.chat.completions.create(
         model=f"{model}",
@@ -84,12 +86,11 @@ async def main(problems, model, use_cachesaver):
   print("🧠 GENERATING MAS XML PLAN")
   print("==============================\n")
 
-  api_calls = 0
-
   prompt_tokens_used = 0
-  # prompt_tokens_saved = 0
+  prompt_tokens_saved = 0
   completion_tokens_used = 0
-  # completion_tokens_saved = 0
+  completion_tokens_saved = 0
+  api_calls = 0
 
   start = time.time()
 
@@ -116,11 +117,17 @@ async def main(problems, model, use_cachesaver):
       print("METADATA: ", metadata)
     else:
       response = create_chat_completion(client, model, messages)
+      metadata = make_dummy_metadata()
 
     usage = getattr(response, "usage", None)
-    prompt_tokens_used += usage.prompt_tokens
-    completion_tokens_used += usage.completion_tokens
-    api_calls += 1 
+    tokens = calculate_saved_tokens(usage, metadata)
+
+    prompt_tokens_saved += tokens["prompt_tokens_saved"]                
+    prompt_tokens_used += tokens["prompt_tokens_used"]
+    completion_tokens_saved += tokens["completion_tokens_saved"]
+    completion_tokens_used += tokens["completion_tokens_used"]
+    if tokens.get('api_call'):
+        api_calls += 1
 
     print(f"Model: {response.model}")
     print(f"Tokens: {response.usage.prompt_tokens} prompt, {response.usage.completion_tokens} completion")
@@ -156,7 +163,9 @@ async def main(problems, model, use_cachesaver):
   print("completion_tokens_used_orc", completion_tokens_used)
   
   return {
+    "prompt_tokens_saved_orc": prompt_tokens_saved,
     "prompt_tokens_used_orc": prompt_tokens_used,
+    "completion_tokens_saved_orc": completion_tokens_saved,
     "completion_tokens_used_orc": completion_tokens_used,
     "api_calls_orc": api_calls
   }
