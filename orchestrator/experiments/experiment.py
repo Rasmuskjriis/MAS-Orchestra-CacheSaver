@@ -14,34 +14,43 @@ class Test(unittest.IsolatedAsyncioTestCase):
     
     async def experiment(self, problems, model, agent_model, use_cachesaver):
         start_time = time.time()
-        metrics = await orchestrator.main(problems, model, use_cachesaver)
-        result = await run.main(problems, agent_model, use_cachesaver)
+        result_orc = await orchestrator.main(problems, model, use_cachesaver)
+        result_agents = await run.main(problems, agent_model, use_cachesaver)
         end_time = time.time()
         
         runtime = end_time - start_time
         
-        input_cost_used_orc, output_cost_used_orc, total_cost_used_orc = tokens_to_cost(metrics["prompt_tokens_used_orc"], metrics["completion_tokens_used_orc"], agent_model)
-        input_cost_used_agents, output_cost_used_agents, total_cost_used_agents = tokens_to_cost(result["prompt_tokens_used_agents"], result["completion_tokens_used_agents"], agent_model)
+        input_cost_used_orc, output_cost_used_orc, total_cost_used_orc = tokens_to_cost(result_orc["prompt_tokens_used_orc"], result_orc["completion_tokens_used_orc"], agent_model)
+        input_cost_saved_agents, output_cost_saved_agents, total_cost_saved_agents = tokens_to_cost(result_agents["prompt_tokens_saved_agents"], result_agents["completion_tokens_saved_agents"], agent_model)
+        input_cost_used_agents, output_cost_used_agents, total_cost_used_agents = tokens_to_cost(result_agents["prompt_tokens_used_agents"], result_agents["completion_tokens_used_agents"], agent_model)
         
         row = {
+            # Metrics
             "problems": problems,
             "use_cachesaver": use_cachesaver,
-            "accuracy": round(result["accuracy"], 2),
+            "accuracy": round(result_agents["accuracy"], 2),
             
-            "prompt_tokens_used_orc": metrics["prompt_tokens_used_orc"],
-            "input_cost_orc ($)": input_cost_used_orc,
-            "completion_tokens_used_orc": metrics["completion_tokens_used_orc"],
-            "output_cost_orc ($)": output_cost_used_orc,
-            "total_cost_orc ($)": total_cost_used_orc,
+            # Orchestrator
+            "prompt_tokens_used_orc": result_orc["prompt_tokens_used_orc"],
+            "input_cost_used_orc ($)": input_cost_used_orc,
+            "completion_tokens_used_orc": result_orc["completion_tokens_used_orc"],
+            "output_cost_used_orc ($)": output_cost_used_orc,
             
-            "prompt_tokens_used_agents": result["prompt_tokens_used_agents"],
-            "input_cost_agents ($)": input_cost_used_agents,
-            "completion_tokens_used_agents": result["completion_tokens_used_agents"],
-            "output_cost_agents ($)": output_cost_used_agents,
-            "total_cost_agents ($)": total_cost_used_agents,
+            # Agents - Saved
+            "prompt_tokens_saved_agents": result_agents["prompt_tokens_saved_agents"],
+            "input_cost_saved_agents ($)": input_cost_saved_agents,
+            "completion_tokens_saved_agents": result_agents["completion_tokens_saved_agents"],
+            "output_cost_saved_agents ($)": output_cost_saved_agents,
             
-            "api_calls_orc" : metrics["api_calls_orc"],
-            "api_calls_agents" : result["api_calls_agents"],
+            # Agents - Used
+            "prompt_tokens_used_agents": result_agents["prompt_tokens_used_agents"],
+            "input_cost_used_agents ($)": input_cost_used_agents,
+            "completion_tokens_used_agents": result_agents["completion_tokens_used_agents"],
+            "output_cost_used_agents ($)": output_cost_used_agents,
+            
+            # Api calls and runtime
+            "api_calls_orc" : result_orc["api_calls_orc"],
+            "api_calls_agents" : result_agents["api_calls_agents"],
             "runtime (s)": round(runtime, 2)
         }
 

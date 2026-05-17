@@ -78,9 +78,9 @@ async def main(problems, agent_model, use_cachesaver):
     api_calls = 0
 
     prompt_tokens_used = 0
-    # prompt_tokens_saved = 0
+    prompt_tokens_saved = 0
     completion_tokens_used = 0
-    # completion_tokens_saved = 0
+    completion_tokens_saved = 0
 
     scores = []
     
