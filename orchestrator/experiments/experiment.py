@@ -67,7 +67,7 @@ class Test(unittest.IsolatedAsyncioTestCase):
         
         use_cachesaver = False
         
-        await self.experiment(1, "math", "meta-llama/llama-4-scout-17b-16e-instruct", use_cachesaver)
+        await self.experiment(1, "math", "gpt-5-nano-2025-08-07", use_cachesaver)
         
         dataframe = pd.DataFrame(self.results)
         

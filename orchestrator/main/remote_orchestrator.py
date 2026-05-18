@@ -38,8 +38,8 @@ async def main(problems, model, use_cachesaver):
   # =========================
   
 #   agent_type = "CoTAgent"  
-  agent_type = "SCAgent"
-#   agent_type = "DebateAgent"
+#   agent_type = "SCAgent"
+  agent_type = "DebateAgent"
 #   agent_type = "ReflexionAgent" # uses early exit right now
 #   agent_type = "All"
 
@@ -106,7 +106,7 @@ async def main(problems, model, use_cachesaver):
 
   for i in range(problems):
     
-    problem = dataset["problem"][i]
+    problem = dataset["problem"][-1]
     
     # problem += "Please use exactly  3 agents to debate this"
     

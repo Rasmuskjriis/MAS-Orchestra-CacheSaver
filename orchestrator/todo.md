@@ -12,7 +12,7 @@ MAS Orchestra
 * [X] Add cachesaver with groq sampler
 * [X] Add dummy metadata to groq/openai sampler
 * [X] Add cachesaver with openai sampler
-* [] Update token counting in cs samplers to reflect cached/deduplicated responses
+* [X] Update token counting in cs samplers to reflect cached/deduplicated responses
 
 ### Trained orchestrator
 * [X] Add cachesaver to the orchestrator
@@ -24,8 +24,8 @@ MAS Orchestra
 * [X] Investigate possible bug with only the first round's responses being taken from the cache (see agents)
 
 ### Tokens
-* [] Update remote_orchestrator.py to return saved tokens as well
-* [] Update experiment.py to handle saved tokens
+* [X] Update remote_orchestrator.py to return saved tokens as well
+* [X] Update experiment.py to handle saved tokens
 
 
 

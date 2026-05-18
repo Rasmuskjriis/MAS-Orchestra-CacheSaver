@@ -25,7 +25,7 @@ async def main(problems, agent_model, use_cachesaver):
 
     if use_cachesaver:
         model_sampler_map = {
-            f"{agent_model}": CSGroqCompletionSampler(
+            f"{agent_model}": CSChatCompletionSampler(
                 model=f"{agent_model}",
                 temperature=1.0,
                 mock_output=False
@@ -33,7 +33,7 @@ async def main(problems, agent_model, use_cachesaver):
         }
     else:
         model_sampler_map = {
-            f"{agent_model}": GroqCompletionSampler(
+            f"{agent_model}": ChatCompletionSampler(
                 model=f"{agent_model}",
                 temperature=1.0,
                 mock_output=False
@@ -91,8 +91,8 @@ async def main(problems, agent_model, use_cachesaver):
     print("problem amount", problems)
     try:
         for i in range(problems):
-            problem = dataset["problem"][i]
-            answer = dataset["answer"][i]
+            problem = dataset["problem"][-1]
+            answer = dataset["answer"][-1]
 
             print("problem: ", problem)
             print("answer: ", answer)
