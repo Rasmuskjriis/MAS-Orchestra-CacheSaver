@@ -1,16 +1,15 @@
 ```xml
 <thinking>
-    This problem involves placing chips in a grid such that each row and column has chips of the same color, and no additional chip can be placed without violating this condition. We need to determine the number of valid configurations.
+    To solve this problem, we need to determine the number of ways to place 25 indistinguishable white chips and 25 indistinguishable black chips in a \(5 \times 5\) grid such that each row and each column contains chips of the same color. Additionally, no additional chip can be placed without violating these conditions.
 </thinking>
 <agent>
-    <agent_name>DebateAgent</agent_name>
-    <agent_description>Near-tie numeric choice using one Debate call.</agent_description>
+    <agent_name>CoTAgent</agent_name>
+    <agent_description>Chain-of-Thought Agent (CoTAgent)</agent_description>
     <required_arguments>
         <agent_input></agent_input>
-        <debate_roles>["Combinatorics Expert", "Graph Theory Specialist"]</debate_roles>
     </required_arguments>
     <agent_output_id>
-    combinatorics_agent_output
+    coth_agent_output
     </agent_output_id>
 </agent>
-<answer>combinatorics_agent_output</answer>
+<answer>coth_agent_output</answer>

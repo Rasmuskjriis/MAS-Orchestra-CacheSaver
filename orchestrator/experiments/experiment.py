@@ -12,9 +12,9 @@ class Test(unittest.IsolatedAsyncioTestCase):
         asyncio.get_running_loop().set_debug(False)
         self.results = []
     
-    async def experiment(self, problems, model, agent_model, use_cachesaver):
+    async def experiment(self, agent_type, problems, model, agent_model, use_cachesaver):
         start_time = time.time()
-        result_orc = await orchestrator.main(problems, model, use_cachesaver)
+        result_orc = await orchestrator.main(agent_type, problems, model, use_cachesaver)
         result_agents = await run.main(problems, agent_model, use_cachesaver)
         end_time = time.time()
         
@@ -67,7 +67,7 @@ class Test(unittest.IsolatedAsyncioTestCase):
         
         use_cachesaver = False
         
-        await self.experiment(1, "math", "gpt-5-nano-2025-08-07", use_cachesaver)
+        await self.experiment("CoTAgent", 1, "math", "gpt-5-nano-2025-08-07", use_cachesaver)
         
         dataframe = pd.DataFrame(self.results)
         

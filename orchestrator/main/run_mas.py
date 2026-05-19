@@ -25,7 +25,7 @@ async def main(problems, agent_model, use_cachesaver):
 
     if use_cachesaver:
         model_sampler_map = {
-            f"{agent_model}": CSChatCompletionSampler(
+            f"{agent_model}": CSGroqCompletionSampler(
                 model=f"{agent_model}",
                 temperature=1.0,
                 mock_output=False
@@ -33,7 +33,7 @@ async def main(problems, agent_model, use_cachesaver):
         }
     else:
         model_sampler_map = {
-            f"{agent_model}": ChatCompletionSampler(
+            f"{agent_model}": GroqCompletionSampler(
                 model=f"{agent_model}",
                 temperature=1.0,
                 mock_output=False
@@ -184,6 +184,9 @@ async def main(problems, agent_model, use_cachesaver):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
+    
+    # "meta-llama/llama-4-scout-17b-16e-instruct"
+    # "gpt-5-nano-2025-08-07"
     
     parser.add_argument("-p","--problems", type=int, default="all")
     parser.add_argument("-m","--agent_model", type=str, default="meta-llama/llama-4-scout-17b-16e-instruct")
