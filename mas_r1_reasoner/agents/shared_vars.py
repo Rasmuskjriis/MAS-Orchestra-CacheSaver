@@ -4,6 +4,7 @@ global global_task_queue
 global global_score_compute
 global global_max_round
 global global_max_sc
+global global_max_debate_round
 global global_debate_role
 global global_cot_instruction
 global global_node_model
@@ -57,6 +58,7 @@ global_vars = [
     "global_score_compute",
     "global_max_round",
     "global_max_sc",
+    "global_max_debate_round",
     "global_debate_role",
     "global_cot_instruction",
     "global_node_model",

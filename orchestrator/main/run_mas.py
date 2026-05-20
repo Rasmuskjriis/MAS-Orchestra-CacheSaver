@@ -17,7 +17,7 @@ import ray
 import os
 import numpy as np
 
-async def main(problems, agent_model, use_cachesaver):
+async def main(problems, agent_model, use_cachesaver, max_debate_round):
     # Set up global variables required for MAS execution
     set_global("global_max_ray_workers", 4)
 
@@ -60,6 +60,7 @@ async def main(problems, agent_model, use_cachesaver):
     set_global("global_FORMAT_INST", lambda request_keys: f"""Reply EXACTLY with the following XML format.\n{str(request_keys)}\nDO NOT MISS ANY REQUEST FIELDS and ensure that your response is a well-formed XML object!\n\n""")
     set_global("global_output_description", "If the question is asked for a numeric result, Return ONLY an integer and DO NOT return anything other than the integer answer; If the question is asked for more than numeric results, Return what the question asked and make sure the answer is complete.")
     set_global("global_cot_instruction", "Please think step by step and then solve the task.")
+    set_global("global_max_debate_round", max_debate_round)
 
     assert os.getenv("GROQ_API_KEY") is not None, "Missing GROQ_API_KEY"
    
@@ -191,6 +192,7 @@ if __name__ == "__main__":
     parser.add_argument("-p","--problems", type=int, default="all")
     parser.add_argument("-m","--agent_model", type=str, default="meta-llama/llama-4-scout-17b-16e-instruct")
     parser.add_argument("-c","--cachesaver", action="store_true", dest="use_cachesaver")
+    parser.add_argument("--max_debate_round", type=int, default=1, help="Maximum number of debate rounds for LLM_debate")
 
     args = parser.parse_args()
 
@@ -198,6 +200,7 @@ if __name__ == "__main__":
         main(
             problems=args.problems, 
             agent_model=args.agent_model,
-            use_cachesaver=args.use_cachesaver
+            use_cachesaver=args.use_cachesaver,
+            max_debate_round=args.max_debate_round
         )
     )

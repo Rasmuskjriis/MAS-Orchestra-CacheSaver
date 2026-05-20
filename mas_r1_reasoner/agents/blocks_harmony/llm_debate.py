@@ -13,7 +13,7 @@ async def DebateAgent(self, agent_input, model: str, debate_roles: List[str]):
 
     # Basic setting
     temperature = 1
-    max_debate_round = 1
+    max_debate_round = getattr(self, 'max_debate_round', 1)
 
     # Instruction for initial reasoning
     debate_initial_instruction =  "Please think step by step and then solve the task."

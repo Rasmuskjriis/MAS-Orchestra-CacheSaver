@@ -12,10 +12,10 @@ class Test(unittest.IsolatedAsyncioTestCase):
         asyncio.get_running_loop().set_debug(False)
         self.results = []
     
-    async def experiment(self, agent_type, problems, model, agent_model, use_cachesaver):
+    async def experiment(self, agent_type, problems, model, agent_model, use_cachesaver, max_debate_round):
         start_time = time.time()
         result_orc = await orchestrator.main(agent_type, problems, model, use_cachesaver)
-        result_agents = await run.main(problems, agent_model, use_cachesaver)
+        result_agents = await run.main(problems, agent_model, use_cachesaver, max_debate_round)
         end_time = time.time()
         
         runtime = end_time - start_time
@@ -27,6 +27,7 @@ class Test(unittest.IsolatedAsyncioTestCase):
         
         row = {
             # Metrics
+            "max_debate_round": max_debate_round,
             "problems": problems,
             "use_cachesaver": use_cachesaver,
             "accuracy": round(result_agents["accuracy"], 2),
@@ -63,11 +64,17 @@ class Test(unittest.IsolatedAsyncioTestCase):
 
         self.results.append(row)
         
-    async def test_experiment(self):
+    # "meta-llama/llama-4-scout-17b-16e-instruct"
+    # "gpt-5-nano-2025-08-07"
         
-        use_cachesaver = False
+    async def test_experiment(self, agent_type, problems):
         
-        await self.experiment("CoTAgent", 1, "math", "gpt-5-nano-2025-08-07", use_cachesaver)
+        use_cachesaver = True
+        
+        # max_debate_round = 2
+        
+        for i in range(2):
+            await self.experiment(agent_type, problems, "math", "meta-llama/llama-4-scout-17b-16e-instruct", use_cachesaver, i+1)
         
         dataframe = pd.DataFrame(self.results)
         
@@ -78,5 +85,15 @@ class Test(unittest.IsolatedAsyncioTestCase):
         
         dataframe.to_excel("orchestrator/results/aime24_results.xlsx", index=True)
         
+    async def run_experiment(self):
+        await self.test_experiment("DebateAgent", 1)
+        # await self.test_experiment("ReflexionAgent", 1)
+        
 if __name__ == '__main__':
-    unittest.main()
+    test = Test()
+
+    async def main():
+        await test.asyncSetUp()
+        await test.run_experiment()
+
+    asyncio.run(main())

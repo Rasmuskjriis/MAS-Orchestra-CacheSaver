@@ -320,6 +320,7 @@ class AgentSystem():
         self.cot_instruction = get_global("global_cot_instruction") 
         # Not needed
         self.max_sc = get_global("global_max_sc")
+        self.max_debate_round = get_global("global_max_debate_round")
         self.max_round = get_global("global_max_round")
         self.debate_role = get_global("global_debate_role")
         self.retrieval_method = get_global("global_retrieval_method")
@@ -329,6 +330,7 @@ class AgentSystem():
         print(f"  - node_model: {self.node_model}")
         # print(f"  - cot_instruction: {self.cot_instruction}")
         print(f"  - max_sc: {self.max_sc} (type: {type(self.max_sc)})")
+        print(f"  - max_debate_round: {self.max_debate_round}")
         print(f"  - max_round: {self.max_round}")
         print(f"  - debate_role: {self.debate_role}")
         print(f"  - retrieval_method: {self.retrieval_method}")
