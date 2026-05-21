@@ -20,7 +20,7 @@ async def ReflexionAgent(self, agent_input, model: str):
     cot_agent = LLMAgentBase(['thinking', 'answer'], 'Chain-of-Thought LLM', model=model, temperature=temperature, agent_system=self)
 
     # Instruction for providing feedback and correcting the answer
-    critic_instruction = "Please review the answer above and criticize on where it might be wrong. If you are absolutely sure it is correct, output exactly 'True' in 'correct'."
+    critic_instruction = "Please review the answer above and criticize on where it might be wrong."
 
     critic_agent = LLMAgentBase(['feedback', 'correct'], 'Critic LLM', model=model, temperature=temperature, agent_system=self)
         
@@ -31,8 +31,6 @@ async def ReflexionAgent(self, agent_input, model: str):
     for i in range(max_reflection_round):
         # Get feedback and correct status from the critic
         feedback, correct = await critic_agent([agent_input, thinking, answer], critic_instruction, i)
-        if correct.content == 'True':
-            break
             
         # Add feedback to the inputs for the next iteration
         cot_inputs.extend([thinking, answer, feedback])
