@@ -108,7 +108,7 @@ async def main(agent_type, problems, model, use_cachesaver):
 
     for i in range(problems):
         
-        problem = dataset["problem"][-1]
+        problem = dataset["problem"][i]
         
         # problem += "Please use exactly  3 agents to debate this"
         
