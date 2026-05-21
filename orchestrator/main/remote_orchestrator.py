@@ -91,7 +91,8 @@ async def main(agent_type, problems, model, use_cachesaver):
     prompt_tokens_saved = 0
     completion_tokens_used = 0
     completion_tokens_saved = 0
-    api_calls = 0
+    api_calls_saved = 0
+    api_calls_used = 0
 
     start = time.time()
 
@@ -127,8 +128,8 @@ async def main(agent_type, problems, model, use_cachesaver):
         prompt_tokens_used += tokens["prompt_tokens_used"]
         completion_tokens_saved += tokens["completion_tokens_saved"]
         completion_tokens_used += tokens["completion_tokens_used"]
-        if tokens.get('api_call'):
-            api_calls += 1
+        api_calls_saved += tokens["api_calls_saved"]
+        api_calls_used += tokens["api_calls_used"]
 
         print(f"Model: {response.model}")
         print(f"Tokens: {response.usage.prompt_tokens} prompt, {response.usage.completion_tokens} completion")
@@ -168,7 +169,8 @@ async def main(agent_type, problems, model, use_cachesaver):
         "prompt_tokens_used_orc": prompt_tokens_used,
         "completion_tokens_saved_orc": completion_tokens_saved,
         "completion_tokens_used_orc": completion_tokens_used,
-        "api_calls_orc": api_calls
+        "api_calls_saved_orc": api_calls_saved,
+        "api_calls_used_orc": api_calls_used,
     }
 
 if __name__ == "__main__":

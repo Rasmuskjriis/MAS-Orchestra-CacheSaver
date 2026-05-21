@@ -219,6 +219,8 @@ class AsyncAgentSystem(AgentSystem):
             "global_max_round",
             "global_max_sc",
             "global_max_debate_round",
+            "global_num_repeated_samples",
+            "global_max_reflection_round",
             "global_node_model",
             "global_decompose_only",
             "global_architecture_only",

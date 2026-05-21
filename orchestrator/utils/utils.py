@@ -87,7 +87,8 @@ def calculate_saved_tokens(usage, metadata):
         'prompt_tokens_used': 0,
         'completion_tokens_saved': 0,
         'completion_tokens_used': 0,
-        'api_call': False
+        'api_calls_saved': 0,
+        'api_calls_used': 0,
     }
     
     cached = metadata.cached[0]
@@ -96,13 +97,14 @@ def calculate_saved_tokens(usage, metadata):
     if cached: # If cached, all tokens are saved
         usage_tracker["prompt_tokens_saved"] += usage.prompt_tokens
         usage_tracker["completion_tokens_saved"] += usage.completion_tokens
+        usage_tracker["api_calls_saved"] += 1
     elif duplicated: # If duped only prompt tokens are saved
         usage_tracker["prompt_tokens_saved"] += usage.prompt_tokens
         usage_tracker["completion_tokens_used"] += usage.completion_tokens
-        usage_tracker["api_call"] = True
+        usage_tracker["api_calls_saved"] += 1
     else:
         usage_tracker["prompt_tokens_used"] += usage.prompt_tokens
         usage_tracker["completion_tokens_used"] += usage.completion_tokens
-        usage_tracker["api_call"] = True
+        usage_tracker["api_calls_used"] += 1
 
     return usage_tracker

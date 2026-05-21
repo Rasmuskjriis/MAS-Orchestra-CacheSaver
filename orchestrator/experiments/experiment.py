@@ -12,10 +12,10 @@ class Test(unittest.IsolatedAsyncioTestCase):
         asyncio.get_running_loop().set_debug(False)
         self.results = []
     
-    async def experiment(self, agent_type, problems, model, agent_model, use_cachesaver, max_debate_round):
+    async def experiment(self, agent_type, problems, model, agent_model, use_cachesaver, max_debate_round, num_repeated_samples, max_reflection_round):
         start_time = time.time()
         result_orc = await orchestrator.main(agent_type, problems, model, use_cachesaver)
-        result_agents = await run.main(problems, agent_model, use_cachesaver, max_debate_round)
+        result_agents = await run.main(problems, agent_model, use_cachesaver, max_debate_round, num_repeated_samples, max_reflection_round)
         end_time = time.time()
         
         runtime = end_time - start_time
@@ -28,6 +28,8 @@ class Test(unittest.IsolatedAsyncioTestCase):
         row = {
             # Metrics
             "max_debate_round": max_debate_round,
+            "num_repeated_samples": num_repeated_samples,
+            "max_reflection_round": max_reflection_round,
             "problems": problems,
             "use_cachesaver": use_cachesaver,
             "accuracy": round(result_agents["accuracy"], 2),
@@ -57,8 +59,10 @@ class Test(unittest.IsolatedAsyncioTestCase):
             "output_cost_used_agents ($)": output_cost_used_agents,
             
             # Api calls and runtime
-            "api_calls_orc" : result_orc["api_calls_orc"],
-            "api_calls_agents" : result_agents["api_calls_agents"],
+            "api_calls_saved_orc" : result_orc["api_calls_saved_orc"],
+            "api_calls_used_orc" : result_orc["api_calls_used_orc"],
+            "api_calls_saved_agents" : result_agents["api_calls_saved_agents"],
+            "api_calls_used_agents" : result_agents["api_calls_used_agents"],
             "runtime (s)": round(runtime, 2)
         }
 
@@ -67,14 +71,21 @@ class Test(unittest.IsolatedAsyncioTestCase):
     # "meta-llama/llama-4-scout-17b-16e-instruct"
     # "gpt-5-nano-2025-08-07"
         
-    async def test_experiment(self, agent_type, problems):
+    async def test_experiment(self, agent_type, samples, problems):
+        
+        model = "gpt-5-nano-2025-08-07"
         
         use_cachesaver = True
         
         # max_debate_round = 2
         
-        for i in range(2):
-            await self.experiment(agent_type, problems, "math", "meta-llama/llama-4-scout-17b-16e-instruct", use_cachesaver, i+1)
+        for i in range(samples):
+            if agent_type == "DebateAgent":
+                await self.experiment(agent_type, problems, "math", model, use_cachesaver, i+1, 0, 0)
+            elif agent_type == "SCAgent":
+                await self.experiment(agent_type, problems, "math", model, use_cachesaver, 0, i+1, 0)
+            elif agent_type == "ReflexionAgent":
+                await self.experiment(agent_type, problems, "math", model, use_cachesaver, 0, 0, i+1)
         
         dataframe = pd.DataFrame(self.results)
         
@@ -83,11 +94,12 @@ class Test(unittest.IsolatedAsyncioTestCase):
         
         dataframe = dataframe.T
         
-        dataframe.to_excel("orchestrator/results/aime24_results.xlsx", index=True)
+        dataframe.to_excel(f"orchestrator/results/aime24_results.xlsx", index=True)
         
     async def run_experiment(self):
-        await self.test_experiment("DebateAgent", 1)
-        # await self.test_experiment("ReflexionAgent", 1)
+        await self.test_experiment("DebateAgent", 1, 1)
+        await self.test_experiment("SCAgent", 1, 1)
+        await self.test_experiment("ReflexionAgent", 1, 1)
         
 if __name__ == '__main__':
     test = Test()

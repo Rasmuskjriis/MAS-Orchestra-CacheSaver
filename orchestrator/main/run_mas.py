@@ -17,7 +17,7 @@ import ray
 import os
 import numpy as np
 
-async def main(problems, agent_model, use_cachesaver, max_debate_round):
+async def main(problems, agent_model, use_cachesaver, max_debate_round, num_repeated_samples, max_reflection_round):
     # Set up global variables required for MAS execution
     set_global("global_max_ray_workers", 4)
 
@@ -25,7 +25,7 @@ async def main(problems, agent_model, use_cachesaver, max_debate_round):
 
     if use_cachesaver:
         model_sampler_map = {
-            f"{agent_model}": CSGroqCompletionSampler(
+            f"{agent_model}": CSChatCompletionSampler(
                 model=f"{agent_model}",
                 temperature=1.0,
                 mock_output=False
@@ -33,7 +33,7 @@ async def main(problems, agent_model, use_cachesaver, max_debate_round):
         }
     else:
         model_sampler_map = {
-            f"{agent_model}": GroqCompletionSampler(
+            f"{agent_model}": ChatCompletionSampler(
                 model=f"{agent_model}",
                 temperature=1.0,
                 mock_output=False
@@ -61,6 +61,8 @@ async def main(problems, agent_model, use_cachesaver, max_debate_round):
     set_global("global_output_description", "If the question is asked for a numeric result, Return ONLY an integer and DO NOT return anything other than the integer answer; If the question is asked for more than numeric results, Return what the question asked and make sure the answer is complete.")
     set_global("global_cot_instruction", "Please think step by step and then solve the task.")
     set_global("global_max_debate_round", max_debate_round)
+    set_global("global_num_repeated_samples", num_repeated_samples)
+    set_global("global_max_reflection_round", max_reflection_round)
 
     assert os.getenv("GROQ_API_KEY") is not None, "Missing GROQ_API_KEY"
    
@@ -76,14 +78,14 @@ async def main(problems, agent_model, use_cachesaver, max_debate_round):
     )
 
     # print("dataset", dataset)
-
-    api_calls = 0
-
-    prompt_tokens_used = 0
+    
     prompt_tokens_saved = 0
-    completion_tokens_used = 0
+    prompt_tokens_used = 0
     completion_tokens_saved = 0
-
+    completion_tokens_used = 0
+    api_calls_saved = 0
+    api_calls_used = 0
+    
     scores = []
     
     if problems == "all":
@@ -147,9 +149,8 @@ async def main(problems, agent_model, use_cachesaver, max_debate_round):
                 prompt_tokens_used += tokens["total_prompt_tokens_used"]
                 completion_tokens_saved += tokens["total_completion_tokens_saved"]
                 completion_tokens_used += tokens["total_completion_tokens_used"]
-                
-                print("api_calls", tokens["api_calls"])
-                api_calls += tokens["api_calls"]
+                api_calls_saved += tokens["total_api_calls_saved"]
+                api_calls_used += tokens["total_api_calls_used"]
 
                 print("actual answer: ", answer)
 
@@ -177,7 +178,8 @@ async def main(problems, agent_model, use_cachesaver, max_debate_round):
             "prompt_tokens_used_agents": prompt_tokens_used,
             "completion_tokens_saved_agents": completion_tokens_saved,
             "completion_tokens_used_agents": completion_tokens_used,
-            "api_calls_agents": api_calls      
+            "api_calls_saved_agents": api_calls_saved,
+            "api_calls_used_agents": api_calls_used  
         }
     finally:
         system.cleanup()
@@ -193,6 +195,8 @@ if __name__ == "__main__":
     parser.add_argument("-m","--agent_model", type=str, default="meta-llama/llama-4-scout-17b-16e-instruct")
     parser.add_argument("-c","--cachesaver", action="store_true", dest="use_cachesaver")
     parser.add_argument("--max_debate_round", type=int, default=1, help="Maximum number of debate rounds for LLM_debate")
+    parser.add_argument("--num_repeated_samples", type=int, default=5, help="Number of repeated samples for CoT-SC (SCAgent)")
+    parser.add_argument("--max_reflection_round", type=int, default=5, help="Maximum reflection rounds for ReflexionAgent")
 
     args = parser.parse_args()
 
@@ -201,6 +205,8 @@ if __name__ == "__main__":
             problems=args.problems, 
             agent_model=args.agent_model,
             use_cachesaver=args.use_cachesaver,
-            max_debate_round=args.max_debate_round
+            max_debate_round=args.max_debate_round,
+            num_repeated_samples=args.num_repeated_samples,
+            max_reflection_round=args.max_reflection_round
         )
     )

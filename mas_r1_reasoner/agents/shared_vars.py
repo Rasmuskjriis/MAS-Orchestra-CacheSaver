@@ -5,6 +5,8 @@ global global_score_compute
 global global_max_round
 global global_max_sc
 global global_max_debate_round
+global global_num_repeated_samples
+global global_max_reflection_round
 global global_debate_role
 global global_cot_instruction
 global global_node_model
@@ -59,6 +61,8 @@ global_vars = [
     "global_max_round",
     "global_max_sc",
     "global_max_debate_round",
+    "global_num_repeated_samples",
+    "global_max_reflection_round",
     "global_debate_role",
     "global_cot_instruction",
     "global_node_model",

@@ -321,6 +321,8 @@ class AgentSystem():
         # Not needed
         self.max_sc = get_global("global_max_sc")
         self.max_debate_round = get_global("global_max_debate_round")
+        self.num_repeated_samples = get_global("global_num_repeated_samples")
+        self.max_reflection_round = get_global("global_max_reflection_round")
         self.max_round = get_global("global_max_round")
         self.debate_role = get_global("global_debate_role")
         self.retrieval_method = get_global("global_retrieval_method")
@@ -331,6 +333,8 @@ class AgentSystem():
         # print(f"  - cot_instruction: {self.cot_instruction}")
         print(f"  - max_sc: {self.max_sc} (type: {type(self.max_sc)})")
         print(f"  - max_debate_round: {self.max_debate_round}")
+        print(f"  - num_repeated_samples: {self.num_repeated_samples}")
+        print(f"  - max_reflection_round: {self.max_reflection_round}")
         print(f"  - max_round: {self.max_round}")
         print(f"  - debate_role: {self.debate_role}")
         print(f"  - retrieval_method: {self.retrieval_method}")
@@ -402,8 +406,8 @@ class AgentSystem():
             'total_prompt_tokens_used': 0,
             'total_completion_tokens_saved': 0,
             'total_completion_tokens_used': 0,
-            'api_calls': 0,
-            # 'calls': self.execution_tokens
+            'total_api_calls_saved': 0,
+            'total_api_calls_used': 0,
         }
         
         # Sum up token counts from all calls
@@ -413,8 +417,8 @@ class AgentSystem():
                 aggregated['total_prompt_tokens_used'] += tokens.get('prompt_tokens_used', 0)
                 aggregated['total_completion_tokens_saved'] += tokens.get('completion_tokens_saved', 0)
                 aggregated['total_completion_tokens_used'] += tokens.get('completion_tokens_used', 0)
-                if tokens.get('api_call'):
-                    aggregated['api_calls'] += 1
+                aggregated['total_api_calls_saved'] += tokens.get('api_calls_saved')
+                aggregated['total_api_calls_used'] += tokens.get('api_calls_used')
         
         return aggregated
     

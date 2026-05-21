@@ -10,7 +10,7 @@ async def ReflexionAgent(self, agent_input, model: str):
 
     # Basic setting
     temperature = 1
-    max_reflection_round = 5
+    max_reflection_round = getattr(self, 'max_reflection_round', 5)
 
     # Instruction for initial reasoning
     initial_instruction = "Please think step by step and then solve the task. All caculation are done mod 23. Any parameter that wasn't mentioned in the problem statement is by default zero"

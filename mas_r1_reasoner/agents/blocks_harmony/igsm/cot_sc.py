@@ -12,7 +12,7 @@ async def SCAgent(self, agent_input, model: str):
 
     # Basic setting
     temperature = 1
-    num_repeated_samples = 5
+    num_repeated_samples = getattr(self, 'num_repeated_samples', 5)
 
     # Instruction for step-by-step reasoning
     cot_instruction = "Please think step by step and then solve the task. All caculation are done mod 23. Any parameter that wasn't mentioned in the problem statement is by default zero"
