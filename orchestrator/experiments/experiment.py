@@ -75,7 +75,7 @@ class Test(unittest.IsolatedAsyncioTestCase):
         
         model = "meta-llama/llama-4-scout-17b-16e-instruct"
         
-        use_cachesaver = True
+        use_cachesaver = False
         
         # max_debate_round = 2
         
@@ -87,19 +87,21 @@ class Test(unittest.IsolatedAsyncioTestCase):
             elif agent_type == "ReflexionAgent":
                 await self.experiment(agent_type, problems, "math", model, use_cachesaver, 0, 0, i+1)
         
-        dataframe = pd.DataFrame(self.results)
+            dataframe = pd.DataFrame(self.results)
+            
+            print("\nResults with CacheSaver:")
+            print(dataframe)
+            
+            dataframe = dataframe.T
+            
+            dataframe.to_excel(f"orchestrator/results/aime24_groq_{agent_type.lower()}.xlsx", index=True)
         
-        print("\nResults with CacheSaver:")
-        print(dataframe)
-        
-        dataframe = dataframe.T
-        
-        dataframe.to_excel(f"orchestrator/results/aime24_results_groq.xlsx", index=True)
+        await self.asyncSetUp()
         
     async def run_experiment(self):
-        await self.test_experiment("DebateAgent", 3, 1)
-        await self.test_experiment("SCAgent", 3, 1)
-        await self.test_experiment("ReflexionAgent", 3, 1)
+        await self.test_experiment("DebateAgent", 2, 1)
+        # await self.test_experiment("SCAgent", 2, 1)
+        # await self.test_experiment("ReflexionAgent", 2, 1)
         
 if __name__ == '__main__':
     test = Test()
