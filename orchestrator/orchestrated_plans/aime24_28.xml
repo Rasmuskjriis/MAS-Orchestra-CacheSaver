@@ -1,0 +1,16 @@
+```xml
+<thinking>
+    To solve this problem, we need to find the greatest four-digit number \( N \) such that changing any one of its digits to 1 results in a number divisible by 7. We can approach this by considering the properties of numbers and divisibility rules. Let's use the DebateAgent to explore different perspectives and find the solution.
+</thinking>
+<agent>
+    <agent_name>DebateAgent</agent_name>
+    <agent_description>Near-tie numeric choice using one Debate call.</agent_description>
+    <required_arguments>
+        <agent_input></agent_input>
+        <debate_roles>["Number Theory Expert", "Divisibility Specialist"]</debate_roles>
+    </required_arguments>
+    <agent_output_id>
+    debate_agent_output
+    </agent_output_id>
+</agent>
+<answer>debate_agent_output</answer>

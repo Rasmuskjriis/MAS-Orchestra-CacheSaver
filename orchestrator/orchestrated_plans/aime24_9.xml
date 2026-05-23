@@ -1,0 +1,16 @@
+```xml
+<thinking>
+    This problem involves a combinatorial game theory scenario where players take turns removing either 1 or 4 tokens from a stack. The goal is to determine the number of positive integers \( n \leq 2024 \) for which Bob has a winning strategy regardless of Alice's moves. To solve this, we need to analyze the game's states and identify winning and losing positions.
+</thinking>
+<agent>
+    <agent_name>DebateAgent</agent_name>
+    <agent_description>Near-tie numeric choice using one Debate call.</agent_description>
+    <required_arguments>
+        <agent_input></agent_input>
+        <debate_roles>["Game Theory Analyst", "Combinatorial Strategist"]</debate_roles>
+    </required_arguments>
+    <agent_output_id>
+    game_theory_agent_output
+    </agent_output_id>
+</agent>
+<answer>game_theory_agent_output</answer>

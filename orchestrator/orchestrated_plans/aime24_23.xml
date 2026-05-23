@@ -1,0 +1,14 @@
+```xml
+<thinking>
+    To solve this problem, we need to find a list of positive integers whose sum is 30, where the unique mode is 9, and the median is a positive integer that does not appear in the list. We need to determine the sum of the squares of all the items in the list.
+</thinking>
+<agent>
+    <agent_name>DebateAgent</agent_name>
+    <agent_description>Near-tie numeric choice using one Debate call.</agent_description>
+    <required_arguments>
+        <agent_input></agent_input>
+        <debate_roles>["Mathematics Professor", "Number Theory Expert"]</debate_roles>
+    </required_arguments>
+    <agent_output_id>debate_agent_output</agent_output_id>
+</agent>
+<answer>debate_agent_output</answer>

@@ -1,0 +1,18 @@
+```xml
+<thinking>
+    To solve this problem, we need to find the remainder when \(\prod_{k=0}^{12}(2-2\omega^k+\omega^{2k})\) is divided by 1000, where \(\omega\) is a 13th root of unity. The key observation here is that \(\omega\) satisfies \(\omega^{13} = 1\) and \(\omega \neq 1\).
+
+    We can leverage the properties of roots of unity and polynomial factorization to simplify the expression. However, the complexity of the problem suggests that it might benefit from a detailed, step-by-step approach, which can be handled by the DebateAgent to ensure accuracy and completeness.
+</thinking>
+<agent>
+    <agent_name>DebateAgent</agent_name>
+    <agent_description>Near-tie numeric choice using one Debate call.</agent_description>
+    <required_arguments>
+        <agent_input></agent_input>
+        <debate_roles>["Number Theory Expert", "Algebraic Geometry Specialist"]</debate_roles>
+    </required_arguments>
+    <agent_output_id>
+    debate_agent_output
+    </agent_output_id>
+</agent>
+<answer>debate_agent_output</answer>

@@ -1,0 +1,16 @@
+```xml
+<thinking>
+    This problem involves placing chips in a \(5 \times 5\) grid with certain constraints. We need to determine the number of ways to place the chips such that each cell contains at most one chip, and all chips in the same row and column have the same color. Additionally, no additional chip can be placed without violating these conditions.
+</thinking>
+<agent>
+    <agent_name>DebateAgent</agent_name>
+    <agent_description>Near-tie combinatorial problem using one Debate call.</agent_description>
+    <required_arguments>
+        <agent_input></agent_input>
+        <debate_roles>["Combinatorics Expert", "Puzzle Solver"]</debate_roles>
+    </required_arguments>
+    <agent_output_id>
+    debate_agent_output
+    </agent_output_id>
+</agent>
+<answer>debate_agent_output</answer>

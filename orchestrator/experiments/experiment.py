@@ -73,9 +73,9 @@ class Test(unittest.IsolatedAsyncioTestCase):
         
     async def test_experiment(self, agent_type, samples, problems):
         
-        model = "meta-llama/llama-4-scout-17b-16e-instruct"
+        model = "gpt-5-nano-2025-08-07"
         
-        use_cachesaver = False
+        use_cachesaver = True
         
         # max_debate_round = 2
         
@@ -94,12 +94,12 @@ class Test(unittest.IsolatedAsyncioTestCase):
             
             dataframe = dataframe.T
             
-            dataframe.to_excel(f"orchestrator/results/aime24_groq_{agent_type.lower()}.xlsx", index=True)
+            dataframe.to_excel(f"orchestrator/results/aime24_openai_{agent_type.lower()}.xlsx", index=True)
         
-        await self.asyncSetUp()
+        # await self.asyncSetUp()
         
     async def run_experiment(self):
-        await self.test_experiment("DebateAgent", 2, 1)
+        await self.test_experiment("DebateAgent", 5, "all")
         # await self.test_experiment("SCAgent", 2, 1)
         # await self.test_experiment("ReflexionAgent", 2, 1)
         

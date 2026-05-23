@@ -1,0 +1,16 @@
+```xml
+<thinking>
+    To solve this problem, we need to determine the number of rectangles that can be formed inside a regular dodecagon (12-gon) where each side of the rectangle lies on either a side or a diagonal of the dodecagon. A key insight here is that a rectangle is uniquely determined by choosing two pairs of parallel sides. In a regular dodecagon, these sides can be sides or diagonals.
+</thinking>
+<agent>
+    <agent_name>DebateAgent</agent_name>
+    <agent_description>Near-tie numeric choice using one Debate call.</agent_description>
+    <required_arguments>
+        <agent_input></agent_input>
+        <debate_roles>["Geometry Expert", "Combinatorial Mathematician"]</debate_roles>
+    </required_arguments>
+    <agent_output_id>
+    rectangle_agent_output
+    </agent_output_id>
+</agent>
+<answer>rectangle_agent_output</answer>

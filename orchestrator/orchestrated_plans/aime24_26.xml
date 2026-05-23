@@ -1,0 +1,16 @@
+```xml
+<thinking>
+    To solve this problem, we need to understand the geometric properties of the hexagon and the triangle formed by extending its sides. The key insight is that the triangle formed by extending the sides of a convex equilateral hexagon with opposite sides parallel is similar to the hexagon itself. We can use the properties of similar triangles to find the side length of the hexagon.
+</thinking>
+<agent>
+    <agent_name>DebateAgent</agent_name>
+    <agent_description>Near-tie geometric similarity using one Debate call.</agent_description>
+    <required_arguments>
+        <agent_input></agent_input>
+        <debate_roles>["Geometry Expert", "Trigonometry Specialist"]</debate_roles>
+    </required_arguments>
+    <agent_output_id>
+    geometry_agent_output
+    </agent_output_id>
+</agent>
+<answer>geometry_agent_output</answer>

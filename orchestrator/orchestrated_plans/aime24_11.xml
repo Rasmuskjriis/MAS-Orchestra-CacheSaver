@@ -1,0 +1,16 @@
+```xml
+<thinking>
+    This problem involves geometric properties and circle geometry, specifically the power of a point theorem. We need to determine the length of \( CE \) given the lengths of the sides of rectangles \(ABCD\) and \(EFGH\) and the collinearity of points \(D, E, C, F\). Let's break down the problem and see if we can solve it directly or if we need to delegate to an agent.
+</thinking>
+<agent>
+    <agent_name>DebateAgent</agent_name>
+    <agent_description>Near-tie geometric problem solving using one Debate call.</agent_description>
+    <required_arguments>
+        <agent_input></agent_input>
+        <debate_roles>["Geometry Expert", "Circle Geometry Specialist"]</debate_roles>
+    </required_arguments>
+    <agent_output_id>
+    circle_geometry_agent_output
+    </agent_output_id>
+</agent>
+<answer>circle_geometry_agent_output</answer>

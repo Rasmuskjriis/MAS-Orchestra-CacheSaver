@@ -25,7 +25,7 @@ async def main(problems, agent_model, use_cachesaver, max_debate_round, num_repe
 
     if use_cachesaver:
         model_sampler_map = {
-            f"{agent_model}": CSGroqCompletionSampler(
+            f"{agent_model}": CSChatCompletionSampler(
                 model=f"{agent_model}",
                 temperature=1.0,
                 mock_output=False
@@ -33,7 +33,7 @@ async def main(problems, agent_model, use_cachesaver, max_debate_round, num_repe
         }
     else:
         model_sampler_map = {
-            f"{agent_model}": GroqCompletionSampler(
+            f"{agent_model}": ChatCompletionSampler(
                 model=f"{agent_model}",
                 temperature=1.0,
                 mock_output=False

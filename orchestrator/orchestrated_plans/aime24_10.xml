@@ -1,0 +1,58 @@
+```xml
+<thinking>
+    To solve this problem, we need to calculate the probability of Jen winning the grand prize given that she won a prize. We can break this down into several steps:
+    1. Calculate the total number of ways to choose 4 numbers from 10.
+    2. Calculate the number of ways Jen can win the grand prize.
+    3. Calculate the number of ways Jen can win a prize but not the grand prize.
+    4. Use these values to find the conditional probability.
+</thinking>
+<agent>
+    <agent_name>DebateAgent</agent_name>
+    <agent_description>Near-tie numeric choice using one Debate call.</agent_description>
+    <required_arguments>
+        <agent_input></agent_input>
+        <debate_roles>["Combinatorics Expert", "Probability Theorist"]</debate_roles>
+    </required_arguments>
+    <agent_output_id>
+    grand_prize_agent_output
+    </agent_output_id>
+</agent>
+<answer>grand_prize_agent_output</answer>
+```
+
+Here's the detailed breakdown of the problem and how the DebateAgent will handle it:
+
+1. **Total Number of Ways to Choose 4 Numbers from 10**:
+   \[
+   \binom{10}{4} = \frac{10!}{4!(10-4)!} = 210
+   \]
+
+2. **Number of Ways Jen Can Win the Grand Prize**:
+   If Jen picks the exact 4 numbers chosen by the lottery, there is only 1 way for her to win the grand prize.
+
+3. **Number of Ways Jen Can Win a Prize But Not the Grand Prize**:
+   - Jen needs to pick at least 2 of the 4 numbers chosen by the lottery.
+   - We need to count the cases where Jen picks exactly 2, 3, or 4 numbers correctly.
+
+4. **Calculate the Probability**:
+   - The probability of Jen winning the grand prize is \(\frac{1}{210}\).
+   - The probability of Jen winning a prize but not the grand prize can be calculated using combinatorial methods.
+
+Let's delegate this to the DebateAgent to get the final answer.
+
+```xml
+<thinking>
+    This problem involves combinatorial calculations and probability theory. Let's use the DebateAgent to handle the detailed calculations and ensure accuracy.
+</thinking>
+<agent>
+    <agent_name>DebateAgent</agent_name>
+    <agent_description>Near-tie numeric choice using one Debate call.</agent_description>
+    <required_arguments>
+        <agent_input></agent_input>
+        <debate_roles>["Combinatorics Expert", "Probability Theorist"]</debate_roles>
+    </required_arguments>
+    <agent_output_id>
+    grand_prize_agent_output
+    </agent_output_id>
+</agent>
+<answer>grand_prize_agent_output</answer>

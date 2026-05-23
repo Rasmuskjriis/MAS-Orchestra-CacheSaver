@@ -1,0 +1,16 @@
+```xml
+<thinking>
+    To solve this problem, we need to use some geometric properties of triangles, specifically involving the circumcenter \(O\) and the incenter \(I\). Given that \(\overline{IA} \perp \overline{OI}\), we can use this perpendicularity condition along with the given circumradius \(R = 13\) and inradius \(r = 6\).
+</thinking>
+<agent>
+    <agent_name>DebateAgent</agent_name>
+    <agent_description>Near-tie geometric property solving using one Debate call.</agent_description>
+    <required_arguments>
+        <agent_input></agent_input>
+        <debate_roles>["Geometry Expert", "Incircle-Circumcircle Theorist"]</debate_roles>
+    </required_arguments>
+    <agent_output_id>
+    geometry_agent_output
+    </agent_output_id>
+</agent>
+<answer>geometry_agent_output</answer>

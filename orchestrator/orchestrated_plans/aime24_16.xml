@@ -1,0 +1,16 @@
+```xml
+<thinking>
+    This problem involves counting and set theory. We need to determine how many residents own all four items: a diamond ring, a set of golf clubs, a garden spade, and a bag of candy hearts. Let's use the principle of inclusion-exclusion to solve this problem.
+</thinking>
+<agent>
+    <agent_name>DebateAgent</agent_name>
+    <agent_description>Near-tie numeric choice using one Debate call.</agent_description>
+    <required_arguments>
+        <agent_input></agent_input>
+        <debate_roles>["Mathematics Professor", "Combinatorial Analyst"]</debate_roles>
+    </required_arguments>
+    <agent_output_id>
+    inclusion_exclusion_agent_output
+    </agent_output_id>
+</agent>
+<answer>inclusion_exclusion_agent_output</answer>
