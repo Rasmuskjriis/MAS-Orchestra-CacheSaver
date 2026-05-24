@@ -1,18 +1,45 @@
 ```xml
 <thinking>
-    To solve this problem, we need to find the remainder when \(\prod_{k=0}^{12}(2-2\omega^k+\omega^{2k})\) is divided by 1000, where \(\omega\) is a 13th root of unity. The key observation here is that \(\omega\) satisfies \(\omega^{13} = 1\) and \(\omega \neq 1\).
+    To solve the problem, we need to find the remainder when \(\prod_{k=0}^{12}(2-2\omega^k+\omega^{2k})\) is divided by 1000, where \(\omega\) is a 13th root of unity. The key observation here is that \(\omega\) satisfies \(\omega^{13} = 1\) and \(\omega^k \neq 1\) for \(0 < k < 13\).
 
-    We can leverage the properties of roots of unity and polynomial factorization to simplify the expression. However, the complexity of the problem suggests that it might benefit from a detailed, step-by-step approach, which can be handled by the DebateAgent to ensure accuracy and completeness.
+    Let's analyze the expression \(2 - 2\omega^k + \omega^{2k}\). Since \(\omega\) is a root of unity, we can use properties of roots of unity to simplify this expression.
 </thinking>
 <agent>
-    <agent_name>DebateAgent</agent_name>
-    <agent_description>Near-tie numeric choice using one Debate call.</agent_description>
+    <agent_name>SCAgent</agent_name>
+    <agent_description>Performs arithmetic calculations using Chain-of-Thought with Self-Consistency (CoT_SC).</agent_description>
     <required_arguments>
         <agent_input></agent_input>
-        <debate_roles>["Number Theory Expert", "Algebraic Geometry Specialist"]</debate_roles>
     </required_arguments>
     <agent_output_id>
-    debate_agent_output
+        math_agent_output
     </agent_output_id>
 </agent>
-<answer>debate_agent_output</answer>
+<answer>math_agent_output</answer>
+```
+
+To further break down the problem, let's delegate the detailed calculation to the `SCAgent` to ensure accuracy and handle potential arithmetic complexities.
+
+Here is the detailed breakdown of the solution:
+
+1. **Understanding the Expression**: For each \(k\) from 0 to 12, we need to evaluate \(2 - 2\omega^k + \omega^{2k}\).
+2. **Simplifying the Expression**: Notice that \(\omega^{13} = 1\), so \(\omega^{2k} = (\omega^k)^2\).
+3. **Roots of Unity Properties**: Use properties of roots of unity to simplify the product.
+
+Let's proceed with the detailed calculation using `SCAgent`.
+
+```xml
+<thinking>
+    We need to evaluate the product \(\prod_{k=0}^{12}(2-2\omega^k+\omega^{2k})\). Let's simplify the expression inside the product.
+    For each \(k\), we have \(2 - 2\omega^k + \omega^{2k}\). We can use properties of roots of unity to simplify this.
+</thinking>
+<agent>
+    <agent_name>SCAgent</agent_name>
+    <agent_description>Performs arithmetic calculations using Chain-of-Thought with Self-Consistency (CoT_SC).</agent_description>
+    <required_arguments>
+        <agent_input></agent_input>
+    </required_arguments>
+    <agent_output_id>
+        math_agent_output
+    </agent_output_id>
+</agent>
+<answer>math_agent_output</answer>

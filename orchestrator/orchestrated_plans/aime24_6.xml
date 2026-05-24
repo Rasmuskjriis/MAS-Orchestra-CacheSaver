@@ -1,16 +1,50 @@
 ```xml
 <thinking>
-    This problem involves finding the distance from a point inside a tetrahedron to each of its faces, given specific edge lengths. This is a geometric problem that can benefit from multiple perspectives, particularly those of a Geometric Analyst and a Topologist. I will delegate this problem to the DebateAgent to explore both geometric and topological approaches.
+    To solve this problem, we need to find the distance from a point \( I \) inside the tetrahedron \( ABCD \) to each of its faces. This distance is known as the inradius of the tetrahedron. The inradius \( r \) of a tetrahedron can be found using the formula:
+    \[
+    r = \frac{3V}{A}
+    \]
+    where \( V \) is the volume of the tetrahedron and \( A \) is the total surface area of the tetrahedron. We need to calculate both \( V \) and \( A \).
+    
+    First, let's calculate the surface area \( A \). The tetrahedron has four triangular faces, each with side lengths \( \sqrt{41} \), \( \sqrt{80} \), and \( \sqrt{89} \). We can use Heron's formula to find the area of each face.
 </thinking>
 <agent>
-    <agent_name>DebateAgent</agent_name>
-    <agent_description>Near-tie geometric/topological analysis using one Debate call.</agent_description>
+    <agent_name>SCAgent</agent_name>
+    <agent_description>Performs arithmetic calculations using Chain-of-Thought with Self-Consistency (CoT_SC).</agent_description>
     <required_arguments>
         <agent_input></agent_input>
-        <debate_roles>["Geometric Analyst", "Topologist"]</debate_roles>
     </required_arguments>
-    <agent_output_id>
-    geometric_topologist_agent_output
-    </agent_output_id>
+    <agent_output_id>surface_area_agent_output</agent_output_id>
 </agent>
-<answer>geometric_topologist_agent_output</answer>
+<answer>surface_area_agent_output</answer>
+
+<thinking>
+    Now, let's calculate the volume \( V \) of the tetrahedron. The volume \( V \) of a tetrahedron with vertices \( A, B, C, D \) can be calculated using the determinant formula:
+    \[
+    V = \frac{1}{6} \left| \det \begin{pmatrix}
+    x_B - x_A & y_B - y_A & z_B - z_A \\
+    x_C - x_A & y_C - y_A & z_C - z_A \\
+    x_D - x_A & y_D - y_A & z_D - z_A
+    \end{pmatrix} \right|
+    \]
+    However, since we don't have the coordinates of the points, we can use another method involving the Cayley-Menger determinant. For simplicity, we will delegate this calculation to the SCAgent.
+</thinking>
+<agent>
+    <agent_name>SCAgent</agent_name>
+    <agent_description>Performs arithmetic calculations using Chain-of-Thought with Self-Consistency (CoT_SC).</agent_description>
+    <required_arguments>
+        <agent_input></agent_input>
+    </required_arguments>
+    <agent_output_id>volume_agent_output</agent_output_id>
+</agent>
+<answer>volume_agent_output</answer>
+
+<agent>
+    <agent_name>SCAgent</agent_name>
+    <agent_description>Performs arithmetic calculations using Chain-of-Thought with Self-Consistency (CoT_SC).</agent_description>
+    <required_arguments>
+        <agent_input></agent_input>
+    </required_arguments>
+    <agent_output_id>inradius_agent_output</agent_output_id>
+</agent>
+<answer>inradius_agent_output</answer>

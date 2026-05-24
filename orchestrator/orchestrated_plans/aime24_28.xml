@@ -1,16 +1,47 @@
 ```xml
 <thinking>
-    To solve this problem, we need to find the greatest four-digit number \( N \) such that changing any one of its digits to 1 results in a number divisible by 7. We can approach this by considering the properties of numbers and divisibility rules. Let's use the DebateAgent to explore different perspectives and find the solution.
+    To find the greatest four-digit positive integer \( N \) such that changing any one of its digits to 1 results in a number divisible by 7, we need to consider the properties of divisibility by 7. We will start by examining the structure of \( N \) and how changing each digit affects its divisibility.
 </thinking>
 <agent>
-    <agent_name>DebateAgent</agent_name>
-    <agent_description>Near-tie numeric choice using one Debate call.</agent_description>
+    <agent_name>SCAgent</agent_name>
+    <agent_description>Performs arithmetic calculations using Chain-of-Thought with Self-Consistency (CoT_SC).</agent_description>
     <required_arguments>
         <agent_input></agent_input>
-        <debate_roles>["Number Theory Expert", "Divisibility Specialist"]</debate_roles>
     </required_arguments>
-    <agent_output_id>
-    debate_agent_output
-    </agent_output_id>
+    <agent_output_id>math_agent_output</agent_output_id>
 </agent>
-<answer>debate_agent_output</answer>
+<answer>math_agent_output</answer>
+```
+
+To solve this problem, let's break it down step by step and delegate the task to the `SCAgent`.
+
+### Step-by-Step Breakdown:
+
+1. **Identify the Structure of \( N \)**:
+   - \( N \) is a four-digit number, so it can be represented as \( \overline{abcd} \), where \( a, b, c, d \) are its digits.
+   - Changing any one of these digits to 1 should result in a number divisible by 7.
+
+2. **Check Divisibility**:
+   - We need to check if \( \overline{a1cd} \), \( \overline{ab1d} \), \( \overline{abc1} \), and \( \overline{1bcd} \) are all divisible by 7.
+   - This implies that the number formed by replacing each digit with 1 should be divisible by 7.
+
+3. **Find the Greatest \( N \)**:
+   - We need to find the largest \( N \) that satisfies the above condition.
+
+### Delegating the Task to `SCAgent`:
+
+We will use the `SCAgent` to perform the detailed calculations and verify the conditions.
+
+```xml
+<thinking>
+    To find the greatest four-digit positive integer \( N \) such that changing any one of its digits to 1 results in a number divisible by 7, we need to check the divisibility conditions for each possible digit change.
+</thinking>
+<agent>
+    <agent_name>SCAgent</agent_name>
+    <agent_description>Performs arithmetic calculations using Chain-of-Thought with Self-Consistency (CoT_SC).</agent_description>
+    <required_arguments>
+        <agent_input></agent_input>
+    </required_arguments>
+    <agent_output_id>math_agent_output</agent_output_id>
+</agent>
+<answer>math_agent_output</answer>

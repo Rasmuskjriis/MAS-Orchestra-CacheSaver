@@ -99,9 +99,9 @@ class Test(unittest.IsolatedAsyncioTestCase):
         # await self.asyncSetUp()
         
     async def run_experiment(self):
-        await self.test_experiment("DebateAgent", 5, "all")
-        # await self.test_experiment("SCAgent", 2, 1)
-        # await self.test_experiment("ReflexionAgent", 2, 1)
+        # await self.test_experiment("DebateAgent", 5, "all")
+        await self.test_experiment("SCAgent", 10, "all")
+        # await self.test_experiment("ReflexionAgent", 5, "all")
         
 if __name__ == '__main__':
     test = Test()

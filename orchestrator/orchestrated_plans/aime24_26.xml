@@ -1,16 +1,40 @@
 ```xml
 <thinking>
-    To solve this problem, we need to understand the geometric properties of the hexagon and the triangle formed by extending its sides. The key insight is that the triangle formed by extending the sides of a convex equilateral hexagon with opposite sides parallel is similar to the hexagon itself. We can use the properties of similar triangles to find the side length of the hexagon.
+    To solve this problem, we need to understand the geometric properties of the hexagon and the triangle formed by extending its sides. The key insight is that the hexagon can be divided into smaller shapes, and the triangle formed by extending the sides of the hexagon can be related to the side length of the hexagon.
 </thinking>
 <agent>
-    <agent_name>DebateAgent</agent_name>
-    <agent_description>Near-tie geometric similarity using one Debate call.</agent_description>
+    <agent_name>SCAgent</agent_name>
+    <agent_description>Performs geometric reasoning and problem-solving using Chain-of-Thought with Self-Consistency (CoT_SC).</agent_description>
     <required_arguments>
         <agent_input></agent_input>
-        <debate_roles>["Geometry Expert", "Trigonometry Specialist"]</debate_roles>
     </required_arguments>
-    <agent_output_id>
-    geometry_agent_output
-    </agent_output_id>
+    <agent_output_id>geometric_agent_output</agent_output_id>
 </agent>
-<answer>geometry_agent_output</answer>
+<answer>geometric_agent_output</answer>
+```
+
+To further break down the solution, let's analyze the geometric properties and use the SCAgent to find the side length of the hexagon.
+
+### Geometric Analysis
+Given a convex equilateral hexagon \(ABCDEF\) where all pairs of opposite sides are parallel, the triangle formed by extending the sides \(AB\), \(CD\), and \(EF\) has side lengths 200, 240, and 300. 
+
+The key observation is that the triangle formed by extending the sides of the hexagon can be related to the side length of the hexagon. Specifically, the triangle formed by extending the sides of the hexagon is similar to the hexagon itself, and the side lengths of the triangle are proportional to the side length of the hexagon.
+
+Let the side length of the hexagon be \(s\). The triangle formed by extending the sides of the hexagon can be divided into smaller triangles and parallelograms, and the side lengths of the triangle are proportional to the side length of the hexagon.
+
+### Delegating to SCAgent
+We will delegate the problem to the SCAgent to find the side length of the hexagon.
+
+```xml
+<thinking>
+    The triangle formed by extending the sides of the hexagon can be analyzed using geometric properties. The side lengths of the triangle are proportional to the side length of the hexagon. We need to find the side length of the hexagon given the side lengths of the triangle.
+</thinking>
+<agent>
+    <agent_name>SCAgent</agent_name>
+    <agent_description>Performs geometric reasoning and problem-solving using Chain-of-Thought with Self-Consistency (CoT_SC).</agent_description>
+    <required_arguments>
+        <agent_input></agent_input>
+    </required_arguments>
+    <agent_output_id>geometric_agent_output</agent_output_id>
+</agent>
+<answer>geometric_agent_output</answer>

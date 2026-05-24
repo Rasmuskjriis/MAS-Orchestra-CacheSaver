@@ -1,16 +1,13 @@
 ```xml
 <thinking>
-    This problem involves finding the number of nonnegative integer triples \((a, b, c)\) that satisfy the equations \(a + b + c = 300\) and \(a^2b + a^2c + b^2a + b^2c + c^2a + c^2b = 6,000,000\). We need to explore this problem through a structured approach, leveraging the strengths of different perspectives. I will delegate this problem to the DebateAgent to capture various viewpoints and reach a justified conclusion.
+    To solve the problem of finding the number of triples of nonnegative integers \((a, b, c)\) satisfying \(a + b + c = 300\) and \(a^2b + a^2c + b^2a + b^2c + c^2a + c^2b = 6,000,000\), we need to analyze the given equations carefully. Let's break down the problem and see if we can simplify it.
 </thinking>
 <agent>
-    <agent_name>DebateAgent</agent_name>
-    <agent_description>Near-tie numeric choice using one Debate call.</agent_description>
+    <agent_name>SCAgent</agent_name>
+    <agent_description>Performs arithmetic calculations using Chain-of-Thought with Self-Consistency (CoT_SC).</agent_description>
     <required_arguments>
         <agent_input></agent_input>
-        <debate_roles>["Algebraic Solver", "Combinatorial Analyst"]</debate_roles>
     </required_arguments>
-    <agent_output_id>
-    debate_agent_output
-    </agent_output_id>
+    <agent_output_id>math_agent_output</agent_output_id>
 </agent>
-<answer>debate_agent_output</answer>
+<answer>math_agent_output</answer>

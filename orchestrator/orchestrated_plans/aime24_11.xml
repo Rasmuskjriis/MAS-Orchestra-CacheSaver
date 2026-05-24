@@ -1,16 +1,36 @@
 ```xml
 <thinking>
-    This problem involves geometric properties and circle geometry, specifically the power of a point theorem. We need to determine the length of \( CE \) given the lengths of the sides of rectangles \(ABCD\) and \(EFGH\) and the collinearity of points \(D, E, C, F\). Let's break down the problem and see if we can solve it directly or if we need to delegate to an agent.
+    To solve this problem, we need to analyze the geometric properties and relationships between the rectangles and the circle. Let's break down the problem step by step and see if we can delegate the task to the SCAgent for a more detailed and accurate solution.
 </thinking>
 <agent>
-    <agent_name>DebateAgent</agent_name>
-    <agent_description>Near-tie geometric problem solving using one Debate call.</agent_description>
+    <agent_name>SCAgent</agent_name>
+    <agent_description>Performs arithmetic calculations using Chain-of-Thought with Self-Consistency (CoT_SC).</agent_description>
     <required_arguments>
         <agent_input></agent_input>
-        <debate_roles>["Geometry Expert", "Circle Geometry Specialist"]</debate_roles>
     </required_arguments>
-    <agent_output_id>
-    circle_geometry_agent_output
-    </agent_output_id>
+    <agent_output_id>math_agent_output</agent_output_id>
 </agent>
-<answer>circle_geometry_agent_output</answer>
+<answer>math_agent_output</answer>
+```
+
+To provide a more detailed and accurate solution, let's delegate the task to the SCAgent. The SCAgent will handle the geometric and algebraic manipulations needed to find the length of \( CE \).
+
+Here’s the breakdown of the problem:
+1. **Identify the Geometry**: Since \( D, E, C, F \) are collinear and \( A, D, H, G \) lie on a circle, we can use properties of cyclic quadrilaterals and collinear points to find the length of \( CE \).
+2. **Use the Given Dimensions**: We know \( BC = 16 \), \( AB = 107 \), \( FG = 17 \), and \( EF = 184 \).
+
+We will now delegate this to the SCAgent to find the length of \( CE \).
+
+```xml
+<thinking>
+    To solve this, we need to use the properties of cyclic quadrilaterals and collinear points. However, the exact steps require detailed geometric analysis which can be handled by the SCAgent.
+</thinking>
+<agent>
+    <agent_name>SCAgent</agent_name>
+    <agent_description>Performs arithmetic calculations using Chain-of-Thought with Self-Consistency (CoT_SC).</agent_description>
+    <required_arguments>
+        <agent_input></agent_input>
+    </required_arguments>
+    <agent_output_id>math_agent_output</agent_output_id>
+</agent>
+<answer>math_agent_output</answer>

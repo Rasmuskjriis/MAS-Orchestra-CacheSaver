@@ -1,92 +1,13 @@
 ```xml
 <thinking>
-    To solve this problem, we need to understand the geometry of the torus and the sphere. The torus is formed by revolving a circle with radius \( r = 3 \) around an axis that is \( R = 6 \) units away from the center of the circle. We need to find the radii of the circles of tangency between the torus and the sphere with radius \( R_s = 11 \).
-
-    The key insight is that the torus and the sphere are externally tangent along circles of radii \( r_i \) and \( r_o \). These radii can be derived from the geometry of the setup.
+    To solve this problem, we need to understand the geometry of the torus and the sphere. The torus is formed by revolving a circle of radius 3 around an axis that is 6 units away from the center of the circle. The sphere has a radius of 11. When the torus rests on the outside of the sphere, it is externally tangent to the sphere along two circles of different radii. We need to find the difference between these two radii.
 </thinking>
 <agent>
-    <agent_name>DebateAgent</agent_name>
-    <agent_description>Near-tie geometric analysis using one Debate call.</agent_description>
+    <agent_name>SCAgent</agent_name>
+    <agent_description>Performs geometric calculations using Chain-of-Thought with Self-Consistency (CoT_SC).</agent_description>
     <required_arguments>
         <agent_input></agent_input>
-        <debate_roles>["Geometry Analyst", "Calculus Solver"]</debate_roles>
     </required_arguments>
-    <agent_output_id>
-    torus_sphere_tangent_analysis
-    </agent_output_id>
+    <agent_output_id>geometry_agent_output</agent_output_id>
 </agent>
-<answer>torus_sphere_tangent_analysis</answer>
-```
-
-Now, let's proceed with the detailed analysis using the `DebateAgent`.
-
-```xml
-<agent>
-    <agent_name>DebateAgent</agent_name>
-    <agent_description>Near-tie geometric analysis using one Debate call.</agent_description>
-    <required_arguments>
-        <agent_input></agent_input>
-        <debate_roles>["Geometry Analyst", "Calculus Solver"]</debate_roles>
-    </required_arguments>
-    <agent_output_id>
-    torus_sphere_tangent_analysis
-    </agent_output_id>
-</agent>
-<answer>torus_sphere_tangent_analysis</answer>
-```
-
-The `DebateAgent` will analyze the geometric setup and provide the radii \( r_i \) and \( r_o \) of the circles of tangency. Here is the step-by-step breakdown:
-
-1. **Identify the Geometry**:
-   - The torus is formed by revolving a circle of radius \( r = 3 \) around an axis at a distance \( R = 6 \).
-   - The sphere has a radius \( R_s = 11 \).
-
-2. **Calculate the Radii of Tangency**:
-   - The inner radius \( r_i \) is given by \( R_s - \sqrt{R^2 - r^2} \).
-   - The outer radius \( r_o \) is given by \( R_s + \sqrt{R^2 - r^2} \).
-
-3. **Substitute the Values**:
-   - \( R = 6 \)
-   - \( r = 3 \)
-   - \( R_s = 11 \)
-
-   Calculate \( \sqrt{R^2 - r^2} \):
-   \[
-   \sqrt{6^2 - 3^2} = \sqrt{36 - 9} = \sqrt{27} = 3\sqrt{3}
-   \]
-
-   Therefore:
-   \[
-   r_i = 11 - 3\sqrt{3}
-   \]
-   \[
-   r_o = 11 + 3\sqrt{3}
-   \]
-
-4. **Find the Difference**:
-   \[
-   r_o - r_i = (11 + 3\sqrt{3}) - (11 - 3\sqrt{3}) = 6\sqrt{3}
-   \]
-
-5. **Express the Difference as a Fraction**:
-   \[
-   6\sqrt{3} = \frac{6\sqrt{3}}{1}
-   \]
-
-Thus, the difference \( r_i - r_o \) is \( -6\sqrt{3} \), and the absolute value is \( 6\sqrt{3} \). In the form \( \frac{m}{n} \), we have \( m = 18 \) and \( n = 1 \).
-
-Therefore, \( m + n = 18 + 1 = 19 \).
-
-```xml
-<agent>
-    <agent_name>DebateAgent</agent_name>
-    <agent_description>Near-tie geometric analysis using one Debate call.</agent_description>
-    <required_arguments>
-        <agent_input></agent_input>
-        <debate_roles>["Geometry Analyst", "Calculus Solver"]</debate_roles>
-    </required_arguments>
-    <agent_output_id>
-    torus_sphere_tangent_analysis
-    </agent_output_id>
-</agent>
-<answer>19</answer>
+<answer>geometry_agent_output</answer>
