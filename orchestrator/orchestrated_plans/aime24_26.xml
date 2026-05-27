@@ -1,6 +1,6 @@
 ```xml
 <thinking>
-    To solve this problem, we need to understand the geometric properties of the hexagon and the triangle formed by extending its sides. The key insight is that the hexagon can be divided into smaller shapes, and the triangle formed by extending the sides of the hexagon can be related to the side length of the hexagon.
+    To solve this problem, we need to understand the geometric properties of the given equilateral hexagon and the triangle formed by extending its sides. The key insight is that the triangle formed by extending the sides of a convex equilateral hexagon with opposite sides parallel is similar to the hexagon itself. We can use this property to find the side length of the hexagon.
 </thinking>
 <agent>
     <agent_name>SCAgent</agent_name>
@@ -8,26 +8,59 @@
     <required_arguments>
         <agent_input></agent_input>
     </required_arguments>
-    <agent_output_id>geometric_agent_output</agent_output_id>
+    <agent_output_id>
+    geometry_agent_output
+    </agent_output_id>
 </agent>
-<answer>geometric_agent_output</answer>
+<answer>geometry_agent_output</answer>
 ```
 
-To further break down the solution, let's analyze the geometric properties and use the SCAgent to find the side length of the hexagon.
+Now, let's define the `SCAgent` to solve the problem:
 
-### Geometric Analysis
-Given a convex equilateral hexagon \(ABCDEF\) where all pairs of opposite sides are parallel, the triangle formed by extending the sides \(AB\), \(CD\), and \(EF\) has side lengths 200, 240, and 300. 
+```python
+def SCAgent(self, agent_input, model: str):
+    from mas_r1_reasoner.agents.agent_system import LLMAgentBase, Info
 
-The key observation is that the triangle formed by extending the sides of the hexagon can be related to the side length of the hexagon. Specifically, the triangle formed by extending the sides of the hexagon is similar to the hexagon itself, and the side lengths of the triangle are proportional to the side length of the hexagon.
+    # Validate that agent_input is an Info object
+    assert isinstance(agent_input, Info), f"agent_input must be an Info object, got {agent_input}"
 
-Let the side length of the hexagon be \(s\). The triangle formed by extending the sides of the hexagon can be divided into smaller triangles and parallelograms, and the side lengths of the triangle are proportional to the side length of the hexagon.
+    # Basic setting
+    temperature = 1
+    num_repeated_samples = 5
 
-### Delegating to SCAgent
-We will delegate the problem to the SCAgent to find the side length of the hexagon.
+    # Instruction for step-by-step reasoning
+    cot_instruction = "Please think step by step and then solve the task."
+
+    # Initialize multiple CoT agents with a higher temperature for varied reasoning
+    cot_agents = [LLMAgentBase(['thinking', 'answer'], 'Chain-of-Thought LLM', model=model, temperature=temperature) for _ in range(num_repeated_samples)]
+
+    thinking_mapping = {}
+    answer_mapping = {}
+    possible_answers = []
+    for i in range(num_repeated_samples):
+        thinking, answer = cot_agents[i]([agent_input], cot_instruction)
+        possible_answers.append(answer.content)
+        thinking_mapping[answer.content] = thinking
+        answer_mapping[answer.content] = answer
+
+    # Ensembling the answers from multiple CoT agents
+    answer = self.majority_voting(possible_answers)
+
+    thinking = thinking_mapping[answer]
+    answer = answer_mapping[answer]
+
+    final_answer = self.make_final_answer(thinking, answer)
+
+    return final_answer
+```
+
+Here is the detailed solution provided by the `SCAgent`:
 
 ```xml
 <thinking>
-    The triangle formed by extending the sides of the hexagon can be analyzed using geometric properties. The side lengths of the triangle are proportional to the side length of the hexagon. We need to find the side length of the hexagon given the side lengths of the triangle.
+    To solve this problem, we need to use the properties of similar triangles. The triangle formed by extending the sides of the hexagon is similar to the hexagon itself. The side lengths of the triangle are 200, 240, and 300. Let's denote the side length of the hexagon as \( s \).
+
+    The ratio of the side lengths of the triangle to the hexagon will be the same. We can use the fact that the hexagon's sides are parallel and equal in length to find the side length of the hexagon.
 </thinking>
 <agent>
     <agent_name>SCAgent</agent_name>
@@ -35,6 +68,8 @@ We will delegate the problem to the SCAgent to find the side length of the hexag
     <required_arguments>
         <agent_input></agent_input>
     </required_arguments>
-    <agent_output_id>geometric_agent_output</agent_output_id>
+    <agent_output_id>
+    geometry_agent_output
+    </agent_output_id>
 </agent>
-<answer>geometric_agent_output</answer>
+<answer>geometry_agent_output</answer>

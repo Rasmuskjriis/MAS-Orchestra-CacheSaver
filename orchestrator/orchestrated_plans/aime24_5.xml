@@ -1,6 +1,6 @@
 ```xml
 <thinking>
-    To solve this problem, we need to find the smallest prime number \( p \) such that there exists a positive integer \( n \) for which \( n^4 + 1 \) is divisible by \( p^2 \). Once we identify \( p \), we need to find the smallest positive integer \( m \) such that \( m^4 + 1 \) is divisible by \( p^2 \).
+    To find the least prime number \( p \) for which there exists a positive integer \( n \) such that \( n^4 + 1 \) is divisible by \( p^2 \), we need to analyze the properties of \( n^4 + 1 \). Let's start by considering the properties of \( n^4 + 1 \) modulo \( p \).
 </thinking>
 <agent>
     <agent_name>SCAgent</agent_name>
@@ -8,16 +8,22 @@
     <required_arguments>
         <agent_input></agent_input>
     </required_arguments>
-    <agent_output_id>prime_agent_output</agent_output_id>
+    <agent_output_id>math_agent_output</agent_output_id>
 </agent>
-<answer>prime_agent_output</answer>
+<answer>math_agent_output</answer>
 ```
 
-To further break down the problem, let's delegate the task to the SCAgent to find the smallest prime \( p \) such that \( n^4 + 1 \) is divisible by \( p^2 \).
+To provide a detailed solution, let's delegate this problem to the `SCAgent` to ensure accuracy and completeness. Here's how we can break it down:
+
+1. **Identify the prime \( p \)**: We need to find the smallest prime \( p \) such that \( n^4 + 1 \equiv 0 \pmod{p^2} \). This means \( n^4 \equiv -1 \pmod{p^2} \).
+
+2. **Check small primes**: We will check small primes to see if they satisfy the condition.
+
+Let's delegate this to the `SCAgent` to handle the detailed arithmetic and verification.
 
 ```xml
 <thinking>
-    We need to find the smallest prime \( p \) such that there exists a positive integer \( n \) for which \( n^4 + 1 \) is divisible by \( p^2 \). Let's check small primes to see if they satisfy this condition.
+    We need to find the smallest prime \( p \) such that \( n^4 + 1 \equiv 0 \pmod{p^2} \). This implies \( n^4 \equiv -1 \pmod{p^2} \). Let's check small primes to see if they satisfy this condition.
 </thinking>
 <agent>
     <agent_name>SCAgent</agent_name>
@@ -25,40 +31,6 @@ To further break down the problem, let's delegate the task to the SCAgent to fin
     <required_arguments>
         <agent_input></agent_input>
     </required_arguments>
-    <agent_output_id>prime_agent_output</agent_output_id>
+    <agent_output_id>math_agent_output</agent_output_id>
 </agent>
-<answer>prime_agent_output</answer>
-```
-
-Now, let's assume the SCAgent has identified the smallest prime \( p \). We need to find the smallest positive integer \( m \) such that \( m^4 + 1 \) is divisible by \( p^2 \).
-
-```xml
-<thinking>
-    Given the smallest prime \( p \), we need to find the smallest positive integer \( m \) such that \( m^4 + 1 \) is divisible by \( p^2 \). We will use the SCAgent to find this \( m \).
-</thinking>
-<agent>
-    <agent_name>SCAgent</agent_name>
-    <agent_description>Performs arithmetic calculations using Chain-of-Thought with Self-Consistency (CoT_SC).</agent_description>
-    <required_arguments>
-        <agent_input></agent_input>
-    </required_arguments>
-    <agent_output_id>smallest_m_agent_output</agent_output_id>
-</agent>
-<answer>smallest_m_agent_output</answer>
-```
-
-Let's assume the SCAgent has found the smallest \( m \). The final answer will be the output of the SCAgent.
-
-```xml
-<thinking>
-    We have identified the smallest prime \( p \) and now need to find the smallest positive integer \( m \) such that \( m^4 + 1 \) is divisible by \( p^2 \). We will use the SCAgent to find this \( m \).
-</thinking>
-<agent>
-    <agent_name>SCAgent</agent_name>
-    <agent_description>Performs arithmetic calculations using Chain-of-Thought with Self-Consistency (CoT_SC).</agent_description>
-    <required_arguments>
-        <agent_input></agent_input>
-    </required_arguments>
-    <agent_output_id>smallest_m_agent_output</agent_output_id>
-</agent>
-<answer>smallest_m_agent_output</answer>
+<answer>math_agent_output</answer>

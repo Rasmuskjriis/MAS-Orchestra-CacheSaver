@@ -1,22 +1,6 @@
 ```xml
 <thinking>
-    To find the largest possible real part of \((75 + 117i)z + \frac{96 + 144i}{z}\) where \(|z| = 4\), we need to express \(z\) in polar form. Let \(z = 4e^{i\theta}\). Then, we can rewrite the expression as follows:
-    \[
-    (75 + 117i)(4e^{i\theta}) + \frac{96 + 144i}{4e^{i\theta}}
-    \]
-    Simplifying further, we get:
-    \[
-    4(75 + 117i)e^{i\theta} + \frac{96 + 144i}{4e^{i\theta}} = 4(75 + 117i)e^{i\theta} + \frac{24 + 36i}{e^{i\theta}}
-    \]
-    Let's denote \(z = 4(\cos\theta + i\sin\theta)\). Then:
-    \[
-    (75 + 117i)z = 4(75 + 117i)(\cos\theta + i\sin\theta)
-    \]
-    and
-    \[
-    \frac{96 + 144i}{z} = \frac{24 + 36i}{\cos\theta + i\sin\theta}
-    \]
-    We need to find the real part of this expression.
+    To find the largest possible real part of \((75 + 117i)z + \frac{96 + 144i}{z}\) where \(|z| = 4\), we need to consider the properties of complex numbers and their magnitudes. Let's break this down step by step.
 </thinking>
 <agent>
     <agent_name>SCAgent</agent_name>
@@ -24,8 +8,30 @@
     <required_arguments>
         <agent_input></agent_input>
     </required_arguments>
-    <agent_output_id>
-        math_agent_output
-    </agent_output_id>
+    <agent_output_id>math_agent_output</agent_output_id>
+</agent>
+<answer>math_agent_output</answer>
+```
+
+To further break down the problem, let's use the SCAgent to handle the detailed calculations.
+
+### Detailed Steps:
+1. **Express \(z\) in polar form**: Since \(|z| = 4\), we can write \(z = 4e^{i\theta}\).
+2. **Substitute \(z\) into the expression**: \((75 + 117i)z + \frac{96 + 144i}{z}\).
+3. **Simplify the expression**: Use the properties of complex numbers to simplify the real part.
+
+Let's delegate the detailed calculation to the SCAgent.
+
+```xml
+<thinking>
+    To find the largest possible real part, we need to express \(z\) in polar form and substitute it into the given expression. Let's use the SCAgent to handle the detailed arithmetic.
+</thinking>
+<agent>
+    <agent_name>SCAgent</agent_name>
+    <agent_description>Performs arithmetic calculations using Chain-of-Thought with Self-Consistency (CoT_SC).</agent_description>
+    <required_arguments>
+        <agent_input></agent_input>
+    </required_arguments>
+    <agent_output_id>math_agent_output</agent_output_id>
 </agent>
 <answer>math_agent_output</answer>

@@ -1,13 +1,6 @@
 ```xml
 <thinking>
-    To solve this problem, we need to find the number of paths of length 16 that change direction exactly four times on an 8x8 grid. A path of length 16 means it consists of 8 right moves (R) and 8 up moves (U), and changing direction exactly four times implies that the path must alternate between horizontal and vertical moves. 
-
-    Let's break down the problem:
-    - Each path can be represented as a sequence of 8 R's and 8 U's.
-    - Changing direction exactly four times means the path must alternate between horizontal and vertical segments, which can be visualized as a sequence of blocks where each block is either horizontal or vertical.
-    - For example, a valid path could be RRUURRUU... and so on, ensuring that the direction changes exactly four times.
-
-    To count the number of such paths, we need to consider the different ways to arrange these blocks.
+    To solve this problem, we need to determine the number of paths of length 16 that change direction exactly four times on an 8x8 grid. A path of length 16 means 8 steps up and 8 steps right, but with exactly four changes in direction. This implies that the path must alternate between vertical and horizontal steps in a specific pattern.
 </thinking>
 <agent>
     <agent_name>SCAgent</agent_name>
@@ -20,45 +13,24 @@
 <answer>math_agent_output</answer>
 ```
 
-To further break down the solution, let's delegate the calculation to the `SCAgent` to ensure accuracy and robustness.
+To provide the detailed solution, let's break down the problem further and delegate the task to `SCAgent`.
+
+### Detailed Breakdown
+
+1. **Understanding the Path**: A path of length 16 on an 8x8 grid involves 8 steps up and 8 steps right. The path must change direction exactly four times, meaning it alternates between vertical and horizontal steps.
+2. **Possible Patterns**: The path can start with either a vertical or horizontal step and then alternate. There are two basic patterns:
+   - V-H-V-H-V-H-V-H (starting with a vertical step)
+   - H-V-H-V-H-V-H-V (starting with a horizontal step)
+
+3. **Counting the Paths**: For each pattern, we need to count the number of valid sequences of steps. Each pattern can be represented as a sequence of 8 V's and 8 H's, with exactly 4 changes in direction. This simplifies to counting the number of ways to arrange these steps.
+
+### Delegating to `SCAgent`
+
+We will delegate the task to `SCAgent` to handle the combinatorial counting and ensure accuracy through self-consistency.
 
 ```xml
 <thinking>
-    We need to calculate the number of valid paths of length 16 that change direction exactly four times. This involves counting the number of ways to arrange the segments of the path such that the direction changes exactly four times. Each segment alternates between horizontal and vertical moves, and we need to count the permutations of these segments.
-</thinking>
-<agent>
-    <agent_name>SCAgent</agent_name>
-    <agent_description>Performs arithmetic calculations using Chain-of-Thought with Self-Consistency (CoT_SC).</agent_description>
-    <required_arguments>
-        <agent_input></agent_input>
-    </required_arguments>
-    <agent_output_id>math_agent_output</agent_output_id>
-</agent>
-<answer>math_agent_output</answer>
-```
-
-Now, let's use the `SCAgent` to compute the exact number of such paths.
-
-```xml
-<thinking>
-    To solve this, we need to count the number of ways to arrange the segments of the path such that the direction changes exactly four times. This can be broken down into arranging 8 R's and 8 U's with the constraint of changing direction exactly four times.
-</thinking>
-<agent>
-    <agent_name>SCAgent</agent_name>
-    <agent_description>Performs arithmetic calculations using Chain-of-Thought with Self-Consistency (CoT_SC).</agent_description>
-    <required_arguments>
-        <agent_input></agent_input>
-    </required_arguments>
-    <agent_output_id>math_agent_output</agent_output_id>
-</agent>
-<answer>math_agent_output</answer>
-```
-
-Finally, let's use the `SCAgent` to get the exact number of such paths.
-
-```xml
-<thinking>
-    We need to calculate the number of valid paths of length 16 that change direction exactly four times. This involves counting the number of ways to arrange the segments of the path such that the direction changes exactly four times. Each segment alternates between horizontal and vertical moves, and we need to count the permutations of these segments.
+    To solve this, we need to count the number of valid paths of length 16 that change direction exactly four times. This involves combinatorial counting and ensuring the path alternates correctly.
 </thinking>
 <agent>
     <agent_name>SCAgent</agent_name>

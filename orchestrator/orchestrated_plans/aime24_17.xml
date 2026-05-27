@@ -1,40 +1,21 @@
 ```xml
 <thinking>
-    Given the problem, we need to find \( AB \cdot AC \) for triangle \( \triangle ABC \) with circumcenter \( O \) and incenter \( I \) such that \( \overline{IA} \perp \overline{OI} \), circumradius \( R = 13 \), and inradius \( r = 6 \). 
+    Given that \(\overline{IA} \perp \overline{OI}\), we can use properties of the triangle's circumcenter \(O\) and incenter \(I\). The condition \(\overline{IA} \perp \overline{OI}\) implies a specific geometric configuration, which can help us find the product \(AB \cdot AC\).
 
-    The condition \( \overline{IA} \perp \overline{OI} \) implies that \( I \) lies on the circle with diameter \( AO \). This geometric property provides us with a specific relationship involving the circumradius and inradius. We can use this to derive the desired product \( AB \cdot AC \).
+    We know the circumradius \(R = 13\) and the inradius \(r = 6\). The formula for the product of the sides of a triangle in terms of the circumradius and inradius is given by:
+    \[
+    AB \cdot AC = \frac{a \cdot b \cdot c}{2R}
+    \]
+    However, we need to find a way to use the given perpendicularity condition to simplify this.
+
+    The perpendicularity condition \(\overline{IA} \perp \overline{OI}\) suggests a special configuration, such as when the triangle is right-angled or has specific angle properties. For simplicity, let's use the SCAgent to handle the detailed geometric analysis and calculation.
 </thinking>
 <agent>
     <agent_name>SCAgent</agent_name>
-    <agent_description>Performs geometric calculations and leverages known properties of triangles.</agent_description>
+    <agent_description>Performs arithmetic calculations using Chain-of-Thought with Self-Consistency (CoT_SC).</agent_description>
     <required_arguments>
         <agent_input></agent_input>
     </required_arguments>
-    <agent_output_id>geometric_agent_output</agent_output_id>
+    <agent_output_id>math_agent_output</agent_output_id>
 </agent>
-<answer>geometric_agent_output</answer>
-```
-
-To further break down the solution, let's utilize the SCAgent to handle the geometric calculation. The key geometric property here is that if \( \overline{IA} \perp \overline{OI} \), then the triangle has a specific configuration that can be analyzed using known formulas and properties of the circumcircle and incircle.
-
-The product \( AB \cdot AC \) can be derived using the formula involving the circumradius \( R \) and the inradius \( r \):
-
-\[ AB \cdot AC = \frac{a^2 + b^2 + c^2}{2} \]
-
-However, a simpler approach involves using the fact that the perpendicularity condition implies a specific relationship between the sides and the radii. For this specific problem, the product \( AB \cdot AC \) can be directly calculated using the known values of \( R \) and \( r \).
-
-Let's delegate the exact calculation to the SCAgent:
-
-```xml
-<thinking>
-    Given the perpendicularity condition and the known values of the circumradius \( R = 13 \) and inradius \( r = 6 \), we can use geometric properties to find \( AB \cdot AC \).
-</thinking>
-<agent>
-    <agent_name>SCAgent</agent_name>
-    <agent_description>Performs geometric calculations and leverages known properties of triangles.</agent_description>
-    <required_arguments>
-        <agent_input></agent_input>
-    </required_arguments>
-    <agent_output_id>geometric_agent_output</agent_output_id>
-</agent>
-<answer>geometric_agent_output</answer>
+<answer>math_agent_output</answer>

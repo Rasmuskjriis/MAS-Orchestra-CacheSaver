@@ -1,62 +1,15 @@
 ```xml
 <thinking>
-    To solve this problem, we need to use some geometric properties of circles and triangles. Specifically, we will use the fact that the tangents from a point to a circle are equal in length, and the power of a point theorem. Let's break down the solution step by step.
+    To solve this problem, we need to use geometric properties of circles and triangles. Specifically, we need to leverage the power of the polar line and the power of a point theorem. Here’s the plan:
+    1. Identify that point \( D \) is the intersection of the tangents to the circle at points \( B \) and \( C \).
+    2. Use the fact that \( AD \) is the polar of point \( P \) with respect to the circle.
+    3. Apply the power of a point theorem to find the length of \( AP \).
+
+    The power of a point theorem states that for a point \( P \) outside a circle, the power of the point with respect to the circle is equal to the product of the lengths of the segments of any secant line through \( P \). In this case, since \( D \) is the intersection of the tangents at \( B \) and \( C \), the power of point \( A \) with respect to the circle is \( AB \cdot AC \).
 </thinking>
 <agent>
     <agent_name>SCAgent</agent_name>
-    <agent_description>Performs geometric calculations and uses the power of a point theorem.</agent_description>
-    <required_arguments>
-        <agent_input></agent_input>
-    </required_arguments>
-    <agent_output_id>geometric_agent_output</agent_output_id>
-</agent>
-<answer>geometric_agent_output</answer>
-```
-
-Now, let's proceed with the geometric solution using the SCAgent.
-
-### Geometric Solution Using SCAgent
-
-To find the length \( AP \), we will use the properties of the circle and the tangents. Here’s the step-by-step breakdown:
-
-1. **Identify Key Points and Properties**:
-   - \( D \) is the intersection of the tangents to the circle at points \( B \) and \( C \).
-   - \( AB = 5 \), \( BC = 9 \), and \( AC = 10 \).
-   - Since \( D \) is the intersection of the tangents, \( DB = DC \).
-
-2. **Use Power of a Point Theorem**:
-   - The power of point \( A \) with respect to the circle is given by \( AP \cdot AD = AB^2 \).
-   - We need to find \( AP \) and \( AD \).
-
-3. **Calculate \( AD \)**:
-   - Use the fact that \( AD \) can be found using the formula for the length of the tangent from a point to a circle, but here we need to use the properties of the triangle and the circle.
-
-4. **Apply the Formula**:
-   - The length \( AP \) can be derived using the formula involving the sides of the triangle and the power of the point.
-
-Let's delegate this calculation to the SCAgent.
-
-```xml
-<thinking>
-    We need to calculate \( AP \) using the properties of the circle and the triangle. The key is to use the power of a point theorem and the lengths of the sides of the triangle.
-</thinking>
-<agent>
-    <agent_name>SCAgent</agent_name>
-    <agent_description>Performs geometric calculations and uses the power of a point theorem.</agent_description>
-    <required_arguments>
-        <agent_input></agent_input>
-    </required_arguments>
-    <agent_output_id>geometric_agent_output</agent_output_id>
-</agent>
-<answer>geometric_agent_output</answer>
-```
-
-Now, let's get the final answer from the SCAgent. 
-
-```xml
-<agent>
-    <agent_name>SCAgent</agent_name>
-    <agent_description>Performs geometric calculations and uses the power of a point theorem.</agent_description>
+    <agent_description>Performs geometric calculations and leverages theorems such as the power of a point.</agent_description>
     <required_arguments>
         <agent_input></agent_input>
     </required_arguments>

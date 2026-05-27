@@ -1,57 +1,22 @@
 ```xml
 <thinking>
     To solve this problem, we need to use the principle of inclusion-exclusion. Let's denote the sets as follows:
-    - \( D \): Set of residents who own a diamond ring.
-    - \( G \): Set of residents who own a set of golf clubs.
-    - \( S \): Set of residents who own a garden spade.
-    - \( C \): Set of residents who own a bag of candy hearts.
+    - \( D \) for the set of residents who own a diamond ring.
+    - \( G \) for the set of residents who own a set of golf clubs.
+    - \( S \) for the set of residents who own a garden spade.
+    - \( C \) for the set of residents who own a bag of candy hearts.
     
-    We are given:
+    We know:
     - \( |D| = 195 \)
     - \( |G| = 367 \)
     - \( |S| = 562 \)
     - \( |C| = 900 \)
-    - \( |D \cap G \cup G \cap S \cup S \cap D \cup D \cap C \cup G \cap C \cup S \cap C| = 437 \)
-    - \( |D \cap G \cap S \cap C| = x \) (the number we need to find)
-
-    According to the principle of inclusion-exclusion for four sets, we have:
-    \[
-    |D \cup G \cup S \cup C| = |D| + |G| + |S| + |C| - |D \cap G| - |G \cap S| - |S \cap D| - |D \cap C| - |G \cap C| - |S \cap C| + |D \cap G \cap S| + |D \cap G \cap C| + |D \cap S \cap C| + |G \cap S \cap C| - |D \cap G \cap S \cap C|
-    \]
-    Since every resident owns at least one item, \( |D \cup G \cup S \cup C| = 900 \).
-
-    We know that the number of residents who own exactly two items is 437. We can express this as:
-    \[
-    |D \cap G| + |G \cap S| + |S \cap D| + |D \cap C| + |G \cap C| + |S \cap C| = 437
-    \]
-
-    Similarly, the number of residents who own exactly three items is 234. We can express this as:
-    \[
-    |D \cap G \cap S| + |D \cap G \cap C| + |D \cap S \cap C| + |G \cap S \cap C| = 234
-    \]
-
-    Finally, the number of residents who own all four items is \( x \). We can now set up the equation using the principle of inclusion-exclusion:
-    \[
-    900 = 195 + 367 + 562 + 900 - (|D \cap G| + |G \cap S| + |S \cap D| + |D \cap C| + |G \cap C| + |S \cap C|) + (|D \cap G \cap S| + |D \cap G \cap C| + |D \cap S \cap C| + |G \cap S \cap C|) - x
-    \]
-    Simplifying, we get:
-    \[
-    900 = 195 + 367 + 562 + 900 - 437 + 234 - x
-    \]
-    \[
-    900 = 2451 - 437 + 234 - x
-    \]
-    \[
-    900 = 2248 - x
-    \]
-    Solving for \( x \):
-    \[
-    x = 2248 - 900
-    \]
-    \[
-    x = 1348
-    \]
-    However, since the total number of residents is 900, the correct value of \( x \) must be recalculated considering the constraints. Let's use the SCAgent to verify and ensure accuracy.
+    - \( |D \cap G \cap S \cap C| = x \) (the number of residents who own all four items, which we need to find).
+    - \( |D \cap G| + |D \cap S| + |D \cap C| + |G \cap S| + |G \cap C| + |S \cap C| - 3(|D \cap G \cap S| + |D \cap G \cap C| + |D \cap S \cap C| + |G \cap S \cap C|) + 6x = 437 + 234 \)
+    
+    However, since we have the number of residents who own exactly two and exactly three items, we can simplify our approach.
+    
+    Let's delegate this calculation to the SCAgent.
 </thinking>
 <agent>
     <agent_name>SCAgent</agent_name>

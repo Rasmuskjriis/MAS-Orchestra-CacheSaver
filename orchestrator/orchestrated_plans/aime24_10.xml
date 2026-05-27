@@ -1,40 +1,73 @@
 ```xml
 <thinking>
-    To solve this problem, we need to calculate the probability of Jen winning the grand prize given that she won a prize. Let's break down the problem into manageable steps.
+    To solve this problem, we need to determine the probability of Jen winning the grand prize given that she won a prize. Let's break down the problem step by step.
     
-    First, let's determine the total number of ways to choose 4 numbers from 10. This is given by the combination formula \( \binom{10}{4} \).
+    1. **Total number of ways to choose 4 numbers from 10**: This is given by the combination formula \( \binom{10}{4} \).
+    2. **Number of ways to win the grand prize**: This is the case where Jen's 4 chosen numbers match the 4 randomly chosen numbers, which is 1 way.
+    3. **Number of ways to win a prize (at least 2 matches)**: This includes the cases where Jen has exactly 2, 3, or 4 matching numbers with the randomly chosen numbers.
     
-    Next, we need to find the probability of Jen winning the grand prize, which means all four of her chosen numbers match the randomly chosen numbers. There is only 1 way to choose 4 specific numbers from 4, so the probability of winning the grand prize is \( \frac{1}{\binom{10}{4}} \).
-
-    Finally, we need to find the probability of Jen winning a prize (at least 2 of her numbers match the randomly chosen numbers) and then use conditional probability to find the desired probability.
+    We need to calculate the conditional probability \( P(\text{grand prize} \mid \text{prize}) \).
 </thinking>
 <agent>
     <agent_name>SCAgent</agent_name>
-    <agent_description>Performs arithmetic calculations using Chain-of-Thought with Self-Consistency (CoT_SC).</agent_description>
+    <agent_description>Performs combinatorial calculations and probability analysis.</agent_description>
     <required_arguments>
         <agent_input></agent_input>
     </required_arguments>
-    <agent_output_id>math_agent_output</agent_output_id>
+    <agent_output_id>probability_agent_output</agent_output_id>
 </agent>
-<answer>math_agent_output</answer>
+<answer>probability_agent_output</answer>
 ```
 
-Now, let's handle the calculation part using the `SCAgent`:
+Now, let's solve the problem using the SCAgent to ensure accuracy and handle any potential errors through ensemble reasoning.
 
+### Step-by-Step Solution Using SCAgent
+
+1. **Calculate Total Combinations**:
+   \[
+   \binom{10}{4} = \frac{10!}{4!(10-4)!} = 210
+   \]
+
+2. **Calculate Favorable Outcomes**:
+   - **Winning the Grand Prize**: Only 1 way.
+   - **Winning a Prize (at least 2 matches)**:
+     - Exactly 2 matches: Choose 2 out of 4 correct numbers and 2 out of the remaining 6 incorrect numbers.
+     \[
+     \binom{4}{2} \times \binom{6}{2} = 6 \times 15 = 90
+     \]
+     - Exactly 3 matches: Choose 3 out of 4 correct numbers and 1 out of the remaining 6 incorrect numbers.
+     \[
+     \binom{4}{3} \times \binom{6}{1} = 4 \times 6 = 24
+     \]
+     - Exactly 4 matches: Only 1 way.
+     \[
+     \binom{4}{4} \times \binom{6}{0} = 1 \times 1 = 1
+     \]
+     Total favorable outcomes for winning a prize:
+     \[
+     90 + 24 + 1 = 115
+     \]
+
+3. **Calculate Probability of Winning a Prize**:
+   \[
+   P(\text{prize}) = \frac{\text{Favorable outcomes}}{\text{Total outcomes}} = \frac{115}{210}
+   \]
+
+4. **Calculate Conditional Probability**:
+   \[
+   P(\text{grand prize} \mid \text{prize}) = \frac{P(\text{grand prize and prize})}{P(\text{prize})} = \frac{\frac{1}{210}}{\frac{115}{210}} = \frac{1}{115}
+   \]
+
+Thus, the probability of Jen winning the grand prize given that she won a prize is \(\frac{1}{115}\).
+
+The final answer is:
 ```xml
-<thinking>
-    The total number of ways to choose 4 numbers from 10 is given by \( \binom{10}{4} \). We can calculate this as follows:
-    \[
-    \binom{10}{4} = \frac{10!}{4!(10-4)!} = \frac{10 \times 9 \times 8 \times 7}{4 \times 3 \times 2 \times 1} = 210
-    \]
-    So, the probability of Jen winning the grand prize is \( \frac{1}{210} \).
-</thinking>
 <agent>
     <agent_name>SCAgent</agent_name>
-    <agent_description>Performs arithmetic calculations using Chain-of-Thought with Self-Consistency (CoT_SC).</agent_description>
+    <agent_description>Performs combinatorial calculations and probability analysis.</agent_description>
     <required_arguments>
         <agent_input></agent_input>
     </required_arguments>
-    <agent_output_id>math_agent_output</agent_output_id>
+    <agent_output_id>probability_agent_output</agent_output_id>
 </agent>
-<answer>math_agent_output</answer>
+<answer>probability_agent_output</answer>

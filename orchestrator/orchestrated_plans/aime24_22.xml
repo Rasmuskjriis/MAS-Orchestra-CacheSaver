@@ -1,36 +1,13 @@
 ```xml
 <thinking>
-    To find the number of rectangles that can be formed inside a fixed regular dodecagon (12-gon) where each side of the rectangle lies on either a side or a diagonal of the dodecagon, we need to consider the geometric properties and combinatorial aspects of the problem. A rectangle in this context can be defined by choosing two pairs of parallel sides, which can be either sides or diagonals of the dodecagon.
+    To find the number of rectangles that can be formed inside a fixed regular dodecagon (12-gon) where each side of the rectangle lies on either a side or a diagonal of the dodecagon, we need to consider the geometric properties of the dodecagon. A rectangle can be formed by choosing pairs of parallel sides or diagonals. Let's break this down step by step.
 </thinking>
 <agent>
     <agent_name>SCAgent</agent_name>
-    <agent_description>Performs arithmetic calculations using Chain-of-Thought with Self-Consistency (CoT_SC).</agent_description>
+    <agent_description>Performs geometric reasoning and combinatorial counting using Chain-of-Thought with Self-Consistency (CoT_SC).</agent_description>
     <required_arguments>
         <agent_input></agent_input>
     </required_arguments>
-    <agent_output_id>rectangles_agent_output</agent_output_id>
+    <agent_output_id>geometry_agent_output</agent_output_id>
 </agent>
-<answer>rectangles_agent_output</answer>
-```
-
-To provide the solution, let's break down the problem further and delegate it to the `SCAgent` to handle the detailed combinatorial calculation.
-
-### Detailed Steps for `SCAgent`:
-1. **Identify Possible Pairs of Parallel Sides**: In a regular dodecagon, we need to identify how many ways we can choose pairs of parallel sides or diagonals that form rectangles.
-2. **Count the Rectangles**: Use combinatorial methods to count the number of valid rectangles.
-
-Let's proceed with the detailed calculation using `SCAgent`.
-
-```xml
-<thinking>
-    To find the number of rectangles in a regular dodecagon, we need to consider the geometric properties and combinatorial aspects. A rectangle can be formed by choosing two pairs of parallel sides, which can be either sides or diagonals of the dodecagon. We need to count the number of such configurations.
-</thinking>
-<agent>
-    <agent_name>SCAgent</agent_name>
-    <agent_description>Performs arithmetic calculations using Chain-of-Thought with Self-Consistency (CoT_SC).</agent_description>
-    <required_arguments>
-        <agent_input></agent_input>
-    </required_arguments>
-    <agent_output_id>rectangles_agent_output</agent_output_id>
-</agent>
-<answer>rectangles_agent_output</answer>
+<answer>geometry_agent_output</answer>

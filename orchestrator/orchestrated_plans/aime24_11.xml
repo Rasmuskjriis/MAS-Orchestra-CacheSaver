@@ -1,6 +1,8 @@
 ```xml
 <thinking>
-    To solve this problem, we need to analyze the geometric properties and relationships between the rectangles and the circle. Let's break down the problem step by step and see if we can delegate the task to the SCAgent for a more detailed and accurate solution.
+    To solve this problem, we need to analyze the geometric properties and relationships between the rectangles and the circle. Given that \(D, E, C, F\) are collinear and \(A, D, H, G\) lie on a circle, we can infer that there might be some symmetry or specific geometric properties that can help us find the length of \(CE\).
+
+    Let's break down the problem into smaller steps and see if we can find a way to solve it directly or if we need to delegate to an agent.
 </thinking>
 <agent>
     <agent_name>SCAgent</agent_name>
@@ -13,17 +15,30 @@
 <answer>math_agent_output</answer>
 ```
 
-To provide a more detailed and accurate solution, let's delegate the task to the SCAgent. The SCAgent will handle the geometric and algebraic manipulations needed to find the length of \( CE \).
+Now, let's solve the problem using the `SCAgent` to ensure accuracy through self-consistency and chain-of-thought reasoning.
 
-Here’s the breakdown of the problem:
-1. **Identify the Geometry**: Since \( D, E, C, F \) are collinear and \( A, D, H, G \) lie on a circle, we can use properties of cyclic quadrilaterals and collinear points to find the length of \( CE \).
-2. **Use the Given Dimensions**: We know \( BC = 16 \), \( AB = 107 \), \( FG = 17 \), and \( EF = 184 \).
+### Detailed Solution via SCAgent
 
-We will now delegate this to the SCAgent to find the length of \( CE \).
+1. **Identify Key Geometric Properties:**
+   - Since \(D, E, C, F\) are collinear and \(A, D, H, G\) lie on a circle, we can use properties of cyclic quadrilaterals and collinearity to find the length of \(CE\).
+   - The lengths given are \(BC = 16\), \(AB = 107\), \(FG = 17\), and \(EF = 184\).
+
+2. **Analyze the Geometry:**
+   - The collinearity of \(D, E, C, F\) suggests that \(CE\) might be related to the lengths of the sides of the rectangles.
+   - The circle passing through \(A, D, H, G\) implies certain symmetrical properties, but we need to find a specific relationship involving \(CE\).
+
+3. **Use the Given Lengths:**
+   - Since \(BC = 16\) and \(AB = 107\), we can consider the right triangle formed by \(B, C, A\) and use the Pythagorean theorem if necessary.
+   - However, the key here is to recognize that the length \(CE\) can be derived from the given lengths and the geometric properties.
+
+4. **Delegation to SCAgent:**
+   - We will use the `SCAgent` to compute the exact length of \(CE\) by leveraging the given lengths and geometric properties.
+
+### Final Output via SCAgent
 
 ```xml
 <thinking>
-    To solve this, we need to use the properties of cyclic quadrilaterals and collinear points. However, the exact steps require detailed geometric analysis which can be handled by the SCAgent.
+    To find the length of \(CE\), we need to use the given lengths and geometric properties. The collinearity of \(D, E, C, F\) and the circle passing through \(A, D, H, G\) suggest a specific relationship. We will use the `SCAgent` to compute the exact length of \(CE\).
 </thinking>
 <agent>
     <agent_name>SCAgent</agent_name>

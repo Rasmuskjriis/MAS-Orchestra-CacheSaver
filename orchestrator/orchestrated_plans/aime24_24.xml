@@ -1,6 +1,6 @@
 ```xml
 <thinking>
-    To solve this problem, we need to find the number of ways to place a digit in each cell of a 2x3 grid such that the sum of the two numbers formed by reading left to right is 999, and the sum of the three numbers formed by reading top to bottom is 99. Let's break this down step by step.
+    To solve this problem, we need to find the number of ways to place a digit in each cell of a 2x3 grid so that the sum of the two numbers formed by reading left to right is 999, and the sum of the three numbers formed by reading top to bottom is 99. Let's break down the problem into smaller parts and use the SCAgent to solve it.
 </thinking>
 <agent>
     <agent_name>SCAgent</agent_name>
@@ -13,30 +13,19 @@
 <answer>math_agent_output</answer>
 ```
 
-To provide a more detailed solution, let's break down the problem and delegate it to the `SCAgent` to handle the arithmetic and combinatorial aspects of the problem.
+To further break down the problem and ensure accuracy, let's delegate the task to the SCAgent. The SCAgent will handle the detailed arithmetic and combinatorial calculations needed to solve this problem.
 
-### Step-by-Step Breakdown
-1. **Understanding the Problem**:
-   - We need to form two numbers from the digits in the 2x3 grid.
-   - The first number is formed by reading the digits from the first row.
-   - The second number is formed by reading the digits from the second row.
-   - The sum of these two numbers should be 999.
-   - Additionally, the sum of the digits in the first column, the second column, and the third column should be 99.
+Here's the breakdown of the steps within the SCAgent:
 
-2. **Formulating the Problem**:
-   - Let the digits in the grid be represented as \(a_1, a_2, a_3\) for the first row and \(b_1, b_2, b_3\) for the second row.
-   - The first number is \(100a_1 + 10a_2 + a_3\).
-   - The second number is \(100b_1 + 10b_2 + b_3\).
-   - The sum of these two numbers should be 999.
-   - The sum of the digits in the columns should be 99, i.e., \(a_1 + b_1 + a_2 + b_2 + a_3 + b_3 = 99\).
+1. **Formulate the Problem**: Identify the constraints and the structure of the problem.
+2. **Generate Possible Combinations**: Use combinatorial methods to generate all possible digit placements.
+3. **Check Constraints**: Verify which combinations satisfy both the sum conditions.
+4. **Count Valid Combinations**: Count the number of valid combinations that meet the criteria.
 
-3. **Delegating to SCAgent**:
-   - We will use the `SCAgent` to handle the combinatorial and arithmetic aspects of the problem.
-
-### Delegated Task
+Let's proceed with the SCAgent to solve this problem.
 ```xml
 <thinking>
-    We need to find the number of ways to place digits in a 2x3 grid such that the sum of the two numbers formed by reading left to right is 999 and the sum of the three numbers formed by reading top to bottom is 99. We will delegate this to the SCAgent to handle the detailed calculations and combinatorial logic.
+    To solve this problem, we need to find the number of ways to place a digit in each cell of a 2x3 grid so that the sum of the two numbers formed by reading left to right is 999, and the sum of the three numbers formed by reading top to bottom is 99. Let's break down the problem into smaller parts and use the SCAgent to solve it.
 </thinking>
 <agent>
     <agent_name>SCAgent</agent_name>
