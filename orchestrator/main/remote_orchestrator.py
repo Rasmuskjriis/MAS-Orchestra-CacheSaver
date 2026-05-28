@@ -33,10 +33,6 @@ def create_chat_completion_with_cs(client, model, messages):
     return (response, metadata)
 
 async def main(agent_type, problems, model, use_cachesaver):
-  # =========================
-  # 1. MAS PROMPT
-  # =========================
-
 
 #   agent_type = "CoTAgent"  
 #   agent_type = "SCAgent"
@@ -68,24 +64,12 @@ async def main(agent_type, problems, model, use_cachesaver):
             api_key="dummy"  # required but ignored by server
         )
 
-    # =========================
-    # 1. Load dataset problem
-    # =========================
-
     print("Fetching dataset...")
     dataset = load_dataset(
         "HuggingFaceH4/aime_2024",
         "default",
         split="train"
     )
-
-    # =========================
-    # 4. Generate XML
-    # =========================
-
-    print("\n==============================")
-    print("🧠 GENERATING MAS XML PLAN")
-    print("==============================\n")
 
     prompt_tokens_used = 0
     prompt_tokens_saved = 0
@@ -155,11 +139,6 @@ async def main(agent_type, problems, model, use_cachesaver):
             f.write(xml_content)
 
     end = time.time()
-
-    print("\n==============================")
-    print("✅ XML PLANS SAVED")
-    print(f"⏱️ Time: {end - start:.2f}s")
-    print("==============================")
     
     print("prompt_tokens_used_orc", prompt_tokens_used)
     print("completion_tokens_used_orc", completion_tokens_used)
