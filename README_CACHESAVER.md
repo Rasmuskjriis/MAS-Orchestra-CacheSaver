@@ -28,4 +28,4 @@ These changes were mostly to the samplers, which are how the agents in the execu
 
 ## Running the code
 
-AS stated above, there is a setup markdown file in the "orchestrator" folder detailing how to setup a Docker image and a uv environment in order to run the code. The Docker image is about 12 gb and uv env is somewhere between 5-10 gb approximately.
+AS stated above, there is a setup markdown file in the "orchestrator" folder detailing how to setup a Docker image and a uv environment in order to run the code. The Docker image is about 12 gb and uv env is somewhere between 5-10 gb approximately. You would need an API key to run the code, which could easily be put into a .env file.

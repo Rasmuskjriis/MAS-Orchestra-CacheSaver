@@ -107,24 +107,14 @@ class GroqCompletionSampler(SamplerBase):
                 if self.mock_output:
                     content = '<thinking>This is a mock output</thinking><answer>This is a mock answer</answer><correct>True</correct><feedback>This is a mock feedback</feedback>'
 
-                else:
-                    print("\n====================")
-                    print("MESSAGES SENT TO MODEL:")
-                    for m in message_list:
-                        print(f"{m['role'].upper()}: {m['content']}")
-                    print("====================\n")
-                    
+                else:                 
                     # Use async client with temperature for regular models
                     response = await self.client.chat.completions.create(
                         model=safe_model,
                         messages=message_list,
                         temperature=safe_temperature,
                         timeout=60
-                    )
-                    
-                    # print("response: ", response)
-
-                    print(f"✓ API request successful")
+                    )                    
                     content = response.choices[0].message.content
 
                     metadata = make_dummy_metadata()
