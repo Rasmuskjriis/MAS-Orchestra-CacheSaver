@@ -20,10 +20,8 @@
 7. Open a terminal in VSC (which should be in WSL), also make sure to open Docker Desktop.
 
 ### Setting up Docker
-(To avoid warnings add this to the .env file: "RAY_ACCEL_ENV_VAR_OVERRIDE_ON_ZERO=0", as well as the keys for OPENAI and GROQ and also a HF_TOKEN for huggingface)
-
 8. Create a Docker image:
-"docker build -t cachesaver-base -f orchestrator/Dockerfile.base ."
+"docker build -t cachesaver-base -f orchestrator/setup/Dockerfile.base ."
 
 9. Create a Docker container:
 docker run -it \
@@ -42,7 +40,7 @@ docker run -it \
 
 ### Running the code
 11. Create MAS plan via. the orchestrator:
-"uv run -m orchestrator.remote_orchestrator"
+"uv run -m orchestrator.main.remote_orchestrator"
 
 or run:
 
@@ -50,11 +48,11 @@ or run:
 
 and then:
 
-"python3 -m orchestrator.remote_orchestrator"
+"python3 -m orchestrator.main.remote_orchestrator"
 
 12. Execute the orchestrator:
-"uv run -m orchestrator.run_mas"
+"uv run -m orchestrator.main.run_mas"
 
 or
 
-"python3 -m orchestrator.run_mas"
+"python3 -m orchestrator.main.run_mas"

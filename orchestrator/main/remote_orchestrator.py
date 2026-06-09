@@ -13,6 +13,7 @@ from orchestrator.prompts.agent_prompts import agent_prompt
 
 from orchestrator.utils.utils import calculate_saved_tokens, make_dummy_metadata
 
+# Helper functions that allow the agents to talk to the LLM with or without CacheSaver
 def create_chat_completion(client, model, messages):
      response = client.chat.completions.create(
         model=f"{model}",
@@ -34,14 +35,11 @@ def create_chat_completion_with_cs(client, model, messages):
 
 async def main(agent_type, problems, model, use_cachesaver):
 
-#   agent_type = "CoTAgent"  
-#   agent_type = "SCAgent"
-#   agent_type = "DebateAgent"
-#   agent_type = "ReflexionAgent" # uses early exit right now
-#   agent_type = "All"
-
+    # Create a prompt to the orchestrator based on the templates in the "agents_prompts.py" file
+    # These include the orchestrator having access to all sub-agents or only one at a time
     MATH_SYSTEM_PROMPT, MATH_USER_PROMPT_TEMPLATE, MATH_USER_SUFFIX = agent_prompt(agent_type)
 
+    # Helper function to collect into one prompt
     def build_math_messages(question):
         return [
           {"role": "system", "content": MATH_SYSTEM_PROMPT},
@@ -49,28 +47,31 @@ async def main(agent_type, problems, model, use_cachesaver):
           {"role": "user", "content": MATH_USER_SUFFIX},
       ]
 
+    # The URL that hosts the orchestrator LLM
     BASE_URL = "https://discern-stroller-recycling.ngrok-free.dev/v1"
 
+    # Create a client based on whether CacheSaver should be used or not
     if use_cachesaver:
         client = _CacheSaverOpenAI(
             base_url=BASE_URL,
-            api_key="dummy",  # required but ignored by server
+            api_key="dummy",
             namespace="",
             cachedir="./cache"
         )
     else:
         client = _OpenAI(
             base_url=BASE_URL,
-            api_key="dummy"  # required but ignored by server
+            api_key="dummy"
         )
 
-    print("Fetching dataset...")
+    # Load the dataset
     dataset = load_dataset(
         "HuggingFaceH4/aime_2024",
         "default",
         split="train"
     )
 
+    # Initialize logging metrics
     prompt_tokens_used = 0
     prompt_tokens_saved = 0
     completion_tokens_used = 0
@@ -80,31 +81,23 @@ async def main(agent_type, problems, model, use_cachesaver):
 
     start = time.time()
 
-    print("Dataset: ", dataset)
-    # print("Dataset length: ", len(dataset[:1]))
-    print("problems", dataset["problem"])
-    print("answer: ", dataset["answer"])
-
     if problems == "all":
         problems = len(dataset["problem"])
-
-    print("problem amount", problems)
 
     for i in range(problems):
         
         problem = dataset["problem"][i]
         
-        # problem += "Please use exactly  3 agents to debate this"
-        
+        # Build the message to the orchestrator using a helper function
         messages = build_math_messages(problem)
 
         if use_cachesaver:
             (response, metadata) = create_chat_completion_with_cs(client, model, messages)
-            print("METADATA: ", metadata)
         else:
             response = create_chat_completion(client, model, messages)
-            metadata = make_dummy_metadata()
+            metadata = make_dummy_metadata() # Make dummy metadata if CacheSaver is not used
 
+        # Log tokens and number of API calls
         usage = getattr(response, "usage", None)
         tokens = calculate_saved_tokens(usage, metadata)
 
@@ -115,20 +108,15 @@ async def main(agent_type, problems, model, use_cachesaver):
         api_calls_saved += tokens["api_calls_saved"]
         api_calls_used += tokens["api_calls_used"]
 
-        print(f"Model: {response.model}")
-        print(f"Tokens: {response.usage.prompt_tokens} prompt, {response.usage.completion_tokens} completion")
-        print(f"\n--- Response ---\n")
-        print(response.choices[0].message.content)
-
         output = response.choices[0].message.content
 
+        # Only take the agent plan part of the output from the orchestrator
         end_tag = "</answer>"
         end_idx = output.rfind(end_tag)
 
         if end_idx != -1:
             xml_content = output[:end_idx + len(end_tag)]
         else:
-            # fallback if model is broken
             xml_content = output
 
 
@@ -140,9 +128,7 @@ async def main(agent_type, problems, model, use_cachesaver):
 
     end = time.time()
     
-    print("prompt_tokens_used_orc", prompt_tokens_used)
-    print("completion_tokens_used_orc", completion_tokens_used)
-    
+    # Return the metrics for our experiments
     return {
         "prompt_tokens_saved_orc": prompt_tokens_saved,
         "prompt_tokens_used_orc": prompt_tokens_used,

@@ -18,11 +18,8 @@ import os
 import numpy as np
 
 async def main(problems, agent_model, use_cachesaver, max_debate_round, num_repeated_samples, max_reflection_round):
-    # Set up global variables required for MAS execution
-    set_global("global_max_ray_workers", 4)
-
-    set_global("global_node_model", f"{agent_model}")
-
+    
+    # Create samplers depending on whether CacheSaver should be used or not    
     if use_cachesaver:
         model_sampler_map = {
             f"{agent_model}": CSChatCompletionSampler(
@@ -39,12 +36,10 @@ async def main(problems, agent_model, use_cachesaver, max_debate_round, num_repe
                 mock_output=False
             )
         }
-
-    print("model_sampler_map: ", model_sampler_map)
-
-    set_global("global_model_sampler_map", model_sampler_map)
-
-    # Set other required global variables with defaults
+        
+    # Set up global variables required for MAS execution
+    set_global("global_max_ray_workers", 4)
+    set_global("global_node_model", f"{agent_model}")
     set_global("global_max_round", 1)
     set_global("global_max_sc", 1)
     set_global("global_decompose_only", False)
@@ -57,28 +52,23 @@ async def main(problems, agent_model, use_cachesaver, max_debate_round, num_repe
     set_global("global_eval_building_blocks", False)
     set_global("global_known_prompt", None)
     set_global("global_multiply_processes", None)
-    set_global("global_FORMAT_INST", lambda request_keys: f"""Reply EXACTLY with the following XML format.\n{str(request_keys)}\nDO NOT MISS ANY REQUEST FIELDS and ensure that your response is a well-formed XML object!\n\n""")
-    set_global("global_output_description", "If the question is asked for a numeric result, Return ONLY an integer and DO NOT return anything other than the integer answer; If the question is asked for more than numeric results, Return what the question asked and make sure the answer is complete.")
-    set_global("global_cot_instruction", "Please think step by step and then solve the task.")
     set_global("global_max_debate_round", max_debate_round)
     set_global("global_num_repeated_samples", num_repeated_samples)
     set_global("global_max_reflection_round", max_reflection_round)
-
-    assert os.getenv("GROQ_API_KEY") is not None, "Missing GROQ_API_KEY"
+    set_global("global_model_sampler_map", model_sampler_map)
    
+   # Initialize Ray and create an asynchronous AgentSystem
     ray.init()
-
     system = AsyncAgentSystem.create_with_globals()
 
-    print("Fetching dataset...")
+    # Load the AIME24 dataset
     dataset = load_dataset(
         "HuggingFaceH4/aime_2024",
         "default",
         split="train"
     )
 
-    # print("dataset", dataset)
-    
+    # Initialize logging metrics
     prompt_tokens_saved = 0
     prompt_tokens_used = 0
     completion_tokens_saved = 0
@@ -86,22 +76,17 @@ async def main(problems, agent_model, use_cachesaver, max_debate_round, num_repe
     api_calls_saved = 0
     api_calls_used = 0
     
+    # Scores contains a list of correct/incorrect answers
     scores = []
     
     if problems == "all":
         problems = len(dataset["problem"])
-
-    print("problem amount", problems)
     try:
         for i in range(problems):
             problem = dataset["problem"][i]
             answer = dataset["answer"][i]
 
-            print("problem: ", problem)
-            print("answer: ", answer)
-
-            print("END OF SOLUTION")
-
+            # Create a task_info object for the execution
             task_info = Info(
                 name="task",
                 author="user",
@@ -113,38 +98,29 @@ async def main(problems, agent_model, use_cachesaver, max_debate_round, num_repe
                 final_answer=None
             )
 
+            # Open the generated plan by the orchestrator
             with open(f"orchestrator/orchestrated_plans/aime24_{i+1}.xml") as f:
                 xml_plan = f.read()
 
+            # Convert said XML plan into valid executable Python code
             code, name, thought = extract_harmony_code_from_response(
                 xml_plan,
                 validate_python_code,
                 logger=None
             )
 
-            # print(f"Extracted code: {code}")
-            # print(f"Extracted thought: {thought}")
-            # print(f"Extracted name: {name}")
-
             if code.startswith("direct_answer"):
                 print("No executable agent plan found:", thought)
             else:
-                # Run the MAS-plan
+                # Executing the agent plan
                 completion = await system.execute_mas_batch_async(
                     [code],
                     [task_info]
                 )
 
-                # print("completion: ", completion)
-                # print("completion[0]: ", completion[0])
-
                 (result, success, error_message, tokens) = completion[0]
-            
-                print("result: ", result)
-                print("success: ", success)
-                print("error_message: ", error_message)
-                print("tokens: ", tokens)
 
+                # Log the metrics
                 prompt_tokens_saved += tokens["total_prompt_tokens_saved"]                
                 prompt_tokens_used += tokens["total_prompt_tokens_used"]
                 completion_tokens_saved += tokens["total_completion_tokens_saved"]
@@ -152,26 +128,19 @@ async def main(problems, agent_model, use_cachesaver, max_debate_round, num_repe
                 api_calls_saved += tokens["total_api_calls_saved"]
                 api_calls_used += tokens["total_api_calls_used"]
 
-                print("actual answer: ", answer)
-
+                # Compute whether the generated answer in correct or not and append to scores
                 mathscorer = MathScorer()
-
-                print("Result: ", result)
-                print("Answer: ", answer)
-                correct = mathscorer.grade_answer(result, answer)
-
-                print("correct: ", correct)
-                
+                correct = mathscorer.grade_answer(result, answer)                
                 if correct:
                     scores.append(1)
                 else:
                     scores.append(0)
                 
         accuracy = np.mean(scores)
-        print("Accuracy: ", accuracy)
         
         system.cleanup()
-            
+        
+        # Return metrics for the experiments
         return {
             "accuracy": accuracy,
             "prompt_tokens_saved_agents": prompt_tokens_saved,
@@ -188,15 +157,12 @@ async def main(problems, agent_model, use_cachesaver, max_debate_round, num_repe
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     
-    # "meta-llama/llama-4-scout-17b-16e-instruct"
-    # "gpt-5-nano-2025-08-07"
-    
     parser.add_argument("-p","--problems", type=int, default="all")
-    parser.add_argument("-m","--agent_model", type=str, default="meta-llama/llama-4-scout-17b-16e-instruct")
+    parser.add_argument("-m","--agent_model", type=str, default="gpt-5-nano-2025-08-07")
     parser.add_argument("-c","--cachesaver", action="store_true", dest="use_cachesaver")
-    parser.add_argument("--max_debate_round", type=int, default=1, help="Maximum number of debate rounds for LLM_debate")
-    parser.add_argument("--num_repeated_samples", type=int, default=5, help="Number of repeated samples for CoT-SC (SCAgent)")
-    parser.add_argument("--max_reflection_round", type=int, default=5, help="Maximum reflection rounds for ReflexionAgent")
+    parser.add_argument("--max_debate_round", type=int, default=1, help="Maximum number of debate rounds for the LLM_debate")
+    parser.add_argument("--num_repeated_samples", type=int, default=5, help="Number of repeated samples for the SCAgent")
+    parser.add_argument("--max_reflection_round", type=int, default=5, help="Maximum reflection rounds for the ReflexionAgent")
 
     args = parser.parse_args()
 
